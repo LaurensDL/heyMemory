@@ -31,7 +31,11 @@ import { z } from "zod";
 // Schema for face photos - using the shared schema from backend
 import { insertFacePhotoSchema, type FacePhoto as FacePhotoType } from "@shared/schema";
 
-const facePhotoFormSchema = insertFacePhotoSchema.extend({
+// Simplified form schema for face photos
+const facePhotoFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  relationship: z.string().optional(),
+  description: z.string().optional(),
   photo: z.any().refine((files) => files?.length > 0, "Photo is required")
 });
 
@@ -71,8 +75,7 @@ export default function CaregiverPage() {
     defaultValues: {
       name: "",
       relationship: "",
-      description: "",
-      photoUrl: ""
+      description: ""
     }
   });
 
