@@ -157,12 +157,7 @@ export default function Home() {
             </p>
             <Card className="bg-[var(--background-light)] p-10 rounded-xl border-2 border-gray-300">
               <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row justify-center items-center gap-12">
-                  <div className="text-center">
-                    <Phone className="text-[var(--button-primary)] w-12 h-12 mx-auto mb-4" aria-hidden="true" />
-                    <p className="text-body font-bold mb-2">Call Support</p>
-                    <p className="text-body">1-800-MEMORY-1</p>
-                  </div>
+                <div className="flex justify-center items-center">
                   <div className="text-center">
                     <Mail className="text-[var(--button-primary)] w-12 h-12 mx-auto mb-4" aria-hidden="true" />
                     <p className="text-body font-bold mb-2">Email Support</p>
