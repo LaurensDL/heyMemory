@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Users, Lightbulb, Phone, Mail } from "lucide-react";
 import { Link } from "wouter";
+import Footer from "@/components/Footer";
 import heroImage from "../../../server/uploads/images/Senior Man Using heyMemory on Smartphone - heyMemory The Alzheimer App.png";
 
 export default function Home() {
@@ -188,9 +189,11 @@ export default function Home() {
               <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
                 Accessibility
               </button>
-              <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                Contact Us
-              </button>
+              <Link href="/contact">
+                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                  Contact Us
+                </button>
+              </Link>
             </div>
             
             <p className="text-body">© 2025 heyMemory. Designed with care for memory support.</p>

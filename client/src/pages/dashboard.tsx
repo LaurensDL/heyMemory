@@ -4,6 +4,7 @@ import { Brain, Users, Lightbulb, Settings, LogOut, Heart, Mail } from "lucide-r
 import { useAuth, useLogout } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
+import Footer from "@/components/Footer";
 
 export default function Dashboard() {
   const { user, isLoading } = useAuth();
