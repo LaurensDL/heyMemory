@@ -1,0 +1,307 @@
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, RotateCcw, Users, Brain, Heart } from "lucide-react";
+import { Link } from "wouter";
+import { type FacePhoto } from "@shared/schema";
+
+export default function FacesGamePage() {
+  const { user } = useAuth();
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [shuffledPhotos, setShuffledPhotos] = useState<FacePhoto[]>([]);
+
+  // Fetch face photos
+  const { data: facePhotos = [], isLoading } = useQuery<FacePhoto[]>({
+    queryKey: ['/api/face-photos'],
+  });
+
+  // Shuffle photos when game starts or photos change
+  useEffect(() => {
+    if (facePhotos.length >= 3) {
+      const shuffled = [...facePhotos].sort(() => Math.random() - 0.5);
+      setShuffledPhotos(shuffled);
+      setCurrentPhotoIndex(0);
+      setIsFlipped(false);
+    }
+  }, [facePhotos, gameStarted]);
+
+  const currentPhoto = shuffledPhotos[currentPhotoIndex];
+  const hasEnoughPhotos = facePhotos.length >= 3;
+
+  const handleFlipCard = () => {
+    setIsFlipped(true);
+  };
+
+  const handleNextPhoto = () => {
+    setIsFlipped(false);
+    setCurrentPhotoIndex((prev) => (prev + 1) % shuffledPhotos.length);
+  };
+
+  const handleStartGame = () => {
+    setGameStarted(true);
+  };
+
+  const handleRestart = () => {
+    const shuffled = [...facePhotos].sort(() => Math.random() - 0.5);
+    setShuffledPhotos(shuffled);
+    setCurrentPhotoIndex(0);
+    setIsFlipped(false);
+  };
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full">
+          <CardContent className="p-8 text-center">
+            <h2 className="text-2xl font-bold mb-4">Please Sign In</h2>
+            <p className="text-gray-600 mb-6">You need to be signed in to play the faces game.</p>
+            <Link href="/login">
+              <Button>Sign In</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full">
+          <CardContent className="p-8 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your photos...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Link href="/dashboard">
+                <Button variant="ghost" size="sm">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Dashboard
+                </Button>
+              </Link>
+              <div className="flex items-center space-x-2">
+                <Brain className="w-6 h-6 text-blue-600" />
+                <h1 className="text-2xl font-bold text-gray-900">Faces Game</h1>
+              </div>
+            </div>
+            {hasEnoughPhotos && gameStarted && (
+              <div className="flex items-center space-x-4">
+                <Badge variant="outline" className="text-sm">
+                  Photo {currentPhotoIndex + 1} of {shuffledPhotos.length}
+                </Badge>
+                <Button variant="outline" size="sm" onClick={handleRestart}>
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Restart
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {!hasEnoughPhotos ? (
+          /* Not Enough Photos Screen */
+          <div className="text-center">
+            <Card className="max-w-2xl mx-auto bg-white shadow-lg">
+              <CardContent className="p-12">
+                <div className="mb-8">
+                  <Users className="w-20 h-20 text-gray-400 mx-auto mb-6" />
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    Need More Photos
+                  </h2>
+                  <p className="text-xl text-gray-600 leading-relaxed">
+                    To play the faces game, you need at least 3 photos of family, friends, or caregivers.
+                  </p>
+                </div>
+
+                <div className="bg-blue-50 rounded-lg p-6 mb-8">
+                  <div className="flex items-center justify-center mb-4">
+                    <Heart className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                    Currently you have {facePhotos.length} photo{facePhotos.length !== 1 ? 's' : ''}
+                  </h3>
+                  <p className="text-blue-700">
+                    Add {3 - facePhotos.length} more photo{(3 - facePhotos.length) !== 1 ? 's' : ''} to start playing
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <Link href="/caregiver">
+                    <Button size="lg" className="w-full text-lg py-6">
+                      <Users className="w-5 h-5 mr-3" />
+                      Add Photos Now
+                    </Button>
+                  </Link>
+                  <p className="text-sm text-gray-500">
+                    A caregiver can help you add photos of important people in your life
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ) : !gameStarted ? (
+          /* Game Start Screen */
+          <div className="text-center">
+            <Card className="max-w-2xl mx-auto bg-white shadow-lg">
+              <CardContent className="p-12">
+                <div className="mb-8">
+                  <Brain className="w-20 h-20 text-blue-600 mx-auto mb-6" />
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    Ready to Play!
+                  </h2>
+                  <p className="text-xl text-gray-600 leading-relaxed">
+                    Exercise your memory by recognizing faces of people you love.
+                  </p>
+                </div>
+
+                <div className="bg-green-50 rounded-lg p-6 mb-8">
+                  <h3 className="text-lg font-semibold text-green-900 mb-3">
+                    How to Play:
+                  </h3>
+                  <div className="text-left space-y-2 text-green-800">
+                    <p>• Look at each photo carefully</p>
+                    <p>• Try to remember their name and relationship</p>
+                    <p>• Touch the photo to see the answer</p>
+                    <p>• Take your time - this is practice, not a test</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Button size="lg" className="w-full text-lg py-6" onClick={handleStartGame}>
+                    <Heart className="w-5 h-5 mr-3" />
+                    Start Game ({facePhotos.length} Photos)
+                  </Button>
+                  <p className="text-sm text-gray-500">
+                    Play daily to keep memories of loved ones fresh
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          /* Game Play Screen */
+          <div className="text-center">
+            <div className="max-w-2xl mx-auto">
+              {/* Game Card */}
+              <div className="relative mb-8">
+                <Card 
+                  className={`w-full bg-white shadow-2xl transition-all duration-700 cursor-pointer transform hover:scale-105 ${
+                    isFlipped ? 'rotate-y-180' : ''
+                  }`}
+                  onClick={!isFlipped ? handleFlipCard : undefined}
+                  style={{ 
+                    transformStyle: 'preserve-3d',
+                    minHeight: '500px'
+                  }}
+                >
+                  {!isFlipped ? (
+                    /* Front of Card - Photo */
+                    <CardContent className="p-0 h-full flex flex-col justify-center items-center relative">
+                      <div className="w-full h-96 bg-gray-100 rounded-t-lg flex items-center justify-center overflow-hidden">
+                        {currentPhoto?.photoUrl ? (
+                          <img
+                            src={currentPhoto.photoUrl}
+                            alt="Person to remember"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex flex-col items-center text-gray-400">
+                            <Users className="w-20 h-20 mb-4" />
+                            <p className="text-lg">No photo available</p>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="p-8 w-full">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                          Who is this person?
+                        </h3>
+                        <p className="text-gray-600 mb-6">
+                          Take your time to remember their name and relationship to you.
+                        </p>
+                        <Button size="lg" className="w-full">
+                          <Heart className="w-5 h-5 mr-2" />
+                          Touch to See Answer
+                        </Button>
+                      </div>
+                    </CardContent>
+                  ) : (
+                    /* Back of Card - Answer */
+                    <CardContent className="p-8 h-full flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-purple-50">
+                      <div className="text-center space-y-6">
+                        <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                          <Heart className="w-10 h-10 text-red-500" />
+                        </div>
+                        
+                        <div>
+                          <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                            {currentPhoto?.name}
+                          </h2>
+                          <Badge variant="secondary" className="text-lg px-4 py-2">
+                            {currentPhoto?.relationship}
+                          </Badge>
+                        </div>
+
+                        {currentPhoto?.description && (
+                          <div className="bg-white/50 rounded-lg p-4 max-w-md mx-auto">
+                            <p className="text-gray-700 text-lg leading-relaxed">
+                              {currentPhoto.description}
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="pt-6">
+                          <Button size="lg" onClick={handleNextPhoto} className="px-8">
+                            Next Photo
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  )}
+                </Card>
+              </div>
+
+              {/* Instructions */}
+              <Card className="bg-white/70 backdrop-blur-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-center space-x-6 text-sm text-gray-600">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <span>Look carefully at the photo</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      <span>Try to remember their name</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                      <span>Touch card to reveal answer</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

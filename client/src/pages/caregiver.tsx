@@ -28,11 +28,10 @@ import {
 import { Link } from "wouter";
 import { z } from "zod";
 
-// Schema for face photos
-const facePhotoSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  relationship: z.string().min(1, "Relationship is required"),
-  description: z.string().optional(),
+// Schema for face photos - using the shared schema from backend
+import { insertFacePhotoSchema, type FacePhoto as FacePhotoType } from "@shared/schema";
+
+const facePhotoFormSchema = insertFacePhotoSchema.extend({
   photo: z.any().optional()
 });
 
@@ -44,18 +43,8 @@ const rememberItemSchema = z.object({
   photo: z.any().optional()
 });
 
-type FacePhotoData = z.infer<typeof facePhotoSchema>;
+type FacePhotoFormData = z.infer<typeof facePhotoFormSchema>;
 type RememberItemData = z.infer<typeof rememberItemSchema>;
-
-interface FacePhoto {
-  id: number;
-  name: string;
-  relationship: string;
-  description?: string;
-  photoUrl?: string;
-  userId: number;
-  createdAt: Date;
-}
 
 interface RememberItem {
   id: number;
@@ -73,12 +62,12 @@ export default function CaregiverPage() {
   const queryClient = useQueryClient();
   const [isPhotoDialogOpen, setIsPhotoDialogOpen] = useState(false);
   const [isRememberDialogOpen, setIsRememberDialogOpen] = useState(false);
-  const [editingPhoto, setEditingPhoto] = useState<FacePhoto | null>(null);
+  const [editingPhoto, setEditingPhoto] = useState<FacePhotoType | null>(null);
   const [editingRemember, setEditingRemember] = useState<RememberItem | null>(null);
 
   // Form setup
-  const photoForm = useForm<FacePhotoData>({
-    resolver: zodResolver(facePhotoSchema),
+  const photoForm = useForm<FacePhotoFormData>({
+    resolver: zodResolver(facePhotoFormSchema),
     defaultValues: {
       name: "",
       relationship: "",
@@ -95,10 +84,9 @@ export default function CaregiverPage() {
     }
   });
 
-  // Fetch face photos (placeholder for now)
-  const { data: facePhotos = [] } = useQuery<FacePhoto[]>({
-    queryKey: ['/api/caregiver/faces'],
-    enabled: false // Will implement API later
+  // Fetch face photos
+  const { data: facePhotos = [] } = useQuery<FacePhotoType[]>({
+    queryKey: ['/api/face-photos'],
   });
 
   // Fetch remember items (placeholder for now)
@@ -107,16 +95,24 @@ export default function CaregiverPage() {
     enabled: false // Will implement API later
   });
 
-  // Mutations (placeholder for now)
+  // Mutations
   const addPhotoMutation = useMutation({
-    mutationFn: async (data: FacePhotoData) => {
-      // Will implement API call
-      console.log("Adding photo:", data);
+    mutationFn: async (data: FacePhotoFormData) => {
+      return apiRequest("/api/face-photos", {
+        method: "POST",
+        body: JSON.stringify({
+          name: data.name,
+          relationship: data.relationship,
+          description: data.description,
+          photoUrl: data.photoUrl || null
+        })
+      });
     },
     onSuccess: () => {
       toast({ title: "Photo added successfully" });
       setIsPhotoDialogOpen(false);
       photoForm.reset();
+      queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
     }
   });
 
@@ -132,7 +128,7 @@ export default function CaregiverPage() {
     }
   });
 
-  const onSubmitPhoto = (data: FacePhotoData) => {
+  const onSubmitPhoto = (data: FacePhotoFormData) => {
     addPhotoMutation.mutate(data);
   };
 
