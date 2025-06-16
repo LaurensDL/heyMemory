@@ -150,6 +150,66 @@ export default function Home() {
           </div>
         </section>
 
+        {/* How It Works Section */}
+        <section id="how-it-works" className="bg-green-50 py-16 md:py-24" aria-labelledby="how-it-works-heading">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 id="how-it-works-heading" className="text-section-heading text-center mb-16">
+              How It Works
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+              {/* Step 1 */}
+              <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center">
+                <CardContent className="p-0">
+                  <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white text-2xl font-bold">1</span>
+                  </div>
+                  <h3 className="text-card-heading mb-4">Family Sets Up</h3>
+                  <p className="text-body leading-relaxed">
+                    A caregiver, family member, or friend creates a profile and adds photos and information 
+                    to help support their loved one's memory.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              {/* Step 2 */}
+              <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center">
+                <CardContent className="p-0">
+                  <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white text-2xl font-bold">2</span>
+                  </div>
+                  <h3 className="text-card-heading mb-4">Daily Practice</h3>
+                  <p className="text-body leading-relaxed">
+                    The user enjoys simple, fun games each day that help exercise memory 
+                    and keep important information fresh in mind.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              {/* Step 3 */}
+              <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center">
+                <CardContent className="p-0">
+                  <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white text-2xl font-bold">3</span>
+                  </div>
+                  <h3 className="text-card-heading mb-4">Find & Remember</h3>
+                  <p className="text-body leading-relaxed">
+                    When something is forgotten, the app helps find the information quickly. 
+                    Names, faces, and important details are always there when needed.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="text-center mt-12">
+              <p className="text-body text-xl leading-relaxed max-w-3xl mx-auto">
+                heyMemory brings families together to support memory wellness with dignity, 
+                understanding, and care.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Support Section */}
         <section id="support" className="bg-blue-50 py-16 md:py-24" aria-labelledby="support-heading">
           <div className="max-w-4xl mx-auto px-6 text-center">
