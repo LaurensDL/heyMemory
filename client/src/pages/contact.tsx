@@ -164,7 +164,6 @@ export default function ContactPage() {
           </div>
         </div>
       </nav>
-
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -278,7 +277,7 @@ export default function ContactPage() {
                 <div>
                   <h3 className="text-2xl font-bold text-black mb-2">Email</h3>
                   <p className="text-xl text-gray-700 mb-2">help@heymemory.app</p>
-                  <p className="text-lg text-gray-600">We respond within 24 hours</p>
+                  <p className="text-lg text-gray-600">We try to respond within 24 hours</p>
                 </div>
               </div>
 
@@ -296,7 +295,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-      
       {/* Footer - Same as homepage */}
       <footer className="bg-gray-50 border-t-2 border-gray-200 py-12" role="contentinfo">
         <div className="max-w-6xl mx-auto px-6">
