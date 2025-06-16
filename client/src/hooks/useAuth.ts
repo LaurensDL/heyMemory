@@ -6,6 +6,7 @@ interface AuthUser {
   id: number;
   email: string;
   isEmailVerified: boolean;
+  isAdmin: boolean;
 }
 
 export function useAuth() {

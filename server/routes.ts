@@ -148,7 +148,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ 
         id: user.id, 
         email: user.email, 
-        isEmailVerified: user.isEmailVerified 
+        isEmailVerified: user.isEmailVerified,
+        isAdmin: user.isAdmin
       });
     } catch (error) {
       console.error("Get user error:", error);
@@ -224,6 +225,113 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       console.error("Profile update error:", error);
       res.status(500).json({ message: "Profile update failed" });
+    }
+  });
+
+  // Admin routes
+  // Get all users (admin only)
+  app.get("/api/admin/users", requireAdmin, async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      res.json(users.map(user => ({
+        id: user.id,
+        email: user.email,
+        isEmailVerified: user.isEmailVerified,
+        isAdmin: user.isAdmin,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      })));
+    } catch (error) {
+      console.error("Get all users error:", error);
+      res.status(500).json({ message: "Failed to get users" });
+    }
+  });
+
+  // Create user (admin only)
+  app.post("/api/admin/users", requireAdmin, async (req, res) => {
+    try {
+      const userData = adminCreateUserSchema.parse(req.body);
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(userData.email);
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists with this email" });
+      }
+
+      const user = await storage.adminCreateUser(userData);
+      res.status(201).json({
+        id: user.id,
+        email: user.email,
+        isEmailVerified: user.isEmailVerified,
+        isAdmin: user.isAdmin,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      });
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ message: error.errors[0]?.message || "Invalid input" });
+      }
+      console.error("Admin create user error:", error);
+      res.status(500).json({ message: "Failed to create user" });
+    }
+  });
+
+  // Update user (admin only)
+  app.put("/api/admin/users/:id", requireAdmin, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const updates = adminUpdateUserSchema.parse(req.body);
+      
+      if (updates.email) {
+        // Check if new email is already taken by another user
+        const existingUser = await storage.getUserByEmail(updates.email);
+        if (existingUser && existingUser.id !== userId) {
+          return res.status(400).json({ message: "Email already in use" });
+        }
+      }
+
+      const user = await storage.adminUpdateUser(userId, updates);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({
+        id: user.id,
+        email: user.email,
+        isEmailVerified: user.isEmailVerified,
+        isAdmin: user.isAdmin,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      });
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ message: error.errors[0]?.message || "Invalid input" });
+      }
+      console.error("Admin update user error:", error);
+      res.status(500).json({ message: "Failed to update user" });
+    }
+  });
+
+  // Delete user (admin only)
+  app.delete("/api/admin/users/:id", requireAdmin, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const currentUserId = (req.session as any).userId;
+      
+      // Prevent admin from deleting themselves
+      if (userId === currentUserId) {
+        return res.status(400).json({ message: "Cannot delete your own account" });
+      }
+
+      const success = await storage.adminDeleteUser(userId);
+      if (!success) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Admin delete user error:", error);
+      res.status(500).json({ message: "Failed to delete user" });
     }
   });
 
