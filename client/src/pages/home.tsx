@@ -116,8 +116,8 @@ export default function Home() {
                     <h3 className="text-card-heading mb-6">Faces Game</h3>
                   </div>
                   <p className="text-body leading-relaxed text-center">
-                    Practice recognizing and remembering important people in your life with our interactive faces game. 
-                    Safe, private, and designed to help strengthen memory connections.
+                    Help you remember faces of people you love. 
+                    Safe, private, and easy to use.
                   </p>
                 </CardContent>
               </Card>
@@ -130,8 +130,8 @@ export default function Home() {
                     <h3 className="text-card-heading mb-6">Remember This</h3>
                   </div>
                   <p className="text-body leading-relaxed text-center">
-                    Store important facts, locations, and memories in an easy-to-access format. 
-                    Review and practice recalling information whenever you need it.
+                    Keep notes to help you remember names, places, and things. 
+                    Easy to use when you need to remember something.
                   </p>
                 </CardContent>
               </Card>
