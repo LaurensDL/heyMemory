@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Users, Lightbulb, Phone, Mail } from "lucide-react";
+import heroImage from "../../../server/uploads/images/Senior Man Using heyMemory on Smartphone - heyMemory The Alzheimer App.png";
 
 export default function Home() {
   const handleLogin = () => {
@@ -55,38 +56,52 @@ export default function Home() {
       <main role="main">
         {/* Hero Section */}
         <section className="bg-white py-16 md:py-24" aria-labelledby="hero-heading">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <h1 id="hero-heading" className="text-hero font-bold text-black mb-8 leading-tight">
-              Welcome to heyMemory
-            </h1>
-            
-            <p className="text-body text-black mb-12 max-w-3xl mx-auto leading-relaxed">
-              heyMemory is designed to help you remember important people, places, and facts. 
-              Our simple and clear interface makes it easy to store and recall the memories that matter most to you.
-            </p>
-            
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Button 
-                onClick={handleLogin}
-                className="w-full sm:w-auto bg-[#0066CC] text-white text-button font-semibold px-12 py-4 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-colors min-h-[56px] min-w-[200px]"
-              >
-                <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                Log In
-              </Button>
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Column - Text Content */}
+              <div className="text-center lg:text-left">
+                <h1 id="hero-heading" className="text-hero font-bold text-black mb-8 leading-tight">
+                  Welcome to heyMemory
+                </h1>
+                
+                <p className="text-body text-black mb-12 leading-relaxed">
+                  heyMemory is designed to help you remember important people, places, and facts. 
+                  Our simple and clear interface makes it easy to store and recall the memories that matter most to you.
+                </p>
+                
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start items-center">
+                  <Button 
+                    onClick={handleLogin}
+                    className="w-full sm:w-auto bg-[#0066CC] text-white text-button font-semibold px-12 py-4 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-colors min-h-[56px] min-w-[200px]"
+                  >
+                    <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                      <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    Log In
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleRegister}
+                    variant="outline"
+                    className="w-full sm:w-auto bg-white text-[#0066CC] text-button font-semibold px-12 py-4 rounded-lg border-2 border-[#0066CC] hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-colors min-h-[56px] min-w-[200px]"
+                  >
+                    <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                    </svg>
+                    Register
+                  </Button>
+                </div>
+              </div>
               
-              <Button 
-                onClick={handleRegister}
-                variant="outline"
-                className="w-full sm:w-auto bg-white text-[#0066CC] text-button font-semibold px-12 py-4 rounded-lg border-2 border-[#0066CC] hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-colors min-h-[56px] min-w-[200px]"
-              >
-                <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                </svg>
-                Register
-              </Button>
+              {/* Right Column - Hero Image */}
+              <div className="flex justify-center lg:justify-end">
+                <img 
+                  src={heroImage}
+                  alt="Senior man using heyMemory app on smartphone, demonstrating accessibility features"
+                  className="w-full max-w-md lg:max-w-lg rounded-lg shadow-lg"
+                />
+              </div>
             </div>
           </div>
         </section>
