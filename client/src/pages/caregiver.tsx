@@ -216,7 +216,7 @@ export default function CaregiverPage() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel>Name *</FormLabel>
                             <FormControl>
                               <Input {...field} placeholder="Enter their name" />
                             </FormControl>
