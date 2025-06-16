@@ -53,7 +53,7 @@ export default function Home() {
 
       <main role="main">
         {/* Hero Section */}
-        <section className="bg-white py-16 md:py-24" aria-labelledby="hero-heading">
+        <section className="bg-blue-50 py-16 md:py-24" aria-labelledby="hero-heading">
           <div className="max-w-6xl mx-auto px-6">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Column - Text Content */}
@@ -113,7 +113,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="bg-gray-50 py-16 md:py-24" aria-labelledby="features-heading">
+        <section id="features" className="bg-amber-50 py-16 md:py-24" aria-labelledby="features-heading">
           <div className="max-w-6xl mx-auto px-6">
             <h2 id="features-heading" className="text-section-heading text-center mb-16">
               How heyMemory Helps You
@@ -152,7 +152,7 @@ export default function Home() {
         </section>
 
         {/* Support Section */}
-        <section id="support" className="bg-white py-16 md:py-24" aria-labelledby="support-heading">
+        <section id="support" className="bg-blue-50 py-16 md:py-24" aria-labelledby="support-heading">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 id="support-heading" className="text-section-heading mb-8">
               We're Here to Help
