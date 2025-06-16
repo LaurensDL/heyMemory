@@ -127,6 +127,14 @@ export default function AdminPage() {
   const handleEditUser = (user: UserType) => {
     setEditingUser(user);
     editForm.setValue('email', user.email);
+    editForm.setValue('firstName', user.firstName || '');
+    editForm.setValue('lastName', user.lastName || '');
+    editForm.setValue('dateOfBirth', user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '');
+    editForm.setValue('address', user.address || '');
+    editForm.setValue('city', user.city || '');
+    editForm.setValue('state', user.state || '');
+    editForm.setValue('zipCode', user.zipCode || '');
+    editForm.setValue('country', user.country || '');
     editForm.setValue('isAdmin', user.isAdmin);
     editForm.setValue('isEmailVerified', user.isEmailVerified);
     setIsEditDialogOpen(true);
@@ -245,63 +253,198 @@ export default function AdminPage() {
 
         {/* Edit User Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Edit User</DialogTitle>
+              <DialogTitle>Edit User Profile</DialogTitle>
             </DialogHeader>
             <Form {...editForm}>
-              <form onSubmit={editForm.handleSubmit(handleUpdateUser)} className="space-y-4">
-                <FormField
-                  control={editForm.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="email" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>New Password (optional)</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="password" placeholder="Leave empty to keep current password" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="isEmailVerified"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center justify-between">
-                      <FormLabel>Email Verified</FormLabel>
-                      <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="isAdmin"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center justify-between">
-                      <FormLabel>Admin Access</FormLabel>
-                      <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex justify-end space-x-2">
+              <form onSubmit={editForm.handleSubmit(handleUpdateUser)} className="space-y-6">
+                {/* Personal Information */}
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-lg">Personal Information</h4>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={editForm.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="text" placeholder="First name" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={editForm.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="text" placeholder="Last name" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={editForm.control}
+                    name="dateOfBirth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Date of Birth</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="date" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={editForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="email" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Address Information */}
+                <div className="space-y-4 border-t pt-4">
+                  <h4 className="font-semibold text-lg">Address Information</h4>
+                  
+                  <FormField
+                    control={editForm.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Street Address</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="text" placeholder="Street address" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={editForm.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="text" placeholder="City" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={editForm.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>State/Province</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="text" placeholder="State/Province" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={editForm.control}
+                      name="zipCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>ZIP/Postal Code</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="text" placeholder="ZIP code" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={editForm.control}
+                      name="country"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="text" placeholder="Country" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Security & Password */}
+                <div className="space-y-4 border-t pt-4">
+                  <h4 className="font-semibold text-lg">Security & Access</h4>
+                  
+                  <FormField
+                    control={editForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>New Password (optional)</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="password" placeholder="Leave empty to keep current password" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={editForm.control}
+                      name="isEmailVerified"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center justify-between">
+                          <FormLabel>Email Verified</FormLabel>
+                          <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={editForm.control}
+                      name="isAdmin"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center justify-between">
+                          <FormLabel>Admin Access</FormLabel>
+                          <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-2 pt-4">
                   <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
                     Cancel
                   </Button>
@@ -343,8 +486,18 @@ export default function AdminPage() {
                           <div className="flex items-center">
                             <User className="w-5 h-5 mr-2 text-gray-400" />
                             <div>
-                              <div className="font-medium">{user.email}</div>
-                              <div className="text-sm text-gray-500">ID: {user.id}</div>
+                              <div className="font-medium">
+                                {user.firstName && user.lastName 
+                                  ? `${user.firstName} ${user.lastName}` 
+                                  : user.email}
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                {user.firstName && user.lastName && <div>{user.email}</div>}
+                                <div>ID: {user.id}</div>
+                                {user.city && user.state && (
+                                  <div>{user.city}, {user.state}</div>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </td>
