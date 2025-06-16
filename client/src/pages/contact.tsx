@@ -294,6 +294,10 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      
+      {/* Spacing before footer */}
+      <div className="py-16"></div>
+      
       {/* Footer - Same as homepage */}
       <footer className="bg-gray-50 border-t-2 border-gray-200 py-12" role="contentinfo">
         <div className="max-w-6xl mx-auto px-6">
