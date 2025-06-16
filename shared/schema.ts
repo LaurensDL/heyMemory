@@ -52,9 +52,9 @@ export const users = pgTable("users", {
 export const facePhotos = pgTable("face_photos", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  relationship: text("relationship").notNull(),
+  relationship: text("relationship"),
   description: text("description"),
-  photoUrl: text("photo_url"),
+  photoUrl: text("photo_url").notNull(),
   userId: integer("user_id").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -143,6 +143,8 @@ export const insertFacePhotoSchema = createInsertSchema(facePhotos).omit({
   id: true,
   userId: true,
   createdAt: true,
+}).extend({
+  photoUrl: z.string().min(1, "Photo is required"),
 });
 
 export const insertRememberItemSchema = createInsertSchema(rememberItems).omit({

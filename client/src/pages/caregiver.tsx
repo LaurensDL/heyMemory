@@ -32,7 +32,7 @@ import { z } from "zod";
 import { insertFacePhotoSchema, type FacePhoto as FacePhotoType } from "@shared/schema";
 
 const facePhotoFormSchema = insertFacePhotoSchema.extend({
-  photo: z.any().optional()
+  photo: z.any().refine((files) => files?.length > 0, "Photo is required")
 });
 
 // Schema for remember this items
@@ -71,7 +71,8 @@ export default function CaregiverPage() {
     defaultValues: {
       name: "",
       relationship: "",
-      description: ""
+      description: "",
+      photoUrl: ""
     }
   });
 
@@ -98,11 +99,23 @@ export default function CaregiverPage() {
   // Mutations
   const addPhotoMutation = useMutation({
     mutationFn: async (data: FacePhotoFormData) => {
+      let photoUrl = "";
+      
+      // Convert file to data URL if photo is provided
+      if (data.photo && data.photo.length > 0) {
+        const file = data.photo[0];
+        photoUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+      }
+      
       return apiRequest("/api/face-photos", "POST", {
         name: data.name,
-        relationship: data.relationship,
-        description: data.description,
-        photoUrl: data.photoUrl || null
+        relationship: data.relationship || "",
+        description: data.description || "",
+        photoUrl: photoUrl
       });
     },
     onSuccess: () => {
@@ -215,9 +228,9 @@ export default function CaregiverPage() {
                         name="relationship"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Relationship</FormLabel>
+                            <FormLabel>Relationship (Optional)</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="e.g., Son, Daughter, Friend" />
+                              <Input {...field} value={field.value || ""} placeholder="e.g., Son, Daughter, Friend" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -231,18 +244,31 @@ export default function CaregiverPage() {
                           <FormItem>
                             <FormLabel>Description (Optional)</FormLabel>
                             <FormControl>
-                              <Textarea {...field} placeholder="Special notes or memories" />
+                              <Textarea {...field} value={field.value || ""} placeholder="Special notes or memories" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                       
-                      <div className="space-y-2">
-                        <Label>Photo</Label>
-                        <Input type="file" accept="image/*" />
-                        <p className="text-sm text-gray-500">Upload a clear photo of this person</p>
-                      </div>
+                      <FormField
+                        control={photoForm.control}
+                        name="photo"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Photo *</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="file" 
+                                accept="image/*"
+                                onChange={(e) => field.onChange(e.target.files)}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                            <p className="text-sm text-gray-500">Upload a clear photo of this person</p>
+                          </FormItem>
+                        )}
+                      />
                       
                       <div className="flex justify-end space-x-2">
                         <Button type="button" variant="outline" onClick={() => setIsPhotoDialogOpen(false)}>
