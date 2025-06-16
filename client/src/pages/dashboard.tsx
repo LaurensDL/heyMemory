@@ -87,7 +87,9 @@ export default function Dashboard() {
         {/* Welcome Section */}
         <section className="max-w-6xl mx-auto px-6 mb-16">
           <div className="text-center">
-            <h1 className="text-hero mb-6">Welcome back!</h1>
+            <h1 className="text-hero mb-6">
+              Hello {user?.firstName || user?.email?.split('@')[0] || 'there'}!
+            </h1>
             {user && (
               <p className="text-body mb-4">
                 Logged in as: <span className="font-bold">{user.email}</span>
