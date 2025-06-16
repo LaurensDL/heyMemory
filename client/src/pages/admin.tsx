@@ -57,7 +57,7 @@ export default function AdminPage() {
   // Create user mutation
   const createUserMutation = useMutation({
     mutationFn: async (data: AdminCreateUserData) => {
-      return await apiRequest('/api/admin/users', 'POST', data);
+      return await apiRequest('POST', '/api/admin/users', data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
@@ -80,7 +80,7 @@ export default function AdminPage() {
   // Update user mutation
   const updateUserMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: AdminUpdateUserData }) => {
-      return await apiRequest(`/api/admin/users/${id}`, 'PUT', data);
+      return await apiRequest('PUT', `/api/admin/users/${id}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
@@ -104,7 +104,7 @@ export default function AdminPage() {
   // Delete user mutation
   const deleteUserMutation = useMutation({
     mutationFn: async (id: number) => {
-      return await apiRequest(`/api/admin/users/${id}`, 'DELETE');
+      return await apiRequest('DELETE', `/api/admin/users/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });

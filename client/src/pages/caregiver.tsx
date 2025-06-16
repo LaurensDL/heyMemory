@@ -114,7 +114,7 @@ export default function CaregiverPage() {
         });
       }
       
-      return apiRequest("/api/face-photos", "POST", {
+      return apiRequest("POST", "/api/face-photos", {
         name: data.name,
         relationship: data.relationship || "",
         description: data.description || "",
