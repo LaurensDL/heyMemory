@@ -8,14 +8,31 @@ import { registerSchema, type RegisterData } from "@shared/schema";
 import { useRegister } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
-import { Brain } from "lucide-react";
-import { useState } from "react";
+import { Brain, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import VerifyEmailPage from "./verify-email";
 
 export default function Register() {
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const registerMutation = useRegister();
   const [isSuccess, setIsSuccess] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState<string>("");
+  const [showVerification, setShowVerification] = useState(false);
+
+  // Check if user already exists but unverified
+  const checkUserMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const response = await fetch("/api/check-verification-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      if (!response.ok) throw new Error("Failed to check user status");
+      return response.json();
+    }
+  });
   
   const {
     register,
@@ -31,13 +48,34 @@ export default function Register() {
   });
 
   const onSubmit = async (data: RegisterData) => {
+    // First check if user already exists
     try {
+      const userStatus = await checkUserMutation.mutateAsync(data.email);
+      
+      if (userStatus.exists && userStatus.verified) {
+        toast({
+          title: "Account Already Exists",
+          description: "An account with this email already exists. Please log in instead.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      if (userStatus.exists && !userStatus.verified) {
+        toast({
+          title: "Email Verification Required",
+          description: "An account with this email exists but isn't verified. Please complete verification or cancel to start over.",
+        });
+        setPendingEmail(data.email);
+        setShowVerification(true);
+        return;
+      }
+      
+      // User doesn't exist, proceed with registration
       await registerMutation.mutateAsync(data);
-      setIsSuccess(true);
-      toast({
-        title: "Registration Successful",
-        description: "Please check your email for verification instructions.",
-      });
+      setPendingEmail(data.email);
+      setShowVerification(true);
+      
     } catch (error: any) {
       toast({
         title: "Registration Failed",
@@ -46,6 +84,25 @@ export default function Register() {
       });
     }
   };
+
+  // Show verification page if needed
+  if (showVerification && pendingEmail) {
+    return (
+      <VerifyEmailPage 
+        email={pendingEmail}
+        onCancel={() => {
+          setShowVerification(false);
+          setPendingEmail("");
+        }}
+        onResendSuccess={() => {
+          toast({
+            title: "Email Sent",
+            description: "A new verification email has been sent.",
+          });
+        }}
+      />
+    );
+  }
 
   if (isSuccess) {
     return (

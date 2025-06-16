@@ -8,13 +8,16 @@ import { loginSchema, type LoginData } from "@shared/schema";
 import { useLogin } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
-import { Brain } from "lucide-react";
-import { useEffect } from "react";
+import { Brain, AlertCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import VerifyEmailPage from "./verify-email";
 
 export default function Login() {
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const loginMutation = useLogin();
+  const [showVerification, setShowVerification] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState("");
   
   const {
     register,
@@ -37,6 +40,17 @@ export default function Login() {
       });
       setLocation("/dashboard");
     } catch (error: any) {
+      // Check if error is due to unverified email
+      if (error.message && error.message.includes("verify")) {
+        toast({
+          title: "Email Verification Required",
+          description: "Please verify your email address before logging in.",
+        });
+        setPendingEmail(data.email);
+        setShowVerification(true);
+        return;
+      }
+      
       toast({
         title: "Login Failed",
         description: error.message || "Please check your credentials and try again.",

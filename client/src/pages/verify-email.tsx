@@ -56,10 +56,16 @@ export default function VerifyEmailPage({ email, onCancel, onResendSuccess }: Ve
 
   const cancelMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest("/api/cancel-registration", {
+      const response = await fetch("/api/cancel-registration", {
         method: "POST",
-        body: { email }
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
       });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to cancel registration");
+      }
+      return response.json();
     },
     onSuccess: () => {
       toast({
