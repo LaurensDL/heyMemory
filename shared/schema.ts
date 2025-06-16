@@ -75,19 +75,22 @@ export const updateProfileSchema = z.object({
   zipCode: z.string().optional(),
   country: z.string().optional(),
   currentPassword: z.string().min(1, "Current password is required"),
-  newPassword: z.string().min(6, "New password must be at least 6 characters").optional(),
+  newPassword: z.string().optional(),
   confirmNewPassword: z.string().optional(),
 }).refine((data) => {
-  if (data.newPassword && !data.confirmNewPassword) {
-    return false;
-  }
-  if (data.newPassword && data.newPassword !== data.confirmNewPassword) {
-    return false;
+  // Only validate passwords if newPassword is provided and not empty
+  if (data.newPassword && data.newPassword.length > 0) {
+    if (data.newPassword.length < 6) {
+      return false;
+    }
+    if (!data.confirmNewPassword || data.newPassword !== data.confirmNewPassword) {
+      return false;
+    }
   }
   return true;
 }, {
-  message: "New passwords don't match",
-  path: ["confirmNewPassword"],
+  message: "New password must be at least 6 characters and passwords must match",
+  path: ["newPassword"],
 });
 
 export const adminCreateUserSchema = z.object({
