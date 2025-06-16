@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, Users, Lightbulb, Settings, LogOut, Heart } from "lucide-react";
+import { Brain, Users, Lightbulb, Settings, LogOut, Heart, Mail } from "lucide-react";
 import { useAuth, useLogout } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
@@ -64,6 +64,13 @@ export default function Dashboard() {
                 <Button variant="outline" className="bg-pink-100 text-pink-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-pink-300 hover:bg-pink-200 focus:bg-pink-200 focus:outline-none focus:ring-4 focus:ring-pink-400 transition-colors">
                   <Heart className="w-5 h-5 mr-2" />
                   Caregiver Tools
+                </Button>
+              </Link>
+
+              <Link href="/contact">
+                <Button variant="outline" className="bg-blue-100 text-blue-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-blue-300 hover:bg-blue-200 focus:bg-blue-200 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors">
+                  <Mail className="w-5 h-5 mr-2" />
+                  Contact
                 </Button>
               </Link>
 

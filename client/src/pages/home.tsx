@@ -40,6 +40,11 @@ export default function Home() {
               >
                 Support
               </button>
+              <Link href="/contact">
+                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                  Contact
+                </button>
+              </Link>
               
               {/* Accessibility Indicator */}
               <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
