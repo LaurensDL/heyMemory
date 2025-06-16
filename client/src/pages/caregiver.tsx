@@ -173,7 +173,6 @@ export default function CaregiverPage() {
           </div>
         </div>
       </nav>
-
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -217,7 +216,7 @@ export default function CaregiverPage() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Person's Name</FormLabel>
+                            <FormLabel>Name</FormLabel>
                             <FormControl>
                               <Input {...field} placeholder="Enter their name" />
                             </FormControl>
