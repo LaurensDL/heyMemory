@@ -13,6 +13,7 @@ export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(email: string, password: string): Promise<User>;
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
+  deleteUser(id: number): Promise<boolean>;
   verifyEmailToken(token: string): Promise<User | undefined>;
   generateEmailVerificationToken(userId: number): Promise<string>;
   updatePassword(userId: number, newPassword: string): Promise<void>;
@@ -147,6 +148,11 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, id))
       .returning();
     return user || undefined;
+  }
+
+  async deleteUser(id: number): Promise<boolean> {
+    const result = await db.delete(users).where(eq(users.id, id));
+    return (result.rowCount || 0) > 0;
   }
 
   async adminDeleteUser(id: number): Promise<boolean> {

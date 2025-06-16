@@ -333,7 +333,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Resend verification email endpoint
+  // Check verification status endpoint
+  app.post("/api/check-verification-status", async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+      
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.json({ exists: false, verified: false });
+      }
+      
+      res.json({ 
+        exists: true, 
+        verified: user.isEmailVerified,
+        userId: user.id
+      });
+    } catch (error) {
+      console.error("Check verification status error:", error);
+      res.status(500).json({ message: "Failed to check verification status" });
+    }
+  });
+
+  // Resend verification email endpoint with cooldown
   app.post("/api/resend-verification", async (req, res) => {
     try {
       const { email } = req.body;
@@ -350,6 +375,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (user.isEmailVerified) {
         return res.status(400).json({ message: "Email is already verified" });
       }
+      
+      // Check for cooldown (stored in user's lastEmailSent field)
+      const now = new Date();
+      const cooldownMinutes = 1; // 1 minute cooldown
+      
+      if (user.lastEmailSent) {
+        const lastSent = new Date(user.lastEmailSent);
+        const timeDiff = (now.getTime() - lastSent.getTime()) / (1000 * 60);
+        
+        if (timeDiff < cooldownMinutes) {
+          const remainingSeconds = Math.ceil((cooldownMinutes * 60) - (timeDiff * 60));
+          return res.status(429).json({ 
+            message: "Please wait before requesting another email",
+            remainingSeconds
+          });
+        }
+      }
+      
+      // Update last email sent time
+      await storage.updateUser(user.id, { lastEmailSent: now });
       
       // Generate new verification token
       const verificationToken = await storage.generateEmailVerificationToken(user.id);
@@ -407,6 +452,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Resend verification error:", error);
       res.status(500).json({ message: "Failed to resend verification email" });
+    }
+  });
+
+  // Cancel registration endpoint
+  app.post("/api/cancel-registration", async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+      
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      if (user.isEmailVerified) {
+        return res.status(400).json({ message: "Cannot cancel verified account" });
+      }
+      
+      // Delete the unverified user
+      await storage.deleteUser(user.id);
+      
+      console.log(`Cancelled registration for ${email}`);
+      res.json({ message: "Registration cancelled successfully" });
+    } catch (error) {
+      console.error("Cancel registration error:", error);
+      res.status(500).json({ message: "Failed to cancel registration" });
     }
   });
 
