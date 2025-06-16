@@ -5,6 +5,8 @@ import {
   loginSchema, 
   registerSchema, 
   updateProfileSchema,
+  adminCreateUserSchema,
+  adminUpdateUserSchema,
   type User 
 } from "@shared/schema";
 import session from "express-session";
@@ -37,6 +39,24 @@ function requireAuth(req: any, res: any, next: any) {
     return res.status(401).json({ message: "Unauthorized" });
   }
   next();
+}
+
+// Middleware to check if user is admin
+async function requireAdmin(req: any, res: any, next: any) {
+  if (!req.session.userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  
+  try {
+    const user = await storage.getUser(req.session.userId);
+    if (!user || !user.isAdmin) {
+      return res.status(403).json({ message: "Admin access required" });
+    }
+    next();
+  } catch (error) {
+    console.error("Admin check error:", error);
+    res.status(500).json({ message: "Authorization check failed" });
+  }
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {

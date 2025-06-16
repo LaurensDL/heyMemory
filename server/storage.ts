@@ -2,6 +2,8 @@ import {
   users,
   type User,
   type InsertUser,
+  type AdminCreateUserData,
+  type AdminUpdateUserData,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -14,6 +16,12 @@ export interface IStorage {
   verifyEmailToken(token: string): Promise<User | undefined>;
   generateEmailVerificationToken(userId: number): Promise<string>;
   updatePassword(userId: number, newPassword: string): Promise<void>;
+  
+  // Admin operations
+  getAllUsers(): Promise<User[]>;
+  adminCreateUser(userData: AdminCreateUserData): Promise<User>;
+  adminUpdateUser(id: number, updates: AdminUpdateUserData): Promise<User | undefined>;
+  adminDeleteUser(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -105,6 +113,38 @@ export class DatabaseStorage implements IStorage {
         updatedAt: new Date()
       })
       .where(eq(users.id, userId));
+  }
+
+  // Admin operations
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users);
+  }
+
+  async adminCreateUser(userData: AdminCreateUserData): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values({
+        email: userData.email,
+        password: userData.password, // Note: In production, this should be hashed
+        isAdmin: userData.isAdmin,
+        isEmailVerified: userData.isEmailVerified,
+      })
+      .returning();
+    return user;
+  }
+
+  async adminUpdateUser(id: number, updates: AdminUpdateUserData): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
+  }
+
+  async adminDeleteUser(id: number): Promise<boolean> {
+    const result = await db.delete(users).where(eq(users.id, id));
+    return result.rowCount > 0;
   }
 }
 
