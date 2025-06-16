@@ -7,6 +7,14 @@ interface AuthUser {
   email: string;
   isEmailVerified: boolean;
   isAdmin: boolean;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
 }
 
 export function useAuth() {

@@ -149,7 +149,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         id: user.id, 
         email: user.email, 
         isEmailVerified: user.isEmailVerified,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        dateOfBirth: user.dateOfBirth,
+        address: user.address,
+        city: user.city,
+        state: user.state,
+        zipCode: user.zipCode,
+        country: user.country
       });
     } catch (error) {
       console.error("Get user error:", error);
@@ -177,7 +185,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Update profile endpoint
   app.put("/api/profile", requireAuth, async (req, res) => {
     try {
-      const { email, currentPassword, newPassword } = updateProfileSchema.parse(req.body);
+      const { 
+        email, 
+        firstName, 
+        lastName, 
+        dateOfBirth, 
+        address, 
+        city, 
+        state, 
+        zipCode, 
+        country, 
+        currentPassword, 
+        newPassword 
+      } = updateProfileSchema.parse(req.body);
       const userId = (req.session as any).userId;
       
       const user = await storage.getUser(userId);
@@ -208,15 +228,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`New email verification token for ${email}: ${token}`);
       }
 
+      // Update profile fields
+      updates.firstName = firstName;
+      updates.lastName = lastName;
+      updates.address = address;
+      updates.city = city;
+      updates.state = state;
+      updates.zipCode = zipCode;
+      updates.country = country;
+      
+      // Handle date of birth conversion
+      if (dateOfBirth) {
+        updates.dateOfBirth = new Date(dateOfBirth);
+      }
+
       // Update password if provided
       if (newPassword) {
         await storage.updatePassword(userId, newPassword);
       }
 
       // Update user
-      if (Object.keys(updates).length > 0) {
-        await storage.updateUser(userId, updates);
-      }
+      await storage.updateUser(userId, updates);
 
       res.json({ message: "Profile updated successfully" });
     } catch (error: any) {
