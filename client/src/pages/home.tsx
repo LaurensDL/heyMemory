@@ -180,8 +180,8 @@ export default function Home() {
                   </div>
                   <h3 className="text-card-heading mb-4">Daily Practice</h3>
                   <p className="text-body leading-relaxed">
-                    The user enjoys simple, fun games each day that help exercise memory 
-                    and keep important information fresh in mind.
+                    The user enjoys a simple, fun Faces Game each day that help exercise memory 
+                    and keep important information about loved ones fresh in mind.
                   </p>
                 </CardContent>
               </Card>
@@ -194,7 +194,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-card-heading mb-4">Find & Remember</h3>
                   <p className="text-body leading-relaxed">
-                    Quick answers to important personal questions — like "Where do I live?" or "Where are my pills?" 
+                    Quick answers to important personal questions, like "Where do I live?" or "Where are my pills?" 
                     Caregivers can add helpful notes, photos, or directions so everything is easy to find when needed.
                   </p>
                 </CardContent>
