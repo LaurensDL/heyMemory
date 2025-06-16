@@ -54,12 +54,27 @@ function setupSession(app: Express) {
   }));
 }
 
-// Middleware to check if user is authenticated
-function requireAuth(req: any, res: any, next: any) {
+// Middleware to check if user is authenticated and email verified
+async function requireAuth(req: any, res: any, next: any) {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Unauthorized" });
   }
-  next();
+  
+  try {
+    const user = await storage.getUser(req.session.userId);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    
+    if (!user.isEmailVerified) {
+      return res.status(401).json({ message: "Email verification required" });
+    }
+    
+    next();
+  } catch (error) {
+    console.error("Auth check error:", error);
+    res.status(500).json({ message: "Authentication check failed" });
+  }
 }
 
 // Middleware to check if user is admin
@@ -97,8 +112,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Create user
       const user = await storage.createUser(email, password);
       
-      // Send verification email (simulated for now)
-      console.log(`Email verification token for ${email}: ${user.emailVerificationToken}`);
+      // Generate verification token
+      const verificationToken = await storage.generateEmailVerificationToken(user.id);
+      
+      // Send verification email
+      const verificationUrl = `${req.protocol}://${req.get('host')}/api/verify-email/${verificationToken}`;
+      
+      const mailOptions = {
+        from: '"heyMemory Support" <help@heymemory.app>',
+        to: email,
+        subject: 'Verify Your heyMemory Account',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #2563eb; font-size: 28px; margin: 0;">heyMemory</h1>
+              <p style="color: #666; font-size: 16px; margin: 10px 0 0 0;">Memory Support Made Simple</p>
+            </div>
+            
+            <div style="background: #f8fafc; padding: 30px; border-radius: 10px; margin-bottom: 30px;">
+              <h2 style="color: #1e293b; font-size: 24px; margin: 0 0 20px 0;">Welcome to heyMemory!</h2>
+              <p style="color: #475569; font-size: 18px; line-height: 1.6; margin: 0 0 25px 0;">
+                Thank you for joining our community. To complete your registration and start using heyMemory, 
+                please verify your email address by clicking the button below.
+              </p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${verificationUrl}" 
+                   style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; 
+                          border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block;">
+                  Verify Email Address
+                </a>
+              </div>
+              
+              <p style="color: #64748b; font-size: 14px; margin: 25px 0 0 0;">
+                If the button doesn't work, copy and paste this link into your browser:<br>
+                <a href="${verificationUrl}" style="color: #2563eb; word-break: break-all;">${verificationUrl}</a>
+              </p>
+            </div>
+            
+            <div style="text-align: center; color: #94a3b8; font-size: 14px;">
+              <p>This verification link will expire in 24 hours.</p>
+              <p>If you didn't create this account, please ignore this email.</p>
+              <p style="margin-top: 20px;">
+                Need help? Contact us at <a href="mailto:help@heymemory.app" style="color: #2563eb;">help@heymemory.app</a>
+              </p>
+            </div>
+          </div>
+        `
+      };
+
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Verification email sent to ${email}`);
+      } catch (emailError) {
+        console.error('Failed to send verification email:', emailError);
+        // Continue with registration even if email fails
+      }
       
       res.status(201).json({ 
         message: "Registration successful. Please check your email for verification link.",
@@ -193,13 +262,151 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const user = await storage.verifyEmailToken(token);
       
       if (!user) {
-        return res.status(400).json({ message: "Invalid or expired verification token" });
+        return res.status(400).send(`
+          <html>
+            <head>
+              <title>Email Verification - heyMemory</title>
+              <style>
+                body { font-family: Arial, sans-serif; max-width: 600px; margin: 100px auto; padding: 20px; text-align: center; }
+                .container { background: #f8fafc; padding: 40px; border-radius: 10px; }
+                .error { color: #dc2626; }
+                .button { background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 20px; }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h1>heyMemory</h1>
+                <h2 class="error">Verification Failed</h2>
+                <p>This verification link is invalid or has expired.</p>
+                <p>Please try registering again or contact support if you continue to have issues.</p>
+                <a href="/" class="button">Return to Homepage</a>
+              </div>
+            </body>
+          </html>
+        `);
       }
       
-      res.json({ message: "Email verified successfully" });
+      res.send(`
+        <html>
+          <head>
+            <title>Email Verification Success - heyMemory</title>
+            <style>
+              body { font-family: Arial, sans-serif; max-width: 600px; margin: 100px auto; padding: 20px; text-align: center; }
+              .container { background: #f0fdf4; padding: 40px; border-radius: 10px; border: 2px solid #16a34a; }
+              .success { color: #16a34a; }
+              .button { background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 20px; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>heyMemory</h1>
+              <h2 class="success">✓ Email Verified Successfully!</h2>
+              <p>Your email has been verified. You can now log in to your heyMemory account.</p>
+              <a href="/login" class="button">Go to Login</a>
+            </div>
+          </body>
+        </html>
+      `);
     } catch (error) {
       console.error("Email verification error:", error);
-      res.status(500).json({ message: "Email verification failed" });
+      res.status(500).send(`
+        <html>
+          <head>
+            <title>Email Verification Error - heyMemory</title>
+            <style>
+              body { font-family: Arial, sans-serif; max-width: 600px; margin: 100px auto; padding: 20px; text-align: center; }
+              .container { background: #fef2f2; padding: 40px; border-radius: 10px; border: 2px solid #dc2626; }
+              .error { color: #dc2626; }
+              .button { background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 20px; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>heyMemory</h1>
+              <h2 class="error">Verification Error</h2>
+              <p>There was an error verifying your email. Please try again or contact support.</p>
+              <a href="/" class="button">Return to Homepage</a>
+            </div>
+          </body>
+        </html>
+      `);
+    }
+  });
+
+  // Resend verification email endpoint
+  app.post("/api/resend-verification", async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+      
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      if (user.isEmailVerified) {
+        return res.status(400).json({ message: "Email is already verified" });
+      }
+      
+      // Generate new verification token
+      const verificationToken = await storage.generateEmailVerificationToken(user.id);
+      
+      // Send verification email
+      const verificationUrl = `${req.protocol}://${req.get('host')}/api/verify-email/${verificationToken}`;
+      
+      const mailOptions = {
+        from: '"heyMemory Support" <help@heymemory.app>',
+        to: email,
+        subject: 'Verify Your heyMemory Account',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #2563eb; font-size: 28px; margin: 0;">heyMemory</h1>
+              <p style="color: #666; font-size: 16px; margin: 10px 0 0 0;">Memory Support Made Simple</p>
+            </div>
+            
+            <div style="background: #f8fafc; padding: 30px; border-radius: 10px; margin-bottom: 30px;">
+              <h2 style="color: #1e293b; font-size: 24px; margin: 0 0 20px 0;">Email Verification</h2>
+              <p style="color: #475569; font-size: 18px; line-height: 1.6; margin: 0 0 25px 0;">
+                Please verify your email address to complete your heyMemory registration by clicking the button below.
+              </p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${verificationUrl}" 
+                   style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; 
+                          border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block;">
+                  Verify Email Address
+                </a>
+              </div>
+              
+              <p style="color: #64748b; font-size: 14px; margin: 25px 0 0 0;">
+                If the button doesn't work, copy and paste this link into your browser:<br>
+                <a href="${verificationUrl}" style="color: #2563eb; word-break: break-all;">${verificationUrl}</a>
+              </p>
+            </div>
+            
+            <div style="text-align: center; color: #94a3b8; font-size: 14px;">
+              <p>This verification link will expire in 24 hours.</p>
+              <p>Need help? Contact us at <a href="mailto:help@heymemory.app" style="color: #2563eb;">help@heymemory.app</a></p>
+            </div>
+          </div>
+        `
+      };
+
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Verification email resent to ${email}`);
+        res.json({ message: "Verification email sent successfully" });
+      } catch (emailError) {
+        console.error('Failed to send verification email:', emailError);
+        res.status(500).json({ message: "Failed to send verification email" });
+      }
+    } catch (error) {
+      console.error("Resend verification error:", error);
+      res.status(500).json({ message: "Failed to resend verification email" });
     }
   });
 
