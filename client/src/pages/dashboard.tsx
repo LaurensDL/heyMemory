@@ -90,11 +90,6 @@ export default function Dashboard() {
             <h1 className="text-hero mb-6">
               Hello {user?.firstName || user?.email?.split('@')[0] || 'there'}!
             </h1>
-            {user && (
-              <p className="text-body mb-4">
-                Logged in as: <span className="font-bold">{user.email}</span>
-              </p>
-            )}
             {user && !user.isEmailVerified && (
               <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 max-w-2xl mx-auto mb-8">
                 <p className="text-body font-bold text-yellow-800">
