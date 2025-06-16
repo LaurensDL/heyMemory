@@ -52,6 +52,12 @@ export default function Home() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Column - Text Content */}
               <div className="text-center lg:text-left">
+                <div className="mb-6">
+                  <p className="text-2xl font-medium text-gray-600 mb-4">
+                    Gentle tools to help you remember what matters.
+                  </p>
+                </div>
+                
                 <h1 id="hero-heading" className="text-hero mb-8 leading-tight">
                   Welcome to heyMemory
                 </h1>
