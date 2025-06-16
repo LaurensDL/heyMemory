@@ -77,7 +77,7 @@ export default function ContactPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-white p-8">
+      <div className="min-h-screen bg-white text-black">
         {/* Navigation Bar - Same as homepage */}
         <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
           <div className="max-w-6xl mx-auto px-6 py-4">
@@ -113,7 +113,7 @@ export default function ContactPage() {
           </div>
         </nav>
 
-        <div className="max-w-2xl mx-auto text-center">
+        <div className="max-w-2xl mx-auto px-8 py-16 text-center">
           <div className="w-20 h-20 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-8">
             <Mail className="w-12 h-12 text-green-600" />
           </div>
@@ -133,7 +133,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white p-8">
+    <div className="min-h-screen bg-white text-black">
       {/* Navigation Bar - Same as homepage */}
       <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
         <div className="max-w-6xl mx-auto px-6 py-4">
@@ -168,7 +168,7 @@ export default function ContactPage() {
           </div>
         </div>
       </nav>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-8 py-16">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-6xl font-bold text-black mb-8">Contact Us</h1>
