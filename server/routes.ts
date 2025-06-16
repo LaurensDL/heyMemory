@@ -1,5 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { z } from "zod";
+import nodemailer from "nodemailer";
 import { storage } from "./storage";
 import { 
   loginSchema, 
@@ -11,6 +13,25 @@ import {
 } from "@shared/schema";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
+
+// Contact form schema
+const contactSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Please enter a valid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(10, "Message must be at least 10 characters long")
+});
+
+// Email transporter setup
+const transporter = nodemailer.createTransport({
+  host: "smtp-auth.mailprotect.be",
+  port: 587,
+  secure: false,
+  auth: {
+    user: "help@heymemory.app",
+    pass: "V3rg3t3n#v#"
+  }
+});
 
 // Session middleware setup
 function setupSession(app: Express) {
@@ -364,6 +385,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Admin delete user error:", error);
       res.status(500).json({ message: "Failed to delete user" });
+    }
+  });
+
+  // Contact form endpoint
+  app.post("/api/contact", async (req, res) => {
+    try {
+      const { name, email, subject, message } = contactSchema.parse(req.body);
+      
+      // Create email content
+      const mailOptions = {
+        from: "help@heymemory.app",
+        to: "help@heymemory.app",
+        subject: `Contact Form: ${subject}`,
+        html: `
+          <h2>New Contact Form Message</h2>
+          <p><strong>From:</strong> ${name} (${email})</p>
+          <p><strong>Subject:</strong> ${subject}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message.replace(/\n/g, '<br>')}</p>
+          <hr>
+          <p><small>This message was sent through the heyMemory contact form.</small></p>
+        `
+      };
+
+      // Send email
+      await transporter.sendMail(mailOptions);
+      
+      res.json({ message: "Message sent successfully" });
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ message: error.errors[0]?.message || "Invalid input" });
+      }
+      console.error("Contact form error:", error);
+      res.status(500).json({ message: "Failed to send message" });
     }
   });
 
