@@ -1,0 +1,175 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, type RegisterData } from "@shared/schema";
+import { useRegister } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import { Link, useLocation } from "wouter";
+import { Brain } from "lucide-react";
+import { useState } from "react";
+
+export default function Register() {
+  const [location, setLocation] = useLocation();
+  const { toast } = useToast();
+  const registerMutation = useRegister();
+  const [isSuccess, setIsSuccess] = useState(false);
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = async (data: RegisterData) => {
+    try {
+      await registerMutation.mutateAsync(data);
+      setIsSuccess(true);
+      toast({
+        title: "Registration Successful",
+        description: "Please check your email for verification instructions.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Registration Failed",
+        description: error.message || "Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center px-6">
+        <div className="w-full max-w-md text-center">
+          <div className="flex items-center justify-center space-x-3 mb-8">
+            <Brain className="text-[var(--button-primary)] w-10 h-10" aria-hidden="true" />
+            <span className="text-3xl font-bold">heyMemory</span>
+          </div>
+          
+          <Card className="bg-white border-2 border-gray-300 shadow-lg">
+            <CardContent className="p-8">
+              <h1 className="text-card-heading mb-6">Check Your Email</h1>
+              <p className="text-body mb-8 leading-relaxed">
+                We've sent you an email verification link. Please check your email and click the link to verify your account before logging in.
+              </p>
+              <Link href="/login">
+                <Button className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black">
+                  Go to Login
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <Brain className="text-[var(--button-primary)] w-10 h-10" aria-hidden="true" />
+            <span className="text-3xl font-bold">heyMemory</span>
+          </div>
+          <p className="text-body">Create your account</p>
+        </div>
+
+        <Card className="bg-white border-2 border-gray-300 shadow-lg">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-card-heading">Register</CardTitle>
+          </CardHeader>
+          <CardContent className="px-8 pb-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-body font-bold">
+                  Email Address
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  {...register("email")}
+                  className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                  placeholder="Enter your email"
+                />
+                {errors.email && (
+                  <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-body font-bold">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  {...register("password")}
+                  className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                  placeholder="Enter your password"
+                />
+                {errors.password && (
+                  <p className="text-red-600 text-lg font-medium">{errors.password.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-body font-bold">
+                  Confirm Password
+                </Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  {...register("confirmPassword")}
+                  className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                  placeholder="Confirm your password"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-600 text-lg font-medium">{errors.confirmPassword.message}</p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={registerMutation.isPending}
+                className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+              >
+                {registerMutation.isPending ? "Creating Account..." : "Create Account"}
+              </Button>
+            </form>
+
+            <div className="mt-8 text-center">
+              <p className="text-body">
+                Already have an account?{" "}
+                <Link href="/login">
+                  <button className="text-[var(--button-primary)] font-bold hover:underline focus:underline focus:outline-none">
+                    Log in here
+                  </button>
+                </Link>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="text-center mt-6">
+          <Link href="/">
+            <button className="text-body font-bold text-[var(--button-primary)] hover:underline focus:underline focus:outline-none">
+              ← Back to Home
+            </button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

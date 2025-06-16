@@ -1,0 +1,146 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Brain, Users, Lightbulb, Settings, LogOut } from "lucide-react";
+import { useAuth, useLogout } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import { Link, useLocation } from "wouter";
+
+export default function Dashboard() {
+  const { user, isLoading } = useAuth();
+  const { toast } = useToast();
+  const logoutMutation = useLogout();
+  const [location, setLocation] = useLocation();
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      toast({
+        title: "Logged Out",
+        description: "You have been logged out successfully.",
+      });
+      setLocation("/");
+    } catch (error: any) {
+      toast({
+        title: "Logout Failed",
+        description: error.message || "Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <Brain className="text-[var(--button-primary)] w-12 h-12 mx-auto mb-4 animate-pulse" />
+          <p className="text-body">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Navigation Bar */}
+      <nav className="bg-white border-b-2 border-gray-200" role="navigation" aria-label="Dashboard navigation">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo and Brand */}
+            <div className="flex items-center space-x-3">
+              <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+              <span className="text-2xl font-bold">heyMemory</span>
+            </div>
+            
+            {/* User Actions */}
+            <div className="flex items-center space-x-4">
+              <Link href="/profile">
+                <Button variant="outline" className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
+                  <Settings className="w-5 h-5 mr-2" />
+                  Settings
+                </Button>
+              </Link>
+              
+              <Button 
+                onClick={handleLogout}
+                disabled={logoutMutation.isPending}
+                variant="outline"
+                className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
+              >
+                <LogOut className="w-5 h-5 mr-2" />
+                {logoutMutation.isPending ? "Logging Out..." : "Log Out"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main role="main" className="py-16">
+        {/* Welcome Section */}
+        <section className="max-w-6xl mx-auto px-6 mb-16">
+          <div className="text-center">
+            <h1 className="text-hero mb-6">Welcome back!</h1>
+            {user && (
+              <p className="text-body mb-4">
+                Logged in as: <span className="font-bold">{user.email}</span>
+              </p>
+            )}
+            {user && !user.isEmailVerified && (
+              <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 max-w-2xl mx-auto mb-8">
+                <p className="text-body font-bold text-yellow-800">
+                  Please verify your email address to access all features.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="max-w-6xl mx-auto px-6">
+          <h2 className="text-section-heading text-center mb-16">
+            Your Memory Tools
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            {/* Feature Card 1: Faces Game */}
+            <Card className="bg-white p-10 rounded-xl border-2 border-gray-300 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-0">
+                <div className="text-center mb-8">
+                  <Users className="text-[var(--button-primary)] w-16 h-16 mx-auto mb-6" aria-hidden="true" />
+                  <h3 className="text-card-heading mb-6">Faces Game</h3>
+                </div>
+                <p className="text-body leading-relaxed text-center mb-8">
+                  Practice recognizing and remembering important people in your life with our interactive faces game.
+                </p>
+                <Button 
+                  className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+                  disabled={user && !user.isEmailVerified}
+                >
+                  {user && !user.isEmailVerified ? "Verify Email First" : "Start Faces Game"}
+                </Button>
+              </CardContent>
+            </Card>
+            
+            {/* Feature Card 2: Remember This */}
+            <Card className="bg-white p-10 rounded-xl border-2 border-gray-300 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-0">
+                <div className="text-center mb-8">
+                  <Lightbulb className="text-[var(--button-primary)] w-16 h-16 mx-auto mb-6" aria-hidden="true" />
+                  <h3 className="text-card-heading mb-6">Remember This</h3>
+                </div>
+                <p className="text-body leading-relaxed text-center mb-8">
+                  Store important facts, locations, and memories in an easy-to-access format.
+                </p>
+                <Button 
+                  className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+                  disabled={user && !user.isEmailVerified}
+                >
+                  {user && !user.isEmailVerified ? "Verify Email First" : "Start Remembering"}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}

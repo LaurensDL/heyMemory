@@ -1,18 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Users, Lightbulb, Phone, Mail } from "lucide-react";
+import { Link } from "wouter";
 import heroImage from "../../../server/uploads/images/Senior Man Using heyMemory on Smartphone - heyMemory The Alzheimer App.png";
 
 export default function Home() {
-  const handleLogin = () => {
-    // Navigate to login page - to be implemented
-    console.log('Login button clicked');
-  };
-
-  const handleRegister = () => {
-    // Navigate to registration page - to be implemented
-    console.log('Register button clicked');
-  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -71,26 +63,28 @@ export default function Home() {
                 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start items-center">
-                  <Button 
-                    onClick={handleLogin}
-                    className="w-full sm:w-auto bg-black text-white font-black text-xl px-12 py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] min-w-[220px] border-3 border-black"
-                  >
-                    <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                      <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Log In
-                  </Button>
+                  <Link href="/login">
+                    <Button 
+                      className="w-full sm:w-auto bg-black text-white font-black text-xl px-12 py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] min-w-[220px] border-3 border-black"
+                    >
+                      <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      Log In
+                    </Button>
+                  </Link>
                   
-                  <Button 
-                    onClick={handleRegister}
-                    variant="outline"
-                    className="w-full sm:w-auto bg-white text-black font-black text-xl px-12 py-6 rounded-xl border-4 border-black hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] min-w-[220px]"
-                  >
-                    <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                      <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                    </svg>
-                    Register
-                  </Button>
+                  <Link href="/register">
+                    <Button 
+                      variant="outline"
+                      className="w-full sm:w-auto bg-white text-black font-black text-xl px-12 py-6 rounded-xl border-4 border-black hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] min-w-[220px]"
+                    >
+                      <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                      </svg>
+                      Register
+                    </Button>
+                  </Link>
                 </div>
               </div>
               

@@ -2,8 +2,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { User, LoginData, RegisterData } from "@shared/schema";
 
+interface AuthUser {
+  id: number;
+  email: string;
+  isEmailVerified: boolean;
+}
+
 export function useAuth() {
-  const { data: user, isLoading, error } = useQuery({
+  const { data: user, isLoading, error } = useQuery<AuthUser>({
     queryKey: ['/api/user'],
     retry: false,
   });
@@ -21,11 +27,18 @@ export function useLogin() {
   
   return useMutation({
     mutationFn: async (data: LoginData) => {
-      return apiRequest('/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Login failed');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/user'] });
@@ -36,11 +49,18 @@ export function useLogin() {
 export function useRegister() {
   return useMutation({
     mutationFn: async (data: RegisterData) => {
-      return apiRequest('/api/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Registration failed');
+      }
+      
+      return response.json();
     },
   });
 }
@@ -50,9 +70,16 @@ export function useLogout() {
   
   return useMutation({
     mutationFn: async () => {
-      return apiRequest('/api/logout', {
+      const response = await fetch('/api/logout', {
         method: 'POST',
       });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Logout failed');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.setQueryData(['/api/user'], null);
@@ -66,11 +93,18 @@ export function useUpdateProfile() {
   
   return useMutation({
     mutationFn: async (data: any) => {
-      return apiRequest('/api/profile', {
+      const response = await fetch('/api/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Profile update failed');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/user'] });
