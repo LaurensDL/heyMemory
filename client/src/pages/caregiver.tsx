@@ -41,7 +41,7 @@ const rememberItemSchema = z.object({
   title: z.string().min(1, "Title is required"),
   content: z.string().min(1, "Content is required"),
   category: z.string().min(1, "Category is required"),
-  importance: z.enum(["low", "medium", "high"]).default("medium")
+  photo: z.any().optional()
 });
 
 type FacePhotoData = z.infer<typeof facePhotoSchema>;
@@ -62,7 +62,7 @@ interface RememberItem {
   title: string;
   content: string;
   category: string;
-  importance: "low" | "medium" | "high";
+  photoUrl?: string;
   userId: number;
   createdAt: Date;
 }
@@ -91,8 +91,7 @@ export default function CaregiverPage() {
     defaultValues: {
       title: "",
       content: "",
-      category: "",
-      importance: "medium"
+      category: ""
     }
   });
 
@@ -342,23 +341,11 @@ export default function CaregiverPage() {
                         )}
                       />
                       
-                      <FormField
-                        control={rememberForm.control}
-                        name="importance"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Importance Level</FormLabel>
-                            <FormControl>
-                              <select {...field} className="w-full p-2 border rounded">
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                              </select>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      <div className="space-y-2">
+                        <Label>Photo (Optional)</Label>
+                        <Input type="file" accept="image/*" />
+                        <p className="text-sm text-gray-500">Upload a helpful reference photo</p>
+                      </div>
                       
                       <div className="flex justify-end space-x-2">
                         <Button type="button" variant="outline" onClick={() => setIsRememberDialogOpen(false)}>
@@ -402,7 +389,7 @@ export default function CaregiverPage() {
                 <ul className="space-y-1 text-sm">
                   <li>• Add important daily information and reminders</li>
                   <li>• Include medical information, routines, and preferences</li>
-                  <li>• Set importance levels to prioritize what's most critical</li>
+                  <li>• Upload reference photos to help with locations and items</li>
                   <li>• Items will appear in the Remember This section</li>
                 </ul>
               </div>
