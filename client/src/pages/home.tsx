@@ -194,8 +194,8 @@ export default function Home() {
                   </div>
                   <h3 className="text-card-heading mb-4">Find & Remember</h3>
                   <p className="text-body leading-relaxed">
-                    When something is forgotten, the app helps find the information quickly. 
-                    Names, faces, and important details are always there when needed.
+                    Quick answers to important personal questions — like "Where do I live?" or "Where are my pills?" 
+                    Caregivers can add helpful notes, photos, or directions so everything is easy to find when needed.
                   </p>
                 </CardContent>
               </Card>
