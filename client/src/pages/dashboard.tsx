@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, Users, Lightbulb, Settings, LogOut } from "lucide-react";
+import { Brain, Users, Lightbulb, Settings, LogOut, Heart } from "lucide-react";
 import { useAuth, useLogout } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
@@ -60,6 +60,13 @@ export default function Dashboard() {
                 </Button>
               </Link>
               
+              <Link href="/caregiver">
+                <Button variant="outline" className="bg-pink-100 text-pink-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-pink-300 hover:bg-pink-200 focus:bg-pink-200 focus:outline-none focus:ring-4 focus:ring-pink-400 transition-colors">
+                  <Heart className="w-5 h-5 mr-2" />
+                  Caregiver Tools
+                </Button>
+              </Link>
+
               {user?.isAdmin && (
                 <Link href="/admin">
                   <Button variant="outline" className="bg-purple-100 text-purple-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-purple-300 hover:bg-purple-200 focus:bg-purple-200 focus:outline-none focus:ring-4 focus:ring-purple-400 transition-colors">
