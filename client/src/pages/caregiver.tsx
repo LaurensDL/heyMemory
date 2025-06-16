@@ -152,7 +152,7 @@ export default function CaregiverPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Bar */}
-      <nav className="bg-white border-b-2 border-gray-200" role="navigation" aria-label="Caregiver navigation">
+      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Caregiver navigation">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo and Brand */}

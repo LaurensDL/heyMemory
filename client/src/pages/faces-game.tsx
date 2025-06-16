@@ -85,32 +85,39 @@ export default function FacesGamePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white shadow-sm border-b sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
+              <Link href="/">
+                <div className="flex items-center space-x-3 cursor-pointer">
+                  <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+                  <span className="text-2xl font-bold">heyMemory</span>
+                </div>
+              </Link>
+              <div className="flex items-center space-x-2">
+                <h1 className="text-2xl font-bold text-gray-900">Faces Game</h1>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              {hasEnoughPhotos && gameStarted && (
+                <>
+                  <Badge variant="outline" className="text-sm">
+                    Photo {currentPhotoIndex + 1} of {shuffledPhotos.length}
+                  </Badge>
+                  <Button variant="outline" size="sm" onClick={handleRestart}>
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Restart
+                  </Button>
+                </>
+              )}
               <Link href="/dashboard">
                 <Button variant="ghost" size="sm">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Dashboard
                 </Button>
               </Link>
-              <div className="flex items-center space-x-2">
-                <Brain className="w-6 h-6 text-blue-600" />
-                <h1 className="text-2xl font-bold text-gray-900">Faces Game</h1>
-              </div>
             </div>
-            {hasEnoughPhotos && gameStarted && (
-              <div className="flex items-center space-x-4">
-                <Badge variant="outline" className="text-sm">
-                  Photo {currentPhotoIndex + 1} of {shuffledPhotos.length}
-                </Badge>
-                <Button variant="outline" size="sm" onClick={handleRestart}>
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Restart
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </div>
