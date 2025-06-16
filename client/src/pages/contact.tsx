@@ -287,8 +287,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-black mb-2">Support Hours</h3>
-                  <p className="text-xl text-gray-700">Monday - Friday: 9 AM - 6 PM</p>
-                  <p className="text-xl text-gray-700">Weekend: 10 AM - 4 PM</p>
+                  <p className="text-xl text-gray-700">Monday - Friday: 10 AM - 5 PM</p>
                 </div>
               </div>
             </div>
