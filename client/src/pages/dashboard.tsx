@@ -103,7 +103,7 @@ export default function Dashboard() {
         {/* Features Section */}
         <section className="max-w-6xl mx-auto px-6">
           <h2 className="text-section-heading text-center mb-16">
-            Your Memory Tools
+            Choose What You'd Like to Do
           </h2>
           
           <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
