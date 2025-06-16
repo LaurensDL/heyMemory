@@ -238,6 +238,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ 
         id: user.id, 
         email: user.email, 
+        pendingEmail: user.pendingEmail,
         isEmailVerified: user.isEmailVerified,
         isAdmin: user.isAdmin,
         firstName: user.firstName,

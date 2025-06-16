@@ -8,13 +8,84 @@ import { updateProfileSchema, type UpdateProfileData } from "@shared/schema";
 import { useAuth, useUpdateProfile } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
-import { Brain, ArrowLeft } from "lucide-react";
-import { useEffect } from "react";
+import { Brain, ArrowLeft, Mail, AlertCircle, Clock } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function Profile() {
   const { user, isLoading } = useAuth();
   const { toast } = useToast();
   const updateProfileMutation = useUpdateProfile();
+  const queryClient = useQueryClient();
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+
+  // Cancel email change mutation
+  const cancelEmailChangeMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch("/api/cancel-email-change", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to cancel email change");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Email Change Cancelled",
+        description: "Your email change request has been cancelled.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to cancel email change",
+        variant: "destructive",
+      });
+    }
+  });
+
+  // Resend email change verification mutation
+  const resendEmailChangeMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch("/api/resend-email-change-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to resend verification");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      setCooldownSeconds(60); // 1 minute cooldown
+      toast({
+        title: "Verification Email Sent",
+        description: "A new verification email has been sent to your pending email address.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to resend verification email",
+        variant: "destructive",
+      });
+    }
+  });
+
+  // Cooldown timer
+  useEffect(() => {
+    if (cooldownSeconds > 0) {
+      const timer = setTimeout(() => {
+        setCooldownSeconds(cooldownSeconds - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldownSeconds]);
   
   const {
     register,
@@ -219,6 +290,59 @@ export default function Profile() {
                     />
                     {errors.email && (
                       <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
+                    )}
+                    
+                    {/* Pending Email Change Notice */}
+                    {user?.pendingEmail && (
+                      <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 space-y-3">
+                        <div className="flex items-start space-x-3">
+                          <Clock className="text-blue-600 w-5 h-5 mt-0.5 flex-shrink-0" />
+                          <div className="flex-1">
+                            <p className="text-blue-800 font-medium text-base">
+                              Email Change Pending
+                            </p>
+                            <p className="text-blue-700 text-sm mt-1">
+                              We sent a verification email to <strong>{user.pendingEmail}</strong>. 
+                              Please check your email and click the verification link to complete the change.
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => resendEmailChangeMutation.mutate()}
+                            disabled={resendEmailChangeMutation.isPending || cooldownSeconds > 0}
+                            className="flex items-center space-x-2"
+                          >
+                            <Mail className="w-4 h-4" />
+                            <span>
+                              {cooldownSeconds > 0 
+                                ? `Resend in ${cooldownSeconds}s` 
+                                : resendEmailChangeMutation.isPending 
+                                  ? "Sending..." 
+                                  : "Resend Email"
+                              }
+                            </span>
+                          </Button>
+                          
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => cancelEmailChangeMutation.mutate()}
+                            disabled={cancelEmailChangeMutation.isPending}
+                            className="flex items-center space-x-2 text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <AlertCircle className="w-4 h-4" />
+                            <span>
+                              {cancelEmailChangeMutation.isPending ? "Cancelling..." : "Cancel Change"}
+                            </span>
+                          </Button>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
