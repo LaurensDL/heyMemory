@@ -130,9 +130,11 @@ export default function Profile() {
         <div className="max-w-2xl mx-auto px-6">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-hero mb-4">Profile Settings</h1>
+            <h1 className="text-hero mb-4">
+              Hello {user?.firstName || user?.email?.split('@')[0] || 'there'}!
+            </h1>
             <p className="text-body">
-              Update your personal information and account settings
+              Logged in as: {user?.email}
             </p>
           </div>
 
