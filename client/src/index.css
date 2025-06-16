@@ -6,30 +6,34 @@
 
 :root {
   --background: hsl(0, 0%, 100%);
-  --foreground: hsl(0, 0%, 0%);
-  --muted: hsl(210, 40%, 98%);
-  --muted-foreground: hsl(215, 13.8%, 34.1%);
+  --foreground: hsl(0, 0%, 7%);
+  --muted: hsl(0, 0%, 96%);
+  --muted-foreground: hsl(0, 0%, 15%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(0, 0%, 0%);
+  --popover-foreground: hsl(0, 0%, 7%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(0, 0%, 0%);
-  --border: hsl(220, 13%, 91%);
-  --input: hsl(220, 13%, 91%);
-  --primary: hsl(207, 100%, 40%);
+  --card-foreground: hsl(0, 0%, 7%);
+  --border: hsl(0, 0%, 80%);
+  --input: hsl(0, 0%, 80%);
+  --primary: hsl(213, 100%, 35%);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(210, 40%, 98%);
-  --secondary-foreground: hsl(0, 0%, 0%);
-  --accent: hsl(210, 40%, 98%);
-  --accent-foreground: hsl(0, 0%, 0%);
+  --secondary: hsl(0, 0%, 96%);
+  --secondary-foreground: hsl(0, 0%, 7%);
+  --accent: hsl(0, 0%, 96%);
+  --accent-foreground: hsl(0, 0%, 7%);
   --destructive: hsl(0, 84.2%, 60.2%);
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(207, 100%, 40%);
-  --radius: 0.5rem;
+  --ring: hsl(213, 100%, 35%);
+  --radius: 0.75rem;
   
-  /* Custom colors for heyMemory */
-  --accessible-blue: hsl(207, 100%, 40%);
-  --light-gray: hsl(210, 20%, 98%);
-  --border-gray: hsl(220, 13%, 91%);
+  /* High contrast colors for accessibility */
+  --text-primary: hsl(0, 0%, 7%);
+  --text-secondary: hsl(0, 0%, 15%);
+  --button-primary: hsl(213, 100%, 35%);
+  --button-primary-hover: hsl(213, 100%, 25%);
+  --button-secondary: hsl(0, 0%, 100%);
+  --button-secondary-border: hsl(0, 0%, 20%);
+  --background-light: hsl(0, 0%, 98%);
 }
 
 .dark {
@@ -65,33 +69,60 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
   
-  /* Custom typography for accessibility */
+  /* Enhanced typography for Alzheimer's accessibility */
   .text-hero {
-    font-size: 48px;
-    line-height: 56px;
+    font-size: 52px;
+    line-height: 64px;
     font-weight: 700;
+    color: var(--text-primary);
   }
   
   .text-body {
-    font-size: 20px;
-    line-height: 32px;
+    font-size: 22px;
+    line-height: 36px;
+    font-weight: 500;
+    color: var(--text-primary);
   }
   
   .text-button {
-    font-size: 18px;
-    line-height: 24px;
-    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 700;
+  }
+  
+  .text-section-heading {
+    font-size: 40px;
+    line-height: 48px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  .text-card-heading {
+    font-size: 28px;
+    line-height: 36px;
+    font-weight: 700;
+    color: var(--text-primary);
   }
   
   @media (max-width: 768px) {
     .text-hero {
-      font-size: 36px;
-      line-height: 44px;
+      font-size: 40px;
+      line-height: 48px;
     }
     
     .text-body {
-      font-size: 18px;
-      line-height: 28px;
+      font-size: 20px;
+      line-height: 32px;
+    }
+    
+    .text-section-heading {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    
+    .text-card-heading {
+      font-size: 24px;
+      line-height: 32px;
     }
   }
 }
