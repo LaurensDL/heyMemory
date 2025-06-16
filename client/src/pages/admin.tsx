@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Edit, Plus, User, Shield, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
+import { Trash2, Edit, Plus, User, Shield, CheckCircle, XCircle, ArrowLeft, Heart } from "lucide-react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -198,6 +198,15 @@ export default function AdminPage() {
               >
                 <User className="w-5 h-5 mr-2" />
                 My Profile
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation('/caregiver')}
+                className="bg-pink-50 text-pink-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-pink-300 hover:bg-pink-100 focus:bg-pink-100 focus:outline-none focus:ring-4 focus:ring-pink-400 transition-colors"
+              >
+                <Heart className="w-5 h-5 mr-2" />
+                Caregiver Tools
               </Button>
             </div>
           </div>
