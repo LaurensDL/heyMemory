@@ -267,7 +267,7 @@ export default function CaregiverPage() {
                               />
                             </FormControl>
                             <FormMessage />
-                            <p className="text-sm text-gray-500">Upload a clear photo of this person</p>
+                            <p className="text-sm text-gray-500">Upload a clear photo of this person or pet</p>
                           </FormItem>
                         )}
                       />
