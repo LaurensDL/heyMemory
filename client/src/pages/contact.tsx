@@ -78,22 +78,34 @@ export default function ContactPage() {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-white p-8">
-        {/* Navigation Bar */}
-        <nav className="bg-white border-b-4 border-gray-300 mb-12" role="navigation">
-          <div className="max-w-4xl mx-auto py-6">
+        {/* Navigation Bar - Same as homepage */}
+        <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+          <div className="max-w-6xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <Brain className="text-[var(--button-primary)] w-10 h-10" />
-                <span className="text-3xl font-bold text-black">heyMemory</span>
+              {/* Logo and Brand */}
+              <div className="flex items-center space-x-3">
+                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+                <span className="text-2xl font-bold">heyMemory</span>
               </div>
               
-              <div className="flex items-center space-x-6">
-                <Link href="/">
-                  <Button className="bg-white text-black font-bold text-xl px-8 py-4 rounded-xl border-4 border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-500 transition-colors">
-                    <ArrowLeft className="w-6 h-6 mr-3" />
-                    Back to Home
-                  </Button>
+              {/* Navigation Links - Hidden on mobile, shown on desktop */}
+              <div className="hidden md:flex items-center space-x-8">
+                <Link href="/dashboard">
+                  <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                    Dashboard
+                  </button>
                 </Link>
+                <Link href="/contact">
+                  <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                    Contact
+                  </button>
+                </Link>
+                
+                {/* Accessibility Indicator */}
+                <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
+                  <span className="text-2xl font-black text-green-700 mr-2">A+</span>
+                  <span className="text-lg font-bold text-green-700">Accessible</span>
+                </div>
               </div>
             </div>
           </div>
@@ -120,28 +132,34 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-white p-8">
-      {/* Navigation Bar */}
-      <nav className="bg-white border-b-4 border-gray-300 mb-12" role="navigation">
-        <div className="max-w-4xl mx-auto py-6">
+      {/* Navigation Bar - Same as homepage */}
+      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+        <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Brain className="text-[var(--button-primary)] w-10 h-10" />
-              <span className="text-3xl font-bold text-black">heyMemory</span>
+            {/* Logo and Brand */}
+            <div className="flex items-center space-x-3">
+              <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+              <span className="text-2xl font-bold">heyMemory</span>
             </div>
             
-            <div className="flex items-center space-x-6">
-              <Link href="/">
-                <Button className="bg-white text-black font-bold text-xl px-8 py-4 rounded-xl border-4 border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-500 transition-colors">
-                  <ArrowLeft className="w-6 h-6 mr-3" />
-                  Back to Home
-                </Button>
+            {/* Navigation Links - Hidden on mobile, shown on desktop */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link href="/dashboard">
+                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                  Dashboard
+                </button>
+              </Link>
+              <Link href="/contact">
+                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                  Contact
+                </button>
               </Link>
               
-              <Link href="/dashboard">
-                <Button className="bg-[var(--button-primary)] hover:bg-[var(--button-primary-hover)] text-white font-bold text-xl px-8 py-4 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors">
-                  Dashboard
-                </Button>
-              </Link>
+              {/* Accessibility Indicator */}
+              <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
+                <span className="text-2xl font-black text-green-700 mr-2">A+</span>
+                <span className="text-lg font-bold text-green-700">Accessible</span>
+              </div>
             </div>
           </div>
         </div>
