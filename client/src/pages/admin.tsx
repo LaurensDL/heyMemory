@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Edit, Plus, User, Shield, CheckCircle, XCircle, ArrowLeft, Heart } from "lucide-react";
-import { useLocation } from "wouter";
+import { Trash2, Edit, Plus, User, Shield, CheckCircle, XCircle, ArrowLeft, Heart, Brain } from "lucide-react";
+import { useLocation, Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
@@ -175,10 +175,12 @@ export default function AdminPage() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo and Brand */}
-            <div className="flex items-center space-x-3">
-              <Shield className="text-purple-600 w-8 h-8" aria-hidden="true" />
-              <span className="text-2xl font-bold">Admin Panel</span>
-            </div>
+            <Link href="/">
+              <div className="flex items-center space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+                <span className="text-2xl font-bold">heyMemory</span>
+              </div>
+            </Link>
             
             {/* Navigation Links */}
             <div className="flex items-center space-x-4">

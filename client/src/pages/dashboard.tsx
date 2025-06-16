@@ -46,10 +46,12 @@ export default function Dashboard() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo and Brand */}
-            <div className="flex items-center space-x-3">
-              <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-              <span className="text-2xl font-bold">heyMemory</span>
-            </div>
+            <Link href="/">
+              <div className="flex items-center space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+                <span className="text-2xl font-bold">heyMemory</span>
+              </div>
+            </Link>
             
             {/* User Actions */}
             <div className="flex items-center space-x-4">

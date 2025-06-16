@@ -156,10 +156,12 @@ export default function CaregiverPage() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo and Brand */}
-            <div className="flex items-center space-x-3">
-              <Heart className="text-pink-600 w-8 h-8" aria-hidden="true" />
-              <span className="text-2xl font-bold">Caregiver Dashboard</span>
-            </div>
+            <Link href="/">
+              <div className="flex items-center space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+                <span className="text-2xl font-bold">heyMemory</span>
+              </div>
+            </Link>
             
             {/* Navigation Links */}
             <div className="flex items-center space-x-4">
