@@ -193,9 +193,7 @@ export default function Home() {
               </button>
             </div>
             
-            <p className="text-body">
-              © 2024 heyMemory. Designed with care for memory support.
-            </p>
+            <p className="text-body">© 2025 heyMemory. Designed with care for memory support.</p>
           </div>
         </div>
       </footer>
