@@ -114,11 +114,10 @@ export default function FacesGamePage() {
           </div>
         </div>
       </div>
-
       <div className="max-w-4xl mx-auto px-6 py-8">
         {!hasEnoughPhotos ? (
           /* Not Enough Photos Screen */
-          <div className="text-center">
+          (<div className="text-center">
             <Card className="max-w-2xl mx-auto bg-white shadow-lg">
               <CardContent className="p-12">
                 <div className="mb-8">
@@ -126,9 +125,7 @@ export default function FacesGamePage() {
                   <h2 className="text-3xl font-bold text-gray-900 mb-4">
                     Need More Photos
                   </h2>
-                  <p className="text-xl text-gray-600 leading-relaxed">
-                    To play the faces game, you need at least 3 photos of family, friends, or caregivers.
-                  </p>
+                  <p className="text-xl text-gray-600 leading-relaxed">To play the faces game, you need at least 3 photos of family, friends, pets or caregivers.</p>
                 </div>
 
                 <div className="bg-blue-50 rounded-lg p-6 mb-8">
@@ -156,10 +153,10 @@ export default function FacesGamePage() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </div>)
         ) : !gameStarted ? (
           /* Game Start Screen */
-          <div className="text-center">
+          (<div className="text-center">
             <Card className="max-w-2xl mx-auto bg-white shadow-lg">
               <CardContent className="p-12">
                 <div className="mb-8">
@@ -195,10 +192,10 @@ export default function FacesGamePage() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </div>)
         ) : (
           /* Game Play Screen */
-          <div className="text-center">
+          (<div className="text-center">
             <div className="max-w-2xl mx-auto">
               {/* Game Card */}
               <div className="relative mb-8">
@@ -214,7 +211,7 @@ export default function FacesGamePage() {
                 >
                   {!isFlipped ? (
                     /* Front of Card - Photo */
-                    <CardContent className="p-0 h-full flex flex-col justify-center items-center relative">
+                    (<CardContent className="p-0 h-full flex flex-col justify-center items-center relative">
                       <div className="w-full h-96 bg-gray-100 rounded-t-lg flex items-center justify-center overflow-hidden">
                         {currentPhoto?.photoUrl ? (
                           <img
@@ -229,7 +226,6 @@ export default function FacesGamePage() {
                           </div>
                         )}
                       </div>
-                      
                       <div className="p-8 w-full">
                         <h3 className="text-2xl font-bold text-gray-900 mb-4">
                           Who is this person?
@@ -242,10 +238,10 @@ export default function FacesGamePage() {
                           Touch to See Answer
                         </Button>
                       </div>
-                    </CardContent>
+                    </CardContent>)
                   ) : (
                     /* Back of Card - Answer */
-                    <CardContent className="p-8 h-full flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-purple-50">
+                    (<CardContent className="p-8 h-full flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-purple-50">
                       <div className="text-center space-y-6">
                         <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
                           <Heart className="w-10 h-10 text-red-500" />
@@ -274,7 +270,7 @@ export default function FacesGamePage() {
                           </Button>
                         </div>
                       </div>
-                    </CardContent>
+                    </CardContent>)
                   )}
                 </Card>
               </div>
@@ -299,7 +295,7 @@ export default function FacesGamePage() {
                 </CardContent>
               </Card>
             </div>
-          </div>
+          </div>)
         )}
       </div>
     </div>
