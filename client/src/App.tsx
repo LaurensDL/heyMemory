@@ -13,7 +13,7 @@ import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
     return (
@@ -33,6 +33,7 @@ function Router() {
       <Route path="/register" component={Register} />
       <Route path="/dashboard" component={isAuthenticated ? Dashboard : Login} />
       <Route path="/profile" component={isAuthenticated ? Profile : Login} />
+      <Route path="/admin" component={isAuthenticated && user?.isAdmin ? Admin : Login} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

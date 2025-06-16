@@ -60,6 +60,15 @@ export default function Dashboard() {
                 </Button>
               </Link>
               
+              {user?.isAdmin && (
+                <Link href="/admin">
+                  <Button variant="outline" className="bg-purple-100 text-purple-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-purple-300 hover:bg-purple-200 focus:bg-purple-200 focus:outline-none focus:ring-4 focus:ring-purple-400 transition-colors">
+                    <Users className="w-5 h-5 mr-2" />
+                    Admin Panel
+                  </Button>
+                </Link>
+              )}
+              
               <Button 
                 onClick={handleLogout}
                 disabled={logoutMutation.isPending}

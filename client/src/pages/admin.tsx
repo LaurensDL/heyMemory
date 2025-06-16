@@ -55,10 +55,7 @@ export default function AdminPage() {
   // Create user mutation
   const createUserMutation = useMutation({
     mutationFn: async (data: AdminCreateUserData) => {
-      return await apiRequest('/api/admin/users', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+      return await apiRequest('/api/admin/users', 'POST', data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
@@ -81,10 +78,7 @@ export default function AdminPage() {
   // Update user mutation
   const updateUserMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: AdminUpdateUserData }) => {
-      return await apiRequest(`/api/admin/users/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      });
+      return await apiRequest(`/api/admin/users/${id}`, 'PUT', data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
@@ -108,9 +102,7 @@ export default function AdminPage() {
   // Delete user mutation
   const deleteUserMutation = useMutation({
     mutationFn: async (id: number) => {
-      return await apiRequest(`/api/admin/users/${id}`, {
-        method: 'DELETE',
-      });
+      return await apiRequest(`/api/admin/users/${id}`, 'DELETE');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
@@ -132,7 +124,7 @@ export default function AdminPage() {
     createUserMutation.mutate(data);
   };
 
-  const handleEditUser = (user: User) => {
+  const handleEditUser = (user: UserType) => {
     setEditingUser(user);
     editForm.setValue('email', user.email);
     editForm.setValue('isAdmin', user.isAdmin);
