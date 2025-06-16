@@ -191,14 +191,7 @@ export default function AdminPage() {
                 Dashboard
               </Button>
               
-              <Button 
-                variant="outline" 
-                onClick={() => setLocation('/profile')}
-                className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
-              >
-                <User className="w-5 h-5 mr-2" />
-                My Profile
-              </Button>
+
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import type { User, LoginData, RegisterData } from "@shared/schema";
 interface AuthUser {
   id: number;
   email: string;
+  pendingEmail?: string;
   isEmailVerified: boolean;
   isAdmin: boolean;
   firstName?: string;
