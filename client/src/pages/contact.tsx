@@ -10,7 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, ArrowLeft, Brain } from "lucide-react";
+import { Link } from "wouter";
 
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -102,6 +103,35 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+      {/* Navigation Bar */}
+      <nav className="bg-white border-b-2 border-gray-200 rounded-xl mb-8 shadow-sm" role="navigation" aria-label="Contact page navigation">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo and Brand */}
+            <div className="flex items-center space-x-3">
+              <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+              <span className="text-2xl font-bold">heyMemory</span>
+            </div>
+            
+            {/* Navigation Links */}
+            <div className="flex items-center space-x-4">
+              <Link href="/">
+                <Button variant="outline" className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Back to Home
+                </Button>
+              </Link>
+              
+              <Link href="/dashboard">
+                <Button className="bg-[var(--button-primary)] hover:bg-[var(--button-primary-hover)] text-white font-bold text-lg px-6 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors">
+                  Dashboard
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       <div className="max-w-6xl mx-auto pt-8">
         {/* Header */}
         <div className="text-center mb-12">

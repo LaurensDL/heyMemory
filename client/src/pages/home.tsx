@@ -48,7 +48,6 @@ export default function Home() {
           </div>
         </div>
       </nav>
-
       <main role="main">
         {/* Hero Section */}
         <section className="bg-blue-50 py-16 md:py-24" aria-labelledby="hero-heading">
@@ -165,7 +164,7 @@ export default function Home() {
                   <div className="text-center">
                     <Mail className="text-[var(--button-primary)] w-12 h-12 mx-auto mb-4" aria-hidden="true" />
                     <p className="text-body font-bold mb-2">Email Support</p>
-                    <p className="text-body">help@heymemory.com</p>
+                    <p className="text-body">help@heymemory.app</p>
                   </div>
                 </div>
               </CardContent>
@@ -173,7 +172,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
       {/* Footer */}
       <footer className="bg-gray-50 border-t-2 border-gray-200 py-12" role="contentinfo">
         <div className="max-w-6xl mx-auto px-6">
