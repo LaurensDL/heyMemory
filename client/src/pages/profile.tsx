@@ -25,6 +25,14 @@ export default function Profile() {
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       email: "",
+      firstName: "",
+      lastName: "",
+      dateOfBirth: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
       currentPassword: "",
       newPassword: "",
       confirmNewPassword: "",
@@ -35,6 +43,14 @@ export default function Profile() {
     if (user) {
       reset({
         email: user.email,
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : "",
+        address: user.address || "",
+        city: user.city || "",
+        state: user.state || "",
+        zipCode: user.zipCode || "",
+        country: user.country || "",
         currentPassword: "",
         newPassword: "",
         confirmNewPassword: "",
@@ -55,6 +71,14 @@ export default function Profile() {
       // Reset password fields
       reset({
         email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        dateOfBirth: data.dateOfBirth,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+        country: data.country,
         currentPassword: "",
         newPassword: "",
         confirmNewPassword: "",
@@ -108,7 +132,7 @@ export default function Profile() {
           <div className="text-center mb-12">
             <h1 className="text-hero mb-4">Profile Settings</h1>
             <p className="text-body">
-              Update your email address and password
+              Update your personal information and account settings
             </p>
           </div>
 
@@ -127,41 +151,187 @@ export default function Profile() {
             </CardHeader>
             <CardContent className="px-8 pb-8">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-                {/* Email Section */}
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-body font-bold">
-                    Email Address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    {...register("email")}
-                    className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                    placeholder="Enter your email"
-                  />
-                  {errors.email && (
-                    <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
-                  )}
+                {/* Personal Information Section */}
+                <div className="space-y-6">
+                  <h3 className="text-card-heading">Personal Information</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName" className="text-body font-bold">
+                        First Name
+                      </Label>
+                      <Input
+                        id="firstName"
+                        type="text"
+                        {...register("firstName")}
+                        className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                        placeholder="Enter your first name"
+                      />
+                      {errors.firstName && (
+                        <p className="text-red-600 text-lg font-medium">{errors.firstName.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName" className="text-body font-bold">
+                        Last Name
+                      </Label>
+                      <Input
+                        id="lastName"
+                        type="text"
+                        {...register("lastName")}
+                        className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                        placeholder="Enter your last name"
+                      />
+                      {errors.lastName && (
+                        <p className="text-red-600 text-lg font-medium">{errors.lastName.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="dateOfBirth" className="text-body font-bold">
+                      Date of Birth
+                    </Label>
+                    <Input
+                      id="dateOfBirth"
+                      type="date"
+                      {...register("dateOfBirth")}
+                      className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                    />
+                    {errors.dateOfBirth && (
+                      <p className="text-red-600 text-lg font-medium">{errors.dateOfBirth.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-body font-bold">
+                      Email Address
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      {...register("email")}
+                      className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                      placeholder="Enter your email"
+                    />
+                    {errors.email && (
+                      <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
+                    )}
+                  </div>
                 </div>
 
-                {/* Current Password Section */}
-                <div className="space-y-2">
-                  <Label htmlFor="currentPassword" className="text-body font-bold">
-                    Current Password
-                  </Label>
-                  <Input
-                    id="currentPassword"
-                    type="password"
-                    {...register("currentPassword")}
-                    className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                    placeholder="Enter your current password"
-                  />
-                  {errors.currentPassword && (
-                    <p className="text-red-600 text-lg font-medium">{errors.currentPassword.message}</p>
-                  )}
-                  <p className="text-lg text-gray-600">
-                    Required to make any changes to your profile
-                  </p>
+                {/* Address Section */}
+                <div className="border-t-2 border-gray-200 pt-8 space-y-6">
+                  <h3 className="text-card-heading">Address Information</h3>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="address" className="text-body font-bold">
+                      Street Address
+                    </Label>
+                    <Input
+                      id="address"
+                      type="text"
+                      {...register("address")}
+                      className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                      placeholder="Enter your street address"
+                    />
+                    {errors.address && (
+                      <p className="text-red-600 text-lg font-medium">{errors.address.message}</p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="city" className="text-body font-bold">
+                        City
+                      </Label>
+                      <Input
+                        id="city"
+                        type="text"
+                        {...register("city")}
+                        className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                        placeholder="Enter your city"
+                      />
+                      {errors.city && (
+                        <p className="text-red-600 text-lg font-medium">{errors.city.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="state" className="text-body font-bold">
+                        State/Province
+                      </Label>
+                      <Input
+                        id="state"
+                        type="text"
+                        {...register("state")}
+                        className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                        placeholder="Enter your state/province"
+                      />
+                      {errors.state && (
+                        <p className="text-red-600 text-lg font-medium">{errors.state.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="zipCode" className="text-body font-bold">
+                        ZIP/Postal Code
+                      </Label>
+                      <Input
+                        id="zipCode"
+                        type="text"
+                        {...register("zipCode")}
+                        className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                        placeholder="Enter your ZIP code"
+                      />
+                      {errors.zipCode && (
+                        <p className="text-red-600 text-lg font-medium">{errors.zipCode.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="country" className="text-body font-bold">
+                        Country
+                      </Label>
+                      <Input
+                        id="country"
+                        type="text"
+                        {...register("country")}
+                        className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                        placeholder="Enter your country"
+                      />
+                      {errors.country && (
+                        <p className="text-red-600 text-lg font-medium">{errors.country.message}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Security Section */}
+                <div className="border-t-2 border-gray-200 pt-8 space-y-6">
+                  <h3 className="text-card-heading">Security</h3>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="currentPassword" className="text-body font-bold">
+                      Current Password
+                    </Label>
+                    <Input
+                      id="currentPassword"
+                      type="password"
+                      {...register("currentPassword")}
+                      className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                      placeholder="Enter your current password"
+                    />
+                    {errors.currentPassword && (
+                      <p className="text-red-600 text-lg font-medium">{errors.currentPassword.message}</p>
+                    )}
+                    <p className="text-lg text-gray-600">
+                      Required to save any changes to your profile
+                    </p>
+                  </div>
                 </div>
 
                 {/* New Password Section */}
