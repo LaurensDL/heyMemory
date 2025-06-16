@@ -126,12 +126,14 @@ export default function Dashboard() {
                 <p className="text-body leading-relaxed text-center mb-8">
                   Practice recognizing and remembering important people in your life with our interactive faces game.
                 </p>
-                <Button 
-                  className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
-                  disabled={user && !user.isEmailVerified}
-                >
-                  {user && !user.isEmailVerified ? "Verify Email First" : "Start Faces Game"}
-                </Button>
+                <Link href="/faces-game">
+                  <Button 
+                    className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+                    disabled={user && !user.isEmailVerified}
+                  >
+                    {user && !user.isEmailVerified ? "Verify Email First" : "Start Faces Game"}
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
             

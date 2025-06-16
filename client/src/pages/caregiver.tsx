@@ -98,14 +98,11 @@ export default function CaregiverPage() {
   // Mutations
   const addPhotoMutation = useMutation({
     mutationFn: async (data: FacePhotoFormData) => {
-      return apiRequest("/api/face-photos", {
-        method: "POST",
-        body: JSON.stringify({
-          name: data.name,
-          relationship: data.relationship,
-          description: data.description,
-          photoUrl: data.photoUrl || null
-        })
+      return apiRequest("/api/face-photos", "POST", {
+        name: data.name,
+        relationship: data.relationship,
+        description: data.description,
+        photoUrl: data.photoUrl || null
       });
     },
     onSuccess: () => {
