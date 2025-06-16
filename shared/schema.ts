@@ -49,6 +49,26 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const facePhotos = pgTable("face_photos", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  relationship: text("relationship").notNull(),
+  description: text("description"),
+  photoUrl: text("photo_url"),
+  userId: integer("user_id").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const rememberItems = pgTable("remember_items", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  category: text("category").notNull(),
+  photoUrl: text("photo_url"),
+  userId: integer("user_id").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
   password: true,
@@ -119,6 +139,25 @@ export const adminUpdateUserSchema = z.object({
   isEmailVerified: z.boolean().optional(),
 });
 
+export const insertFacePhotoSchema = createInsertSchema(facePhotos).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+});
+
+export const insertRememberItemSchema = createInsertSchema(rememberItems).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+});
+
+export const contactSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Please enter a valid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type LoginData = z.infer<typeof loginSchema>;
@@ -126,3 +165,8 @@ export type RegisterData = z.infer<typeof registerSchema>;
 export type UpdateProfileData = z.infer<typeof updateProfileSchema>;
 export type AdminCreateUserData = z.infer<typeof adminCreateUserSchema>;
 export type AdminUpdateUserData = z.infer<typeof adminUpdateUserSchema>;
+export type FacePhoto = typeof facePhotos.$inferSelect;
+export type InsertFacePhoto = z.infer<typeof insertFacePhotoSchema>;
+export type RememberItem = typeof rememberItems.$inferSelect;
+export type InsertRememberItem = z.infer<typeof insertRememberItemSchema>;
+export type ContactData = z.infer<typeof contactSchema>;

@@ -9,7 +9,9 @@ import {
   updateProfileSchema,
   adminCreateUserSchema,
   adminUpdateUserSchema,
-  type User 
+  insertFacePhotoSchema,
+  type User,
+  type FacePhoto
 } from "@shared/schema";
 import session from "express-session";
 import connectPg from "connect-pg-simple";

@@ -1,12 +1,15 @@
 import {
   users,
+  facePhotos,
   type User,
   type InsertUser,
   type AdminCreateUserData,
   type AdminUpdateUserData,
+  type FacePhoto,
+  type InsertFacePhoto,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -29,6 +32,12 @@ export interface IStorage {
   adminCreateUser(userData: AdminCreateUserData): Promise<User>;
   adminUpdateUser(id: number, updates: AdminUpdateUserData): Promise<User | undefined>;
   adminDeleteUser(id: number): Promise<boolean>;
+
+  // Face photos operations
+  getFacePhotos(userId: number): Promise<FacePhoto[]>;
+  createFacePhoto(userId: number, data: InsertFacePhoto): Promise<FacePhoto>;
+  updateFacePhoto(id: number, userId: number, data: Partial<InsertFacePhoto>): Promise<FacePhoto | undefined>;
+  deleteFacePhoto(id: number, userId: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -266,6 +275,39 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, userId));
 
     return token;
+  }
+
+  // Face photos operations
+  async getFacePhotos(userId: number): Promise<FacePhoto[]> {
+    const photos = await db.select().from(facePhotos).where(eq(facePhotos.userId, userId));
+    return photos;
+  }
+
+  async createFacePhoto(userId: number, data: InsertFacePhoto): Promise<FacePhoto> {
+    const [photo] = await db
+      .insert(facePhotos)
+      .values({
+        ...data,
+        userId,
+      })
+      .returning();
+    return photo;
+  }
+
+  async updateFacePhoto(id: number, userId: number, data: Partial<InsertFacePhoto>): Promise<FacePhoto | undefined> {
+    const [photo] = await db
+      .update(facePhotos)
+      .set(data)
+      .where(and(eq(facePhotos.id, id), eq(facePhotos.userId, userId)))
+      .returning();
+    return photo || undefined;
+  }
+
+  async deleteFacePhoto(id: number, userId: number): Promise<boolean> {
+    const result = await db
+      .delete(facePhotos)
+      .where(and(eq(facePhotos.id, id), eq(facePhotos.userId, userId)));
+    return (result.rowCount || 0) > 0;
   }
 }
 
