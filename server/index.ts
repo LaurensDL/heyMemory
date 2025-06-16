@@ -6,6 +6,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Set session secret for development
+if (!process.env.SESSION_SECRET) {
+  process.env.SESSION_SECRET = 'heymemory-dev-secret-key-change-in-production';
+}
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
