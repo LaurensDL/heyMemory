@@ -18,6 +18,12 @@ export interface IStorage {
   generateEmailVerificationToken(userId: number): Promise<string>;
   updatePassword(userId: number, newPassword: string): Promise<void>;
   
+  // Email change operations
+  initiateEmailChange(userId: number, newEmail: string): Promise<string>;
+  confirmEmailChange(token: string): Promise<User | undefined>;
+  cancelEmailChange(userId: number): Promise<boolean>;
+  resendEmailChangeVerification(userId: number): Promise<string>;
+
   // Admin operations
   getAllUsers(): Promise<User[]>;
   adminCreateUser(userData: AdminCreateUserData): Promise<User>;
@@ -171,6 +177,95 @@ export class DatabaseStorage implements IStorage {
   async adminDeleteUser(id: number): Promise<boolean> {
     const result = await db.delete(users).where(eq(users.id, id));
     return (result.rowCount || 0) > 0;
+  }
+
+  // Email change operations
+  async initiateEmailChange(userId: number, newEmail: string): Promise<string> {
+    // Check if new email is already in use
+    const existingUser = await this.getUserByEmail(newEmail);
+    if (existingUser && existingUser.id !== userId) {
+      throw new Error("Email address is already in use");
+    }
+
+    const token = crypto.randomUUID();
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+    await db
+      .update(users)
+      .set({
+        pendingEmail: newEmail,
+        emailChangeToken: token,
+        emailChangeExpires: expires,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId));
+
+    return token;
+  }
+
+  async confirmEmailChange(token: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.emailChangeToken, token));
+
+    if (!user || !user.emailChangeExpires || new Date() > user.emailChangeExpires) {
+      return undefined;
+    }
+
+    if (!user.pendingEmail) {
+      return undefined;
+    }
+
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        email: user.pendingEmail,
+        pendingEmail: null,
+        emailChangeToken: null,
+        emailChangeExpires: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, user.id))
+      .returning();
+
+    return updatedUser;
+  }
+
+  async cancelEmailChange(userId: number): Promise<boolean> {
+    const result = await db
+      .update(users)
+      .set({
+        pendingEmail: null,
+        emailChangeToken: null,
+        emailChangeExpires: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId));
+
+    return (result.rowCount || 0) > 0;
+  }
+
+  async resendEmailChangeVerification(userId: number): Promise<string> {
+    const user = await this.getUser(userId);
+    if (!user || !user.pendingEmail) {
+      throw new Error("No pending email change found");
+    }
+
+    const token = crypto.randomUUID();
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+    await db
+      .update(users)
+      .set({
+        emailChangeToken: token,
+        emailChangeExpires: expires,
+        lastEmailSent: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId));
+
+    return token;
   }
 }
 

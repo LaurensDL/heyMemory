@@ -484,6 +484,175 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Email change routes
+  app.post("/api/initiate-email-change", requireAuth, async (req: any, res) => {
+    const { newEmail } = req.body;
+    const userId = (req.session as any).userId;
+
+    if (!newEmail) {
+      return res.status(400).json({ message: "New email is required" });
+    }
+
+    try {
+      const token = await storage.initiateEmailChange(userId, newEmail);
+      
+      // Send email change verification email
+      const verificationUrl = `${req.protocol}://${req.get('host')}/api/confirm-email-change/${token}`;
+      
+      const mailOptions = {
+        from: 'heyMemory <help@heymemory.app>',
+        to: newEmail,
+        subject: 'Verify Your New Email Address - heyMemory',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #1f2937; font-size: 28px; margin: 0;">heyMemory</h1>
+              <p style="color: #6b7280; font-size: 16px; margin: 10px 0 0 0;">Memory Support Made Simple</p>
+            </div>
+            
+            <div style="background-color: #f9fafb; padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+              <h2 style="color: #1f2937; font-size: 24px; margin: 0 0 20px 0;">Verify Your New Email Address</h2>
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                You requested to change your email address. To complete this change, please click the button below to verify your new email address.
+              </p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${verificationUrl}" style="background-color: #1f2937; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+                  Verify New Email Address
+                </a>
+              </div>
+              
+              <p style="color: #64748b; font-size: 14px; margin: 25px 0 0 0;">
+                If the button doesn't work, copy and paste this link into your browser:<br>
+                <a href="${verificationUrl}" style="color: #2563eb; word-break: break-all;">${verificationUrl}</a>
+              </p>
+            </div>
+            
+            <div style="text-align: center; color: #94a3b8; font-size: 14px;">
+              <p>This verification link will expire in 24 hours.</p>
+              <p>If you didn't request this change, please ignore this email.</p>
+              <p>Need help? Contact us at <a href="mailto:help@heymemory.app" style="color: #2563eb;">help@heymemory.app</a></p>
+            </div>
+          </div>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
+      res.json({ message: "Email change verification sent to new address" });
+    } catch (error: any) {
+      console.error("Email change initiation error:", error);
+      res.status(400).json({ message: error.message || "Failed to initiate email change" });
+    }
+  });
+
+  app.get("/api/confirm-email-change/:token", async (req, res) => {
+    const { token } = req.params;
+
+    try {
+      const user = await storage.confirmEmailChange(token);
+      if (!user) {
+        return res.redirect('/?error=invalid-token');
+      }
+
+      res.redirect('/?success=email-changed');
+    } catch (error) {
+      console.error("Email change confirmation error:", error);
+      res.redirect('/?error=email-change-failed');
+    }
+  });
+
+  app.post("/api/cancel-email-change", requireAuth, async (req: any, res) => {
+    const userId = (req.session as any).userId;
+
+    try {
+      const success = await storage.cancelEmailChange(userId);
+      if (!success) {
+        return res.status(400).json({ message: "No pending email change found" });
+      }
+
+      res.json({ message: "Email change cancelled successfully" });
+    } catch (error) {
+      console.error("Email change cancellation error:", error);
+      res.status(500).json({ message: "Failed to cancel email change" });
+    }
+  });
+
+  app.post("/api/resend-email-change-verification", requireAuth, async (req: any, res) => {
+    const userId = (req.session as any).userId;
+
+    try {
+      const user = await storage.getUser(userId);
+      if (!user || !user.pendingEmail) {
+        return res.status(400).json({ message: "No pending email change found" });
+      }
+
+      // Check cooldown
+      const now = new Date();
+      const cooldownMinutes = 1;
+      
+      if (user.lastEmailSent) {
+        const lastSent = new Date(user.lastEmailSent);
+        const timeDiff = (now.getTime() - lastSent.getTime()) / (1000 * 60);
+        
+        if (timeDiff < cooldownMinutes) {
+          const remainingSeconds = Math.ceil((cooldownMinutes * 60) - (timeDiff * 60));
+          return res.status(429).json({ 
+            message: "Please wait before requesting another email",
+            remainingSeconds
+          });
+        }
+      }
+
+      const token = await storage.resendEmailChangeVerification(userId);
+      
+      const verificationUrl = `${req.protocol}://${req.get('host')}/api/confirm-email-change/${token}`;
+      
+      const mailOptions = {
+        from: 'heyMemory <help@heymemory.app>',
+        to: user.pendingEmail,
+        subject: 'Verify Your New Email Address - heyMemory',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #1f2937; font-size: 28px; margin: 0;">heyMemory</h1>
+              <p style="color: #6b7280; font-size: 16px; margin: 10px 0 0 0;">Memory Support Made Simple</p>
+            </div>
+            
+            <div style="background-color: #f9fafb; padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+              <h2 style="color: #1f2937; font-size: 24px; margin: 0 0 20px 0;">Verify Your New Email Address</h2>
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                You requested to change your email address. To complete this change, please click the button below to verify your new email address.
+              </p>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${verificationUrl}" style="background-color: #1f2937; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+                  Verify New Email Address
+                </a>
+              </div>
+              
+              <p style="color: #64748b; font-size: 14px; margin: 25px 0 0 0;">
+                If the button doesn't work, copy and paste this link into your browser:<br>
+                <a href="${verificationUrl}" style="color: #2563eb; word-break: break-all;">${verificationUrl}</a>
+              </p>
+            </div>
+            
+            <div style="text-align: center; color: #94a3b8; font-size: 14px;">
+              <p>This verification link will expire in 24 hours.</p>
+              <p>If you didn't request this change, please ignore this email.</p>
+              <p>Need help? Contact us at <a href="mailto:help@heymemory.app" style="color: #2563eb;">help@heymemory.app</a></p>
+            </div>
+          </div>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
+      res.json({ message: "Email change verification sent" });
+    } catch (error: any) {
+      console.error("Email change resend error:", error);
+      res.status(400).json({ message: error.message || "Failed to resend verification" });
+    }
+  });
+
   // Update profile endpoint
   app.put("/api/profile", requireAuth, async (req, res) => {
     try {
@@ -514,8 +683,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const updates: Partial<User> = {};
       
-      // Update email if changed
+      // Handle email change through verification process
       if (email !== user.email) {
+        // Initiate email change verification process instead of direct update
+        try {
+          const token = await storage.initiateEmailChange(userId, email);
+          
+          const verificationUrl = `${req.protocol}://${req.get('host')}/api/confirm-email-change/${token}`;
+          
+          const mailOptions = {
+            from: 'heyMemory <help@heymemory.app>',
+            to: email,
+            subject: 'Verify Your New Email Address - heyMemory',
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                  <h1 style="color: #1f2937; font-size: 28px; margin: 0;">heyMemory</h1>
+                  <p style="color: #6b7280; font-size: 16px; margin: 10px 0 0 0;">Memory Support Made Simple</p>
+                </div>
+                
+                <div style="background-color: #f9fafb; padding: 30px; border-radius: 12px; margin-bottom: 30px;">
+                  <h2 style="color: #1f2937; font-size: 24px; margin: 0 0 20px 0;">Verify Your New Email Address</h2>
+                  <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                    You requested to change your email address. To complete this change, please click the button below to verify your new email address.
+                  </p>
+                  
+                  <div style="text-align: center; margin: 30px 0;">
+                    <a href="${verificationUrl}" style="background-color: #1f2937; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+                      Verify New Email Address
+                    </a>
+                  </div>
+                  
+                  <p style="color: #64748b; font-size: 14px; margin: 25px 0 0 0;">
+                    If the button doesn't work, copy and paste this link into your browser:<br>
+                    <a href="${verificationUrl}" style="color: #2563eb; word-break: break-all;">${verificationUrl}</a>
+                  </p>
+                </div>
+                
+                <div style="text-align: center; color: #94a3b8; font-size: 14px;">
+                  <p>This verification link will expire in 24 hours.</p>
+                  <p>If you didn't request this change, please ignore this email.</p>
+                  <p>Need help? Contact us at <a href="mailto:help@heymemory.app" style="color: #2563eb;">help@heymemory.app</a></p>
+                </div>
+              </div>
+            `
+          };
+
+          await transporter.sendMail(mailOptions);
+        } catch (emailChangeError) {
+          console.error("Email change error:", emailChangeError);
+          return res.status(400).json({ message: "Failed to initiate email change" });
+        }
+      } else {
         // Check if new email is already taken
         const existingUser = await storage.getUserByEmail(email);
         if (existingUser && existingUser.id !== userId) {
