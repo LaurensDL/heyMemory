@@ -59,6 +59,25 @@ export default function Login() {
     }
   };
 
+  // Show verification page if needed
+  if (showVerification && pendingEmail) {
+    return (
+      <VerifyEmailPage 
+        email={pendingEmail}
+        onCancel={() => {
+          setShowVerification(false);
+          setPendingEmail("");
+        }}
+        onResendSuccess={() => {
+          toast({
+            title: "Email Sent",
+            description: "A new verification email has been sent.",
+          });
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-6">
       <div className="w-full max-w-md">

@@ -135,16 +135,29 @@ export class DatabaseStorage implements IStorage {
   }
 
   async adminUpdateUser(id: number, updates: AdminUpdateUserData): Promise<User | undefined> {
-    const processedUpdates = { ...updates };
-    
+    const updateData: Partial<typeof users.$inferInsert> = {
+      email: updates.email,
+      password: updates.password,
+      isEmailVerified: updates.isEmailVerified,
+      isAdmin: updates.isAdmin,
+      firstName: updates.firstName,
+      lastName: updates.lastName,
+      address: updates.address,
+      city: updates.city,
+      state: updates.state,
+      zipCode: updates.zipCode,
+      country: updates.country,
+      updatedAt: new Date(),
+    };
+
     // Handle date conversion for dateOfBirth
-    if (processedUpdates.dateOfBirth) {
-      processedUpdates.dateOfBirth = new Date(processedUpdates.dateOfBirth) as any;
+    if (updates.dateOfBirth) {
+      updateData.dateOfBirth = new Date(updates.dateOfBirth);
     }
     
     const [user] = await db
       .update(users)
-      .set({ ...processedUpdates, updatedAt: new Date() })
+      .set(updateData)
       .where(eq(users.id, id))
       .returning();
     return user || undefined;
