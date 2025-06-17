@@ -331,14 +331,14 @@ export default function FacesGamePage() {
 
               {/* Quit Game Button - Outside the card to prevent misclicks */}
               {isFlipped && (
-                <div className="mt-6">
+                <div className="mt-6 flex justify-center">
                   <Button 
                     size="lg" 
                     onClick={handleQuitGame} 
                     variant="destructive" 
-                    className="w-full max-w-xs mx-auto block"
+                    className="flex items-center gap-2 px-6"
                   >
-                    <X className="w-5 h-5 mr-2" />
+                    <X className="w-5 h-5" />
                     Quit Game
                   </Button>
                 </div>
