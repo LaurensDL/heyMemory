@@ -471,7 +471,7 @@ export default function Profile() {
                       type="password"
                       {...register("currentPassword")}
                       className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                      placeholder="Enter your current password"
+                      placeholder="Current password"
                     />
                     {errors.currentPassword && (
                       <p className="text-red-600 text-lg font-medium">{errors.currentPassword.message}</p>
