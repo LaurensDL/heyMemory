@@ -65,7 +65,7 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-4 md:px-6">
             <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
               {/* Left Column - Text Content */}
-              <div className="text-center lg:text-left order-2 lg:order-1">
+              <div className="text-center lg:text-left order-1">
                 <div className="mb-4 md:mb-6">
                   <p className="text-lg md:text-xl lg:text-2xl font-medium text-gray-600 mb-3 md:mb-4">
                     Gentle tools to help you remember what matters.
@@ -109,7 +109,7 @@ export default function Home() {
               </div>
               
               {/* Right Column - Hero Image */}
-              <div className="flex justify-center lg:justify-end order-1 lg:order-2 mb-6 lg:mb-0">
+              <div className="flex justify-center lg:justify-end order-2 mb-6 lg:mb-0">
                 <img 
                   src={heroImage}
                   alt="Senior man using heyMemory app on smartphone, demonstrating accessibility features"
