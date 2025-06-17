@@ -149,12 +149,14 @@ export default function Dashboard() {
                 <p className="text-body leading-relaxed text-center mb-8">
                   Store important facts, locations, and memories in an easy-to-access format.
                 </p>
-                <Button 
-                  className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
-                  disabled={user && !user.isEmailVerified}
-                >
-                  {user && !user.isEmailVerified ? "Verify Email First" : "Start Remembering"}
-                </Button>
+                <Link href="/remember">
+                  <Button 
+                    className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+                    disabled={user && !user.isEmailVerified}
+                  >
+                    {user && !user.isEmailVerified ? "Verify Email First" : "Start Remembering"}
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>

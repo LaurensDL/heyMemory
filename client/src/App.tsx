@@ -13,6 +13,7 @@ import Profile from "@/pages/profile";
 import Admin from "@/pages/admin";
 import Caregiver from "@/pages/caregiver";
 import FacesGame from "@/pages/faces-game";
+import Remember from "@/pages/remember";
 import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/admin" component={isAuthenticated && user?.isAdmin ? Admin : Login} />
       <Route path="/caregiver" component={isAuthenticated ? Caregiver : Login} />
       <Route path="/faces-game" component={isAuthenticated ? FacesGame : Login} />
+      <Route path="/remember" component={isAuthenticated ? Remember : Login} />
       <Route path="/contact" component={Contact} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
