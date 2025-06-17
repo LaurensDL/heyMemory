@@ -603,6 +603,8 @@ export default function CaregiverPage() {
                             {!editingPhoto && (
                               <p className="text-sm text-gray-500 text-center mt-2">
                                 Take a new photo or choose from your gallery
+                                <br />
+                                <span className="text-blue-600 font-medium">💡 Square images work best</span>
                               </p>
                             )}
                           </FormItem>
@@ -806,6 +808,8 @@ export default function CaregiverPage() {
                             {!editingRemember && (
                               <p className="text-sm text-gray-500 text-center mt-2">
                                 Take a new photo or choose from your gallery
+                                <br />
+                                <span className="text-blue-600 font-medium">💡 Square images work best</span>
                               </p>
                             )}
                           </FormItem>
@@ -896,6 +900,7 @@ export default function CaregiverPage() {
                 <ul className="space-y-1 text-sm">
                   <li>• Add photos of family members, friends, pets and caregivers</li>
                   <li>• Include clear, recent photos showing the person's or animals face</li>
+                  <li>• Use square images for best display results</li>
                   <li>• Add helpful details about their relationship</li>
                   <li>• Photos will appear in the faces game for practice</li>
                 </ul>
@@ -906,6 +911,7 @@ export default function CaregiverPage() {
                   <li>• Add important daily information and reminders</li>
                   <li>• Include medical information, routines, and preferences</li>
                   <li>• Upload reference photos to help with locations and items</li>
+                  <li>• Use square images for best display results</li>
                   <li>• Items will appear in the Remember This section</li>
                 </ul>
               </div>
