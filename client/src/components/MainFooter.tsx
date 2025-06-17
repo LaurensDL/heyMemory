@@ -29,7 +29,10 @@ export function MainFooter() {
             </Link>
           </div>
           
-          <p className="text-body">© 2025 heyMemory. Designed with care for memory support.</p>
+          <div className="space-y-2">
+            <p className="text-body">© 2025 heyMemory. Designed with care for memory support.</p>
+            <p className="text-sm text-gray-600">A project by BILTSITE ™ Web & App Development.</p>
+          </div>
         </div>
       </div>
     </footer>
