@@ -10,8 +10,10 @@ import {
   adminCreateUserSchema,
   adminUpdateUserSchema,
   insertFacePhotoSchema,
+  insertRememberItemSchema,
   type User,
-  type FacePhoto
+  type FacePhoto,
+  type RememberItem
 } from "@shared/schema";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
@@ -1022,6 +1024,92 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Delete face photo error:", error);
       res.status(500).json({ message: "Failed to delete face photo" });
+    }
+  });
+
+  // Remember Items API routes
+  app.get("/api/remember-items", requireAuth, async (req: any, res) => {
+    try {
+      const userId = (req.session as any).userId;
+      const items = await storage.getRememberItems(userId);
+      res.json(items);
+    } catch (error) {
+      console.error("Get remember items error:", error);
+      res.status(500).json({ message: "Failed to get remember items" });
+    }
+  });
+
+  app.post("/api/remember-items", requireAuth, async (req: any, res) => {
+    try {
+      const userId = (req.session as any).userId;
+      const validatedData = insertRememberItemSchema.parse(req.body);
+      const item = await storage.createRememberItem(userId, validatedData);
+      res.json(item);
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ message: error.errors[0]?.message || "Invalid input" });
+      }
+      console.error("Create remember item error:", error);
+      res.status(500).json({ message: "Failed to create remember item" });
+    }
+  });
+
+  app.put("/api/remember-items/:id", requireAuth, async (req: any, res) => {
+    try {
+      const userId = (req.session as any).userId;
+      const itemId = parseInt(req.params.id);
+      const validatedData = insertRememberItemSchema.partial().parse(req.body);
+      const item = await storage.updateRememberItem(itemId, userId, validatedData);
+      
+      if (!item) {
+        return res.status(404).json({ message: "Remember item not found" });
+      }
+      
+      res.json(item);
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ message: error.errors[0]?.message || "Invalid input" });
+      }
+      console.error("Update remember item error:", error);
+      res.status(500).json({ message: "Failed to update remember item" });
+    }
+  });
+
+  app.patch("/api/remember-items/:id", requireAuth, async (req: any, res) => {
+    try {
+      const userId = (req.session as any).userId;
+      const itemId = parseInt(req.params.id);
+      const validatedData = insertRememberItemSchema.partial().parse(req.body);
+      const item = await storage.updateRememberItem(itemId, userId, validatedData);
+      
+      if (!item) {
+        return res.status(404).json({ message: "Remember item not found" });
+      }
+      
+      res.json(item);
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ message: error.errors[0]?.message || "Invalid input" });
+      }
+      console.error("Update remember item error:", error);
+      res.status(500).json({ message: "Failed to update remember item" });
+    }
+  });
+
+  app.delete("/api/remember-items/:id", requireAuth, async (req: any, res) => {
+    try {
+      const userId = (req.session as any).userId;
+      const itemId = parseInt(req.params.id);
+      const success = await storage.deleteRememberItem(itemId, userId);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Remember item not found" });
+      }
+      
+      res.json({ message: "Remember item deleted successfully" });
+    } catch (error) {
+      console.error("Delete remember item error:", error);
+      res.status(500).json({ message: "Failed to delete remember item" });
     }
   });
 

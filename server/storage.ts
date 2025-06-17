@@ -1,12 +1,15 @@
 import {
   users,
   facePhotos,
+  rememberItems,
   type User,
   type InsertUser,
   type AdminCreateUserData,
   type AdminUpdateUserData,
   type FacePhoto,
   type InsertFacePhoto,
+  type RememberItem,
+  type InsertRememberItem,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and } from "drizzle-orm";
@@ -38,6 +41,12 @@ export interface IStorage {
   createFacePhoto(userId: number, data: InsertFacePhoto): Promise<FacePhoto>;
   updateFacePhoto(id: number, userId: number, data: Partial<InsertFacePhoto>): Promise<FacePhoto | undefined>;
   deleteFacePhoto(id: number, userId: number): Promise<boolean>;
+
+  // Remember items operations
+  getRememberItems(userId: number): Promise<RememberItem[]>;
+  createRememberItem(userId: number, data: InsertRememberItem): Promise<RememberItem>;
+  updateRememberItem(id: number, userId: number, data: Partial<InsertRememberItem>): Promise<RememberItem | undefined>;
+  deleteRememberItem(id: number, userId: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -307,6 +316,41 @@ export class DatabaseStorage implements IStorage {
     const result = await db
       .delete(facePhotos)
       .where(and(eq(facePhotos.id, id), eq(facePhotos.userId, userId)));
+    return (result.rowCount || 0) > 0;
+  }
+
+  async getRememberItems(userId: number): Promise<RememberItem[]> {
+    return await db
+      .select()
+      .from(rememberItems)
+      .where(eq(rememberItems.userId, userId))
+      .orderBy(rememberItems.createdAt);
+  }
+
+  async createRememberItem(userId: number, data: InsertRememberItem): Promise<RememberItem> {
+    const [item] = await db
+      .insert(rememberItems)
+      .values({
+        ...data,
+        userId,
+      })
+      .returning();
+    return item;
+  }
+
+  async updateRememberItem(id: number, userId: number, data: Partial<InsertRememberItem>): Promise<RememberItem | undefined> {
+    const [item] = await db
+      .update(rememberItems)
+      .set(data)
+      .where(and(eq(rememberItems.id, id), eq(rememberItems.userId, userId)))
+      .returning();
+    return item || undefined;
+  }
+
+  async deleteRememberItem(id: number, userId: number): Promise<boolean> {
+    const result = await db
+      .delete(rememberItems)
+      .where(and(eq(rememberItems.id, id), eq(rememberItems.userId, userId)));
     return (result.rowCount || 0) > 0;
   }
 }
