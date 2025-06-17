@@ -106,18 +106,30 @@ async function requireAdmin(req: any, res: any, next: any) {
 // Rate limiting configurations
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 requests per windowMs
+  max: 10, // Increased limit for development
   message: { message: "Too many authentication attempts, please try again later" },
   standardHeaders: true,
   legacyHeaders: false,
+  trustProxy: true,
+  skip: (req) => {
+    // Skip rate limiting in development for localhost
+    return process.env.NODE_ENV === 'development' && 
+           (req.ip === '127.0.0.1' || req.ip === '::1' || req.ip?.includes('localhost'));
+  }
 });
 
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 200, // Increased limit for development
   message: { message: "Too many requests, please try again later" },
   standardHeaders: true,
   legacyHeaders: false,
+  trustProxy: true,
+  skip: (req) => {
+    // Skip rate limiting in development for localhost
+    return process.env.NODE_ENV === 'development' && 
+           (req.ip === '127.0.0.1' || req.ip === '::1' || req.ip?.includes('localhost'));
+  }
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {

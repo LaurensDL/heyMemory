@@ -4,6 +4,9 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 
+// Trust proxy for rate limiting in production environments
+app.set('trust proxy', true);
+
 // Security headers middleware
 app.use((req, res, next) => {
   // Prevent clickjacking
