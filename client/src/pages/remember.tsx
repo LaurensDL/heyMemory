@@ -180,21 +180,11 @@ export default function RememberPage() {
         <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
           <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] h-auto p-0 bg-white rounded-lg">
             <div className="flex flex-col h-full">
-              {/* Header with close button */}
+              {/* Header */}
               <DialogHeader className="p-4 md:p-6 pb-2 border-b border-gray-200 flex-shrink-0">
-                <div className="flex items-center justify-between">
-                  <DialogTitle className="text-2xl md:text-3xl font-black text-gray-900 flex-1 text-center pr-8">
-                    {selectedItem?.title}
-                  </DialogTitle>
-                  <Button 
-                    onClick={handleCloseDetail} 
-                    variant="ghost" 
-                    className="h-8 w-8 p-0 hover:bg-gray-100 rounded-full"
-                  >
-                    <span className="sr-only">Close</span>
-                    ✕
-                  </Button>
-                </div>
+                <DialogTitle className="text-2xl md:text-3xl font-black text-gray-900 text-center">
+                  {selectedItem?.title}
+                </DialogTitle>
               </DialogHeader>
               
               {selectedItem && (
