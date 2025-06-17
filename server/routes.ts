@@ -623,7 +623,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const token = await storage.resendEmailChangeVerification(userId);
       
-      const verificationUrl = `${req.protocol}://${req.get('host')}/api/confirm-email-change/${token}`;
+      const verificationUrl = `https://heymemory.app/api/confirm-email-change/${token}`;
       
       const mailOptions = {
         from: 'heyMemory <help@heymemory.app>',
@@ -708,7 +708,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
           const token = await storage.initiateEmailChange(userId, email);
           
-          const verificationUrl = `${req.protocol}://${req.get('host')}/api/confirm-email-change/${token}`;
+          const verificationUrl = `https://heymemory.app/api/confirm-email-change/${token}`;
           
           const mailOptions = {
             from: 'heyMemory <help@heymemory.app>',
