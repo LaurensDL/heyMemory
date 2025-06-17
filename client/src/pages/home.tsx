@@ -180,7 +180,7 @@ export default function Home() {
         </section>
 
         {/* Support Section */}
-        <section id="support" className="bg-white py-16 md:py-24" aria-labelledby="support-heading">
+        <section id="support" className="bg-amber-50 py-16 md:py-24" aria-labelledby="support-heading">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 id="support-heading" className="text-section-heading mb-8">
               We're Here to Help
