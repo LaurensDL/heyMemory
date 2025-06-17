@@ -147,18 +147,18 @@ export default function FacesGamePage() {
           </div>
         </div>
       </nav>
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 py-4 md:py-8">
         {!hasEnoughPhotos ? (
           /* Not Enough Photos Screen */
           (<div className="text-center">
             <Card className="max-w-2xl mx-auto bg-white shadow-lg">
-              <CardContent className="p-12">
-                <div className="mb-8">
-                  <Users className="w-20 h-20 text-gray-400 mx-auto mb-6" />
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <CardContent className="p-6 md:p-12">
+                <div className="mb-6 md:mb-8">
+                  <Users className="w-16 h-16 md:w-20 md:h-20 text-gray-400 mx-auto mb-4 md:mb-6" />
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
                     Need More Photos
                   </h2>
-                  <p className="text-xl text-gray-600 leading-relaxed">To play the faces game, you need at least 3 photos of family, friends, pets or caregivers.</p>
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">To play the faces game, you need at least 3 photos of family, friends, pets or caregivers.</p>
                 </div>
 
                 <div className="bg-blue-50 rounded-lg p-6 mb-8">
@@ -191,36 +191,48 @@ export default function FacesGamePage() {
           /* Game Start Screen */
           (<div className="text-center">
             <Card className="max-w-2xl mx-auto bg-white shadow-lg">
-              <CardContent className="p-12">
-                <div className="mb-8">
-                  <Brain className="w-20 h-20 text-blue-600 mx-auto mb-6" />
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <CardContent className="p-6 md:p-12">
+                <div className="mb-6 md:mb-8">
+                  <Brain className="w-16 h-16 md:w-20 md:h-20 text-blue-600 mx-auto mb-4 md:mb-6" />
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
                     Ready to Play!
                   </h2>
-                  <p className="text-xl text-gray-600 leading-relaxed">
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
                     Exercise your memory by recognizing faces of people you love.
                   </p>
                 </div>
 
-                <div className="bg-green-50 rounded-lg p-6 mb-8">
-                  <h3 className="text-lg font-semibold text-green-900 mb-3">
+                <div className="bg-green-50 rounded-lg p-4 md:p-6 mb-8">
+                  <h3 className="text-lg md:text-xl font-semibold text-green-900 mb-4 text-center">
                     How to Play:
                   </h3>
-                  <div className="text-left space-y-2 text-green-800">
-                    <p>• Look at each photo carefully</p>
-                    <p>• Try to remember their name and relationship</p>
-                    <p>• Touch the photo to see the answer</p>
-                    <p>• Take your time - this is practice, not a test</p>
+                  <div className="space-y-3 md:space-y-2 text-green-800">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-3 h-3 md:w-2 md:h-2 bg-green-600 rounded-full mt-2 md:mt-2.5 flex-shrink-0"></div>
+                      <p className="text-base md:text-sm leading-relaxed">Look at each photo carefully</p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-3 h-3 md:w-2 md:h-2 bg-green-600 rounded-full mt-2 md:mt-2.5 flex-shrink-0"></div>
+                      <p className="text-base md:text-sm leading-relaxed">Try to remember their name and relationship</p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-3 h-3 md:w-2 md:h-2 bg-green-600 rounded-full mt-2 md:mt-2.5 flex-shrink-0"></div>
+                      <p className="text-base md:text-sm leading-relaxed">Touch the photo to see the answer</p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-3 h-3 md:w-2 md:h-2 bg-green-600 rounded-full mt-2 md:mt-2.5 flex-shrink-0"></div>
+                      <p className="text-base md:text-sm leading-relaxed">Take your time - this is practice, not a test</p>
+                    </div>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <Button 
                     size="lg" 
-                    className="w-full bg-blue-600 text-white font-bold text-xl py-6 px-8 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors" 
+                    className="touch-button w-full bg-blue-600 text-white font-bold text-lg md:text-xl py-4 md:py-6 px-6 md:px-8 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-blue-400 transition-colors" 
                     onClick={handleStartGame}
                   >
-                    <Heart className="w-6 h-6 mr-3" />
+                    <Heart className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3" />
                     Start Game
                   </Button>
                   <p className="text-sm text-gray-500">
@@ -234,8 +246,8 @@ export default function FacesGamePage() {
           /* Game Play Screen */
           (<div className="text-center">
             <div className="max-w-2xl mx-auto">
-              {/* Game Card */}
-              <div className="relative mb-8">
+              {/* Game Card - Mobile Optimized */}
+              <div className="relative mb-6 md:mb-8">
                 <div 
                   className={`w-full bg-white shadow-2xl transition-all duration-700 cursor-pointer rounded-lg overflow-hidden ${
                     isFlipped ? 'rotate-y-180' : ''
@@ -243,30 +255,31 @@ export default function FacesGamePage() {
                   onClick={!isFlipped ? handleFlipCard : undefined}
                   style={{ 
                     transformStyle: 'preserve-3d',
-                    height: '650px'
+                    height: 'auto',
+                    minHeight: '500px'
                   }}
                 >
                   {!isFlipped ? (
                     /* Front of Card - Photo */
                     (<div className="p-0 flex flex-col h-full w-full">
-                      <div className="w-full h-96 bg-gray-100 flex items-center justify-center overflow-hidden">
+                      <div className="w-full aspect-square max-h-80 md:max-h-96 bg-gray-100 flex items-center justify-center overflow-hidden">
                         {currentPhoto?.photoUrl ? (
                           <img
                             src={currentPhoto.photoUrl}
                             alt="Person to remember"
-                            className="w-96 h-96 object-cover"
+                            className="w-full h-full object-cover"
                           />
                         ) : (
                           <div className="flex flex-col items-center text-gray-400">
-                            <Users className="w-20 h-20 mb-4" />
-                            <p className="text-lg">No photo available</p>
+                            <Users className="w-16 h-16 md:w-20 md:h-20 mb-3 md:mb-4" />
+                            <p className="text-base md:text-lg">No photo available</p>
                           </div>
                         )}
                       </div>
-                      <div className="p-8 flex-1 flex flex-col justify-center">
-                        <h3 className="font-bold text-gray-900 mb-4 text-[32px]">Who is this?</h3>
+                      <div className="p-4 md:p-8 flex-1 flex flex-col justify-center">
+                        <h3 className="font-bold text-gray-900 mb-4 md:mb-6 text-2xl md:text-3xl">Who is this?</h3>
                         
-                        <Button size="lg" className="w-full">
+                        <Button size="lg" className="touch-button w-full text-lg md:text-xl py-4 md:py-6">
                           <Heart className="w-5 h-5 mr-2" />
                           See Answer
                         </Button>
@@ -276,23 +289,23 @@ export default function FacesGamePage() {
                     /* Back of Card - Answer */
                     (<div className="p-0 flex flex-col h-full w-full">
                       <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden">
-                        <div className="text-center space-y-4 p-6">
-                          <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                            <Heart className="w-10 h-10 text-red-500" />
+                        <div className="text-center space-y-3 md:space-y-4 p-4 md:p-6">
+                          <div className="bg-white rounded-full p-3 md:p-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+                            <Heart className="w-8 h-8 md:w-10 md:h-10 text-red-500" />
                           </div>
                           
                           <div>
-                            <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
                               {currentPhoto?.name}
                             </h2>
-                            <Badge variant="secondary" className="text-lg px-4 py-2">
+                            <Badge variant="secondary" className="text-base md:text-lg px-3 md:px-4 py-1 md:py-2">
                               {currentPhoto?.relationship}
                             </Badge>
                           </div>
 
                           {currentPhoto?.description && (
-                            <div className="bg-white/50 rounded-lg p-4 max-w-sm mx-auto">
-                              <p className="text-gray-700 text-lg leading-relaxed">
+                            <div className="bg-white/50 rounded-lg p-3 md:p-4 max-w-xs md:max-w-sm mx-auto">
+                              <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                                 {currentPhoto.description}
                               </p>
                             </div>
@@ -302,33 +315,34 @@ export default function FacesGamePage() {
                             size="lg" 
                             onClick={() => setIsFlipped(false)} 
                             variant="outline" 
-                            className="w-full max-w-sm mx-auto bg-white text-black font-bold text-xl py-4 px-8 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
+                            className="touch-button w-full max-w-xs md:max-w-sm mx-auto bg-white text-black font-bold text-lg md:text-xl py-3 md:py-4 px-6 md:px-8 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-gray-400 transition-colors"
                           >
-                            <Eye className="w-6 h-6 mr-3" />
+                            <Eye className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3" />
                             See Photo Again
                           </Button>
                         </div>
                       </div>
-                      <div className="p-8 flex-1 flex flex-col justify-center">
-                        <div className="flex gap-4">
+                      <div className="p-4 md:p-8 flex-1 flex flex-col justify-center">
+                        <div className="flex gap-2 md:gap-4">
                           <Button 
                             size="lg" 
                             onClick={handlePrevPhoto} 
                             variant="outline" 
-                            className="flex-1 bg-white text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="touch-button flex-1 bg-white text-black font-bold text-base md:text-xl py-3 md:py-4 px-4 md:px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             disabled={currentPhotoIndex === 0}
                           >
-                            <ChevronLeft className="w-6 h-6 mr-2" />
-                            Previous
+                            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-1 md:mr-2" />
+                            <span className="hidden sm:inline">Previous</span>
+                            <span className="sm:hidden">Prev</span>
                           </Button>
                           
                           <Button 
                             size="lg" 
                             onClick={handleNextPhoto} 
-                            className="flex-1 bg-blue-600 text-white font-bold text-xl py-4 px-6 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
+                            className="touch-button flex-1 bg-blue-600 text-white font-bold text-base md:text-xl py-3 md:py-4 px-4 md:px-6 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-blue-400 transition-colors"
                           >
                             Next
-                            <ChevronRight className="w-6 h-6 ml-2" />
+                            <ChevronRight className="w-5 h-5 md:w-6 md:h-6 ml-1 md:ml-2" />
                           </Button>
                         </div>
                       </div>
