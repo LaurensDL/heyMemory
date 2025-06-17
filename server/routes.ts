@@ -232,8 +232,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
-      // Verify password using bcrypt
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      // Check if password is hashed (bcrypt hashes start with $2b$, $2a$, or $2y$)
+      let isPasswordValid = false;
+      if (user.password.startsWith('$2b$') || user.password.startsWith('$2a$') || user.password.startsWith('$2y$')) {
+        // Password is already hashed, use bcrypt comparison
+        isPasswordValid = await bcrypt.compare(password, user.password);
+      } else {
+        // Password is plain text, compare directly and then hash it
+        if (user.password === password) {
+          isPasswordValid = true;
+          // Migrate to hashed password
+          const saltRounds = 12;
+          const hashedPassword = await bcrypt.hash(password, saltRounds);
+          await storage.updateUser(user.id, { password: hashedPassword });
+        }
+      }
+      
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
@@ -720,8 +734,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Verify current password using bcrypt
-      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+      // Verify current password (handle both plain text and hashed passwords)
+      let isPasswordValid = false;
+      if (user.password.startsWith('$2b$') || user.password.startsWith('$2a$') || user.password.startsWith('$2y$')) {
+        // Password is already hashed, use bcrypt comparison
+        isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+      } else {
+        // Password is plain text, compare directly
+        isPasswordValid = user.password === currentPassword;
+      }
+      
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Current password is incorrect" });
       }
