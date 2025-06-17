@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
+import { setupConsentListener } from "@/lib/cookieUtils";
 import Home from "@/pages/home";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
@@ -59,6 +60,10 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    setupConsentListener();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
