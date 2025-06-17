@@ -81,11 +81,11 @@ export default function Home() {
                   Our simple and clear interface makes it easy to store and recall the memories that matter most to you.
                 </p>
                 
-                {/* CTA Buttons - Mobile First */}
-                <div className="flex flex-col gap-4 md:gap-6 justify-center lg:justify-start items-center">
-                  <Link href="/login" className="w-full sm:w-auto">
+                {/* CTA Buttons - Mobile First, Desktop Horizontal */}
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center lg:justify-start items-center">
+                  <Link href="/login" className="w-full sm:w-auto md:w-auto">
                     <Button 
-                      className="w-full sm:w-auto touch-button bg-black text-white font-black text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[56px] md:min-h-[64px] border-3 border-black"
+                      className="w-full md:w-auto touch-button bg-black text-white font-black text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[56px] md:min-h-[64px] border-3 border-black"
                     >
                       <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -94,10 +94,10 @@ export default function Home() {
                     </Button>
                   </Link>
                   
-                  <Link href="/register" className="w-full sm:w-auto">
+                  <Link href="/register" className="w-full sm:w-auto md:w-auto">
                     <Button 
                       variant="outline"
-                      className="w-full sm:w-auto touch-button bg-white text-black font-black text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-xl border-3 md:border-4 border-black hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[56px] md:min-h-[64px]"
+                      className="w-full md:w-auto touch-button bg-white text-black font-black text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-xl border-3 md:border-4 border-black hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[56px] md:min-h-[64px]"
                     >
                       <svg className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
