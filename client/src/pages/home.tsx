@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, Users, Lightbulb, Phone, Mail, Home as HomeIcon, ChevronRight } from "lucide-react";
+import { Brain, Users, Lightbulb, Phone, Mail, Home as HomeIcon, ChevronRight, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";
@@ -262,10 +262,19 @@ export default function Home() {
             </ol>
             
             <div className="text-center mt-12">
-              <p className="text-body text-xl leading-relaxed max-w-3xl mx-auto">
+              <p className="text-body text-xl leading-relaxed max-w-3xl mx-auto mb-8">
                 heyMemory brings families together to support memory wellness with dignity, 
                 understanding, and care.
               </p>
+              <Link href="/how-it-works">
+                <Button 
+                  className="touch-button bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8 py-4 rounded-xl transition-colors focus:ring-4 focus:ring-blue-300"
+                  aria-label="Learn how to set up and use heyMemory"
+                >
+                  See How It Works
+                  <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

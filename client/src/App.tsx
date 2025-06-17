@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { setupConsentListener } from "@/lib/cookieUtils";
 import Home from "@/pages/home";
+import HowItWorks from "@/pages/how-it-works";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
 import Dashboard from "@/pages/dashboard";
@@ -54,6 +55,7 @@ function Router() {
       <Route path="/faces-game" component={isAuthenticated ? FacesGame : Login} />
       <Route path="/remember" component={isAuthenticated ? Remember : Login} />
       <Route path="/contact" component={Contact} />
+      <Route path="/how-it-works" component={HowItWorks} />
       <Route path="/cookie-policy" component={CookiePolicy} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
