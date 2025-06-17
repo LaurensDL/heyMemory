@@ -4,7 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Shield, BarChart3, Target, User, ArrowLeft, Settings, Brain } from "lucide-react";
+import { Shield, BarChart3, Target, User, Settings } from "lucide-react";
 import { useCookies, CookieCategories } from "@/hooks/useCookies";
 import { useState } from "react";
 import { Link } from "wouter";

@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Mail, Phone, MapPin, Clock, ArrowLeft, Brain } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";

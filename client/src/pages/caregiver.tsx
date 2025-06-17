@@ -13,8 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { 
-  Brain, 
-  ArrowLeft, 
   Upload, 
   Plus, 
   Trash2, 
@@ -25,7 +23,6 @@ import {
   Camera,
   FileText
 } from "lucide-react";
-import { Link } from "wouter";
 import { z } from "zod";
 import { MainNavigation } from "@/components/MainNavigation";
 
