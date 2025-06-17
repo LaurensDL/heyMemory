@@ -129,6 +129,7 @@ export default function AdminPage() {
   const handleEditUser = (user: UserType) => {
     setEditingUser(user);
     editForm.setValue('email', user.email);
+    editForm.setValue('password', ''); // Clear password field for editing
     editForm.setValue('firstName', user.firstName || '');
     editForm.setValue('lastName', user.lastName || '');
     editForm.setValue('dateOfBirth', user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '');
@@ -137,6 +138,7 @@ export default function AdminPage() {
     editForm.setValue('state', user.state || '');
     editForm.setValue('zipCode', user.zipCode || '');
     editForm.setValue('country', user.country || '');
+    editForm.setValue('caregiverPhoneNumber', user.caregiverPhoneNumber || '');
     editForm.setValue('isAdmin', user.isAdmin);
     editForm.setValue('isEmailVerified', user.isEmailVerified);
     setIsEditDialogOpen(true);

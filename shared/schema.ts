@@ -128,7 +128,9 @@ export const adminCreateUserSchema = z.object({
 
 export const adminUpdateUserSchema = z.object({
   email: z.string().email("Please enter a valid email address").optional(),
-  password: z.string().min(6, "Password must be at least 6 characters").optional(),
+  password: z.string().optional().refine((val) => !val || val.length >= 6, {
+    message: "Password must be at least 6 characters when provided",
+  }),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   dateOfBirth: z.string().optional(),

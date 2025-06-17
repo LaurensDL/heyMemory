@@ -751,19 +751,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error("Email change error:", emailChangeError);
           return res.status(400).json({ message: "Failed to initiate email change" });
         }
-      } else {
-        // Check if new email is already taken
-        const existingUser = await storage.getUserByEmail(email);
-        if (existingUser && existingUser.id !== userId) {
-          return res.status(400).json({ message: "Email already in use" });
-        }
-        
-        updates.email = email;
-        updates.isEmailVerified = false;
-        
-        // Generate new verification token
-        const token = await storage.generateEmailVerificationToken(userId);
-        console.log(`New email verification token for ${email}: ${token}`);
       }
 
       // Update profile fields
