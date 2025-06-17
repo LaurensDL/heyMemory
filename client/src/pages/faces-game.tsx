@@ -235,99 +235,101 @@ export default function FacesGamePage() {
                   onClick={!isFlipped ? handleFlipCard : undefined}
                   style={{ 
                     transformStyle: 'preserve-3d',
-                    minHeight: '500px'
+                    height: 'auto'
                   }}
                 >
-                  {!isFlipped ? (
-                    /* Front of Card - Photo */
-                    (<CardContent className="p-0 h-full flex flex-col relative">
-                      <div className="w-full aspect-square bg-gray-100 rounded-t-lg flex items-center justify-center overflow-hidden">
-                        {currentPhoto?.photoUrl ? (
-                          <img
-                            src={currentPhoto.photoUrl}
-                            alt="Person to remember"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex flex-col items-center text-gray-400">
-                            <Users className="w-20 h-20 mb-4" />
-                            <p className="text-lg">No photo available</p>
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-8 w-full">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-4">Who is this?</h3>
-                        <p className="text-gray-600 mb-6">
-                          Take your time to remember their name and relationship to you.
-                        </p>
-                        <Button size="lg" className="w-full">
-                          <Heart className="w-5 h-5 mr-2" />
-                          Touch to See Answer
-                        </Button>
-                      </div>
-                    </CardContent>)
-                  ) : (
-                    /* Back of Card - Answer */
-                    (<CardContent className="p-0 h-full flex flex-col relative">
-                      <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 rounded-t-lg flex items-center justify-center overflow-hidden">
-                        <div className="text-center space-y-2 p-4 max-h-full overflow-hidden">
-                          <div className="bg-white rounded-full p-2 w-12 h-12 flex items-center justify-center mx-auto">
-                            <Heart className="w-6 h-6 text-red-500" />
-                          </div>
-                          
-                          <div>
-                            <h2 className="text-2xl font-bold text-gray-900 mb-1">
-                              {currentPhoto?.name}
-                            </h2>
-                            <Badge variant="secondary" className="text-sm px-3 py-1">
-                              {currentPhoto?.relationship}
-                            </Badge>
-                          </div>
-
-                          {currentPhoto?.description && (
-                            <div className="bg-white/50 rounded-lg p-2 max-w-xs mx-auto">
-                              <p className="text-sm text-gray-700 leading-tight line-clamp-3">
-                                {currentPhoto.description}
-                              </p>
+                  <div className="min-h-[600px] flex">
+                    {!isFlipped ? (
+                      /* Front of Card - Photo */
+                      (<CardContent className="p-0 h-full flex flex-col relative w-full">
+                        <div className="w-full aspect-square bg-gray-100 rounded-t-lg flex items-center justify-center overflow-hidden">
+                          {currentPhoto?.photoUrl ? (
+                            <img
+                              src={currentPhoto.photoUrl}
+                              alt="Person to remember"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex flex-col items-center text-gray-400">
+                              <Users className="w-20 h-20 mb-4" />
+                              <p className="text-lg">No photo available</p>
                             </div>
                           )}
+                        </div>
+                        <div className="p-8 w-full flex-1">
+                          <h3 className="text-2xl font-bold text-gray-900 mb-4">Who is this?</h3>
+                          <p className="text-gray-600 mb-6">
+                            Take your time to remember their name and relationship to you.
+                          </p>
+                          <Button size="lg" className="w-full">
+                            <Heart className="w-5 h-5 mr-2" />
+                            Touch to See Answer
+                          </Button>
+                        </div>
+                      </CardContent>)
+                    ) : (
+                      /* Back of Card - Answer */
+                      (<CardContent className="p-0 h-full flex flex-col relative w-full">
+                        <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 rounded-t-lg flex items-center justify-center overflow-hidden">
+                          <div className="text-center space-y-4 p-6">
+                            <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                              <Heart className="w-10 h-10 text-red-500" />
+                            </div>
+                            
+                            <div>
+                              <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                                {currentPhoto?.name}
+                              </h2>
+                              <Badge variant="secondary" className="text-lg px-4 py-2">
+                                {currentPhoto?.relationship}
+                              </Badge>
+                            </div>
 
-                          <Button 
-                            size="sm" 
-                            onClick={() => setIsFlipped(false)} 
-                            variant="outline" 
-                            className="w-full max-w-xs mx-auto bg-white text-black font-bold text-sm py-2 px-4 rounded-lg border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors"
-                          >
-                            <Eye className="w-4 h-4 mr-2" />
-                            See Photo Again
-                          </Button>
+                            {currentPhoto?.description && (
+                              <div className="bg-white/50 rounded-lg p-4 max-w-sm mx-auto">
+                                <p className="text-gray-700 text-lg leading-relaxed">
+                                  {currentPhoto.description}
+                                </p>
+                              </div>
+                            )}
+
+                            <Button 
+                              size="lg" 
+                              onClick={() => setIsFlipped(false)} 
+                              variant="outline" 
+                              className="w-full max-w-sm mx-auto bg-white text-black font-bold text-xl py-4 px-8 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
+                            >
+                              <Eye className="w-6 h-6 mr-3" />
+                              See Photo Again
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                      <div className="p-8 w-full">
-                        <div className="flex gap-4">
-                          <Button 
-                            size="lg" 
-                            onClick={handlePrevPhoto} 
-                            variant="outline" 
-                            className="flex-1 bg-white text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            disabled={currentPhotoIndex === 0}
-                          >
-                            <ChevronLeft className="w-6 h-6 mr-2" />
-                            Previous
-                          </Button>
-                          
-                          <Button 
-                            size="lg" 
-                            onClick={handleNextPhoto} 
-                            className="flex-1 bg-blue-600 text-white font-bold text-xl py-4 px-6 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
-                          >
-                            Next
-                            <ChevronRight className="w-6 h-6 ml-2" />
-                          </Button>
+                        <div className="p-8 w-full flex-1">
+                          <div className="flex gap-4">
+                            <Button 
+                              size="lg" 
+                              onClick={handlePrevPhoto} 
+                              variant="outline" 
+                              className="flex-1 bg-white text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              disabled={currentPhotoIndex === 0}
+                            >
+                              <ChevronLeft className="w-6 h-6 mr-2" />
+                              Previous
+                            </Button>
+                            
+                            <Button 
+                              size="lg" 
+                              onClick={handleNextPhoto} 
+                              className="flex-1 bg-blue-600 text-white font-bold text-xl py-4 px-6 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
+                            >
+                              Next
+                              <ChevronRight className="w-6 h-6 ml-2" />
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>)
-                  )}
+                      </CardContent>)
+                    )}
+                  </div>
                 </Card>
               </div>
 
