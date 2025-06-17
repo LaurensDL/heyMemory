@@ -207,6 +207,12 @@ export default function Home() {
                 </CardContent>
               </Card>
             </div>
+            
+            <div className="text-center mt-12">
+              <p className="text-body text-xl leading-relaxed max-w-3xl mx-auto">
+                This app supports individuals with Neurocognitive Disorders and Neurodevelopmental Disabilities through simple memory training and daily life support.
+              </p>
+            </div>
           </div>
         </section>
 
