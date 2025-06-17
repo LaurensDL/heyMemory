@@ -233,9 +233,7 @@ export default function FacesGamePage() {
                         )}
                       </div>
                       <div className="p-8 w-full">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                          Who is this person?
-                        </h3>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-4">Who is this?</h3>
                         <p className="text-gray-600 mb-6">
                           Take your time to remember their name and relationship to you.
                         </p>
