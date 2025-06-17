@@ -268,15 +268,15 @@ export default function FacesGamePage() {
                     </CardContent>)
                   ) : (
                     /* Back of Card - Answer */
-                    (<CardContent className="p-0 h-full flex flex-col justify-center items-center relative">
+                    (<CardContent className="p-0 h-full flex flex-col relative">
                       <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 rounded-t-lg flex items-center justify-center overflow-hidden">
-                        <div className="text-center space-y-4 p-6">
-                          <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto">
-                            <Heart className="w-10 h-10 text-red-500" />
+                        <div className="text-center space-y-3 p-4 flex flex-col justify-center h-full">
+                          <div className="bg-white rounded-full p-3 w-16 h-16 flex items-center justify-center mx-auto">
+                            <Heart className="w-8 h-8 text-red-500" />
                           </div>
                           
                           <div>
-                            <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                            <h2 className="text-3xl font-bold text-gray-900 mb-2">
                               {currentPhoto?.name}
                             </h2>
                             <Badge variant="secondary" className="text-lg px-4 py-2">
@@ -285,8 +285,8 @@ export default function FacesGamePage() {
                           </div>
 
                           {currentPhoto?.description && (
-                            <div className="bg-white/50 rounded-lg p-4 max-w-sm mx-auto">
-                              <p className="text-[20px] text-[#1c2129]">
+                            <div className="bg-white/50 rounded-lg p-3 max-w-xs mx-auto">
+                              <p className="text-base text-gray-700 leading-relaxed">
                                 {currentPhoto.description}
                               </p>
                             </div>
@@ -296,37 +296,34 @@ export default function FacesGamePage() {
                             size="lg" 
                             onClick={() => setIsFlipped(false)} 
                             variant="outline" 
-                            className="w-full max-w-sm mx-auto bg-white text-black font-bold text-xl py-4 px-8 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
+                            className="w-full max-w-xs mx-auto bg-white text-black font-bold text-lg py-3 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
                           >
-                            <Eye className="w-6 h-6 mr-3" />
+                            <Eye className="w-5 h-5 mr-2" />
                             See Photo Again
                           </Button>
                         </div>
                       </div>
-                      <div className="p-4 w-full">
-                        <div className="space-y-2">
+                      <div className="p-8 w-full">
+                        <div className="flex gap-4">
+                          <Button 
+                            size="lg" 
+                            onClick={handlePrevPhoto} 
+                            variant="outline" 
+                            className="flex-1 bg-white text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={currentPhotoIndex === 0}
+                          >
+                            <ChevronLeft className="w-6 h-6 mr-2" />
+                            Previous
+                          </Button>
                           
-                          <div className="flex gap-4">
-                            <Button 
-                              size="lg" 
-                              onClick={handlePrevPhoto} 
-                              variant="outline" 
-                              className="flex-1 bg-white text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                              disabled={currentPhotoIndex === 0}
-                            >
-                              <ChevronLeft className="w-6 h-6 mr-2" />
-                              Previous
-                            </Button>
-                            
-                            <Button 
-                              size="lg" 
-                              onClick={handleNextPhoto} 
-                              className="flex-1 bg-blue-600 text-white font-bold text-xl py-4 px-6 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
-                            >
-                              Next
-                              <ChevronRight className="w-6 h-6 ml-2" />
-                            </Button>
-                          </div>
+                          <Button 
+                            size="lg" 
+                            onClick={handleNextPhoto} 
+                            className="flex-1 bg-blue-600 text-white font-bold text-xl py-4 px-6 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
+                          >
+                            Next
+                            <ChevronRight className="w-6 h-6 ml-2" />
+                          </Button>
                         </div>
                       </div>
                     </CardContent>)
