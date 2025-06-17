@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { z } from "zod";
+import { MainNavigation } from "@/components/MainNavigation";
 
 // Schema for face photos - using the shared schema from backend
 import { insertFacePhotoSchema, insertRememberItemSchema, type FacePhoto as FacePhotoType, type RememberItem } from "@shared/schema";
