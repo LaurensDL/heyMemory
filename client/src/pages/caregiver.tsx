@@ -31,12 +31,12 @@ import { z } from "zod";
 // Schema for face photos - using the shared schema from backend
 import { insertFacePhotoSchema, type FacePhoto as FacePhotoType } from "@shared/schema";
 
-// Simplified form schema for face photos
+// Schema for face photos - makes photo optional for edits
 const facePhotoFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   relationship: z.string().optional(),
   description: z.string().optional(),
-  photo: z.any().refine((files) => files?.length > 0, "Photo is required")
+  photo: z.any().optional()
 });
 
 // Schema for remember this items
