@@ -264,7 +264,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         city: user.city,
         state: user.state,
         zipCode: user.zipCode,
-        country: user.country
+        country: user.country,
+        caregiverPhoneNumber: user.caregiverPhoneNumber
       });
     } catch (error) {
       console.error("Get user error:", error);
