@@ -406,15 +406,47 @@ export default function CaregiverPage() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Photo *</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="file" 
-                                accept="image/*"
-                                onChange={(e) => field.onChange(e.target.files)}
-                              />
-                            </FormControl>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  capture="environment"
+                                  onChange={(e) => field.onChange(e.target.files)}
+                                  className="hidden"
+                                  id="camera-input"
+                                />
+                                <Button 
+                                  type="button"
+                                  variant="outline"
+                                  className="w-full h-12 border-2 border-dashed"
+                                  onClick={() => document.getElementById('camera-input')?.click()}
+                                >
+                                  <Camera className="w-5 h-5 mr-2" />
+                                  Take Photo
+                                </Button>
+                              </div>
+                              <div>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => field.onChange(e.target.files)}
+                                  className="hidden"
+                                  id="gallery-input"
+                                />
+                                <Button 
+                                  type="button"
+                                  variant="outline"
+                                  className="w-full h-12 border-2 border-dashed"
+                                  onClick={() => document.getElementById('gallery-input')?.click()}
+                                >
+                                  <Upload className="w-5 h-5 mr-2" />
+                                  From Gallery
+                                </Button>
+                              </div>
+                            </div>
                             <FormMessage />
-                            <p className="text-sm text-gray-500">Upload a clear photo of this person or pet</p>
+                            <p className="text-sm text-gray-500 text-center mt-2">Take a new photo or choose from your gallery</p>
                           </FormItem>
                         )}
                       />
