@@ -207,9 +207,13 @@ export default function FacesGamePage() {
                 </div>
 
                 <div className="space-y-4">
-                  <Button size="lg" className="w-full text-lg py-6" onClick={handleStartGame}>
-                    <Heart className="w-5 h-5 mr-3" />
-                    Start Game ({facePhotos.length} Photos)
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-blue-600 text-white font-bold text-xl py-6 px-8 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors" 
+                    onClick={handleStartGame}
+                  >
+                    <Heart className="w-6 h-6 mr-3" />
+                    Start Game
                   </Button>
                   <p className="text-sm text-gray-500">
                     Play daily to keep memories of loved ones fresh
