@@ -112,30 +112,17 @@ export default function RememberPage() {
                       </CardTitle>
                       <Eye className="w-5 h-5 text-gray-400 flex-shrink-0" />
                     </div>
-                    <Badge variant="secondary" className="w-fit text-xs">
-                      <Tag className="w-3 h-3 mr-1" />
-                      {item.category}
-                    </Badge>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                      {item.content}
-                    </p>
-                    
                     {item.photoUrl && (
-                      <div className="mb-4">
+                      <div>
                         <img 
                           src={item.photoUrl} 
                           alt={item.title}
-                          className="w-full h-32 object-cover rounded-lg border"
+                          className="w-full aspect-square object-cover rounded-lg border"
                         />
                       </div>
                     )}
-                    
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Clock className="w-3 h-3 mr-1" />
-                      Added {formatDate(item.createdAt)}
-                    </div>
                   </CardContent>
                 </Card>
               ))}
