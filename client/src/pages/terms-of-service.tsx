@@ -14,12 +14,44 @@ export default function TermsOfServicePage() {
     metaRobots.content = 'noindex, nofollow';
     document.head.appendChild(metaRobots);
 
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/terms-of-service';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute to html element
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Terms of Service page loaded. Use headings navigation to browse content.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
     return () => {
       // Cleanup on component unmount
       const existingMeta = document.querySelector('meta[name="robots"]');
       if (existingMeta) {
         document.head.removeChild(existingMeta);
       }
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
     };
   }, []);
   return (

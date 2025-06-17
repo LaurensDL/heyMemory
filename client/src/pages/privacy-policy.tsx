@@ -15,64 +15,110 @@ export default function PrivacyPolicyPage() {
     metaRobots.content = 'noindex, nofollow';
     document.head.appendChild(metaRobots);
 
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/privacy-policy';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute to html element
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Privacy Policy page loaded. Use headings navigation to browse content.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
     return () => {
       // Cleanup on component unmount
       const existingMeta = document.querySelector('meta[name="robots"]');
       if (existingMeta) {
         document.head.removeChild(existingMeta);
       }
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
     };
   }, []);
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" lang="en">
       <MainNavigation backTo={{ href: "/", label: "Back to Home", shortLabel: "Back" }} />
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
-          <p className="text-muted-foreground">
-            Last updated: {new Date().toLocaleDateString()}
-          </p>
-        </div>
+      {/* Invisible breadcrumb navigation for screen readers */}
+      <nav aria-label="Breadcrumb navigation" className="sr-only">
+        <ol>
+          <li><Link href="/" aria-label="Navigate to homepage">Home</Link></li>
+          <li aria-current="page">Privacy Policy</li>
+        </ol>
+      </nav>
 
-        <div className="space-y-6">
+      <main role="main" aria-labelledby="privacy-policy-heading" className="container mx-auto px-4 py-8 max-w-4xl focus:outline-none" tabIndex={-1}>
+        <header className="mb-6">
+          <h1 id="privacy-policy-heading" className="text-3xl font-bold mb-2 text-[clamp(1.5rem,4vw,3rem)] leading-tight">
+            Privacy Policy
+          </h1>
+          <p className="text-muted-foreground text-[clamp(0.875rem,2.5vw,1rem)]" aria-live="polite">
+            Last updated: <time dateTime={new Date().toISOString().split('T')[0]}>{new Date().toLocaleDateString()}</time>
+          </p>
+        </header>
+
+        <section className="space-y-6" aria-label="Privacy policy content">
           {/* Introduction */}
-          <Card>
+          <Card role="region" aria-labelledby="commitment-heading">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
+              <CardTitle id="commitment-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Shield className="h-5 w-5" aria-hidden="true" />
                 Our Commitment to Your Privacy
               </CardTitle>
             </CardHeader>
-            <CardContent className="prose prose-sm max-w-none dark:prose-invert">
-              <p>
+            <CardContent>
+              <p className="text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed mb-4">
                 At heyMemory, we understand that privacy is especially important when dealing with 
                 personal memories and health-related information. This Privacy Policy explains how 
                 Biltsite ("we," "our," or "us") collects, uses, protects, and shares your personal 
                 information when you use the heyMemory application.
               </p>
-              <p>
+              <div className="text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed" aria-label="Company contact information">
                 <strong>Company Information:</strong><br />
                 Biltsite<br />
                 Founder: Laurens De Leeuw<br />
                 Address: Donklaan 79 bus 16, 9290 Berlare, Belgium<br />
-                Contact: help@heyMemory.app
-              </p>
+                Contact: <Link href="mailto:help@heyMemory.app" 
+                              className="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                              aria-label="Send email to heyMemory support">help@heyMemory.app</Link>
+              </div>
             </CardContent>
           </Card>
 
           {/* Information We Collect */}
-          <Card>
+          <Card role="region" aria-labelledby="information-collect-heading">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Database className="h-5 w-5" />
+              <CardTitle id="information-collect-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Database className="h-5 w-5" aria-hidden="true" />
                 Information We Collect
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-semibold mb-2">Personal Information</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground ml-4">
+                <h3 id="personal-info-heading" className="font-semibold mb-2 text-[clamp(1rem,2.5vw,1.25rem)]">Personal Information</h3>
+                <ul className="list-disc list-inside space-y-1 text-[clamp(0.875rem,2.5vw,1rem)] text-muted-foreground ml-4" 
+                    aria-labelledby="personal-info-heading">
                   <li>Email address (for account creation and communication)</li>
                   <li>First and last name</li>
                   <li>Date of birth (to provide age-appropriate features)</li>
@@ -80,286 +126,256 @@ export default function PrivacyPolicyPage() {
                   <li>Caregiver phone number (for emergency contact purposes)</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold mb-2">Memory-Related Content</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground ml-4">
-                  <li>Photos of faces you upload for memory exercises</li>
-                  <li>Names and descriptions associated with photos</li>
-                  <li>Memory items and reminders you create</li>
-                  <li>Personal notes and descriptions</li>
+                <h3 id="memory-data-heading" className="font-semibold mb-2 text-[clamp(1rem,2.5vw,1.25rem)]">Memory and Application Data</h3>
+                <ul className="list-disc list-inside space-y-1 text-[clamp(0.875rem,2.5vw,1rem)] text-muted-foreground ml-4"
+                    aria-labelledby="memory-data-heading">
+                  <li>Photos and images you upload for memory exercises</li>
+                  <li>Names and descriptions of people in your photos</li>
+                  <li>Remember items (notes, reminders, and important information)</li>
+                  <li>Game progress and interaction data</li>
+                  <li>Usage patterns and preferences</li>
                 </ul>
               </div>
-              
+
               <div>
-                <h4 className="font-semibold mb-2">Technical Information</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground ml-4">
-                  <li>Device information and browser type</li>
-                  <li>IP address and general location</li>
-                  <li>Usage patterns and feature interactions</li>
-                  <li>Error logs and performance data</li>
+                <h3 id="technical-data-heading" className="font-semibold mb-2 text-[clamp(1rem,2.5vw,1.25rem)]">Technical Information</h3>
+                <ul className="list-disc list-inside space-y-1 text-[clamp(0.875rem,2.5vw,1rem)] text-muted-foreground ml-4"
+                    aria-labelledby="technical-data-heading">
+                  <li>Device information (type, operating system, browser)</li>
+                  <li>IP address and location data (for security and functionality)</li>
+                  <li>Log files and usage analytics</li>
+                  <li>Cookies and similar tracking technologies</li>
                 </ul>
               </div>
             </CardContent>
           </Card>
 
-          {/* How We Use Information */}
-          <Card>
+          {/* How We Use Your Information */}
+          <Card role="region" aria-labelledby="how-we-use-heading">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Eye className="h-5 w-5" />
+              <CardTitle id="how-we-use-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Eye className="h-5 w-5" aria-hidden="true" />
                 How We Use Your Information
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <h4 className="font-semibold">Primary Services</h4>
-                  <ul className="list-disc list-inside text-muted-foreground ml-4 mt-1">
-                    <li>Provide personalized memory support and cognitive exercises</li>
-                    <li>Store and organize your photos and memory items</li>
-                    <li>Enable face recognition games and memory training</li>
-                    <li>Facilitate caregiver access and support features</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold">Communication</h4>
-                  <ul className="list-disc list-inside text-muted-foreground ml-4 mt-1">
-                    <li>Send account verification and security notifications</li>
-                    <li>Provide customer support and respond to inquiries</li>
-                    <li>Share important updates about the service</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold">Improvement and Analytics</h4>
-                  <ul className="list-disc list-inside text-muted-foreground ml-4 mt-1">
-                    <li>Analyze usage patterns to improve our services</li>
-                    <li>Monitor system performance and identify issues</li>
-                    <li>Develop new features based on user needs</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Data Storage and Security */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Data Storage and Security
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 text-sm">
-                <p>
-                  <strong>Hosting:</strong> Your data is securely hosted on Replit's infrastructure, 
-                  which provides enterprise-grade security measures including encryption at rest and in transit.
-                </p>
-                
-                <p>
-                  <strong>Security Measures:</strong>
-                </p>
-                <ul className="list-disc list-inside text-muted-foreground ml-4">
-                  <li>Password-protected accounts with secure authentication</li>
-                  <li>Encrypted data transmission (HTTPS)</li>
-                  <li>Regular security updates and monitoring</li>
-                  <li>Limited access controls for our development team</li>
-                </ul>
-                
-                <p>
-                  <strong>Data Retention:</strong> We retain your personal information for as long as 
-                  your account is active or as needed to provide services. We follow standard legal 
-                  requirements for data retention and will securely delete information when no longer needed.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Third-Party Services */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Third-Party Services
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 text-sm">
-                <p>We may use trusted third-party services to enhance our application:</p>
-                
-                <div>
-                  <h4 className="font-semibold">Email Services</h4>
-                  <p className="text-muted-foreground">
-                    For sending account verification emails, security notifications, and customer support communications.
-                  </p>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold">Analytics Tools</h4>
-                  <p className="text-muted-foreground">
-                    To understand how users interact with our app and identify areas for improvement. 
-                    We only collect aggregated, non-personally identifiable usage data.
-                  </p>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold">Payment Processing</h4>
-                  <p className="text-muted-foreground">
-                    For secure processing of subscription payments. We do not store payment card information on our servers.
-                  </p>
-                </div>
-                
-                <p className="text-muted-foreground">
-                  All third-party services we use are carefully vetted for security and privacy compliance.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Your Rights */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Your Privacy Rights
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 text-sm">
-                <p>You have the following rights regarding your personal information:</p>
-                
-                <ul className="list-disc list-inside text-muted-foreground ml-4 space-y-1">
-                  <li><strong>Access:</strong> Request a copy of the personal data we hold about you</li>
-                  <li><strong>Correction:</strong> Update or correct inaccurate information</li>
-                  <li><strong>Deletion:</strong> Request deletion of your account and associated data</li>
-                  <li><strong>Portability:</strong> Request your data in a portable format</li>
-                  <li><strong>Withdrawal:</strong> Withdraw consent for optional data processing</li>
-                </ul>
-                
-                <p>
-                  To exercise these rights, contact us at <strong>help@heyMemory.app</strong>. 
-                  We will respond to your request within 30 days.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Age Requirements */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5" />
-                Age Requirements
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm">
-                <p>
-                  heyMemory is designed for users who are at least 13 years old. If you are under 13, 
-                  please do not use our services or provide any personal information. If we learn that 
-                  we have collected personal information from a child under 13, we will delete that 
-                  information as quickly as possible.
-                </p>
-                
-                <p className="mt-3">
-                  For users between 13-18 years old, we recommend parental guidance when using our services, 
-                  especially given the memory and health-related nature of our application.
-                </p>
-              </div>
+              <ul className="space-y-2 text-[clamp(0.875rem,2.5vw,1rem)]" aria-labelledby="how-we-use-heading">
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">•</span>
+                  <span><strong>Provide Services:</strong> Deliver memory training exercises, store your data securely, and maintain your account</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">•</span>
+                  <span><strong>Improve Experience:</strong> Personalize content, analyze usage patterns, and enhance our features</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">•</span>
+                  <span><strong>Communication:</strong> Send important updates, security alerts, and support responses</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">•</span>
+                  <span><strong>Safety & Security:</strong> Protect against fraud, ensure data security, and comply with legal requirements</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">•</span>
+                  <span><strong>Emergency Contact:</strong> Contact caregivers when necessary for safety purposes</span>
+                </li>
+              </ul>
             </CardContent>
           </Card>
 
           {/* Data Sharing */}
-          <Card>
+          <Card role="region" aria-labelledby="data-sharing-heading">
             <CardHeader>
-              <CardTitle>When We Share Information</CardTitle>
+              <CardTitle id="data-sharing-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Users className="h-5 w-5" aria-hidden="true" />
+                How We Share Your Information
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3 text-sm">
-                <p>We do <strong>not</strong> sell, rent, or trade your personal information. We may share information only in these limited circumstances:</p>
-                
-                <ul className="list-disc list-inside text-muted-foreground ml-4 space-y-1">
-                  <li><strong>With Your Consent:</strong> When you explicitly authorize us to share specific information</li>
-                  <li><strong>Emergency Situations:</strong> To protect your safety or the safety of others</li>
-                  <li><strong>Legal Requirements:</strong> When required by law, court order, or legal process</li>
-                  <li><strong>Service Providers:</strong> With trusted partners who help us operate our services (under strict confidentiality agreements)</li>
-                </ul>
-                
-                <p>
-                  We will always notify you if there are any changes to how we share your information.
+            <CardContent className="space-y-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-[clamp(0.875rem,2.5vw,1rem)] font-medium text-blue-900">
+                  We do not sell, rent, or trade your personal information to third parties for commercial purposes.
                 </p>
+              </div>
+              
+              <div>
+                <h3 className="font-semibold mb-2 text-[clamp(1rem,2.5vw,1.25rem)]">Limited Sharing Occurs Only For:</h3>
+                <ul className="space-y-2 text-[clamp(0.875rem,2.5vw,1rem)]">
+                  <li className="flex items-start">
+                    <span className="mr-2 text-blue-600">•</span>
+                    <span><strong>Service Providers:</strong> Trusted partners who help us operate the service (hosting, analytics, customer support)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-blue-600">•</span>
+                    <span><strong>Legal Requirements:</strong> When required by law, court order, or to protect safety</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-blue-600">•</span>
+                    <span><strong>Emergency Situations:</strong> Contacting designated caregivers in health or safety emergencies</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-blue-600">•</span>
+                    <span><strong>Business Transfers:</strong> In the event of a merger or acquisition (with continued privacy protection)</span>
+                  </li>
+                </ul>
               </div>
             </CardContent>
           </Card>
 
-          {/* Changes to Policy */}
-          <Card>
+          {/* Data Security */}
+          <Card role="region" aria-labelledby="data-security-heading">
             <CardHeader>
-              <CardTitle>Changes to This Policy</CardTitle>
+              <CardTitle id="data-security-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Shield className="h-5 w-5" aria-hidden="true" />
+                Data Security
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm">
-                <p>
-                  We may update this Privacy Policy from time to time to reflect changes in our 
-                  practices or for legal, operational, or regulatory reasons. We will notify you 
-                  of any material changes by email or through the application.
-                </p>
-                
-                <p className="mt-3">
-                  Your continued use of heyMemory after any changes indicates your acceptance 
-                  of the updated Privacy Policy.
-                </p>
-              </div>
+              <p className="text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed mb-4">
+                We implement industry-standard security measures to protect your sensitive information:
+              </p>
+              <ul className="space-y-2 text-[clamp(0.875rem,2.5vw,1rem)]">
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">✓</span>
+                  <span>Encryption of data in transit and at rest</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">✓</span>
+                  <span>Secure server infrastructure with regular security updates</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">✓</span>
+                  <span>Limited access controls - only authorized personnel can access your data</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">✓</span>
+                  <span>Regular security audits and vulnerability assessments</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-green-600">✓</span>
+                  <span>Secure password storage using industry-standard hashing</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Your Rights */}
+          <Card role="region" aria-labelledby="your-rights-heading">
+            <CardHeader>
+              <CardTitle id="your-rights-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Eye className="h-5 w-5" aria-hidden="true" />
+                Your Privacy Rights
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed mb-4">
+                You have several rights regarding your personal information:
+              </p>
+              <ul className="space-y-2 text-[clamp(0.875rem,2.5vw,1rem)]">
+                <li className="flex items-start">
+                  <span className="mr-2 text-blue-600">•</span>
+                  <span><strong>Access:</strong> Request a copy of your personal data</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-blue-600">•</span>
+                  <span><strong>Correction:</strong> Update or correct inaccurate information</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-blue-600">•</span>
+                  <span><strong>Deletion:</strong> Request deletion of your account and associated data</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-blue-600">•</span>
+                  <span><strong>Portability:</strong> Export your data in a readable format</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-blue-600">•</span>
+                  <span><strong>Opt-out:</strong> Unsubscribe from marketing communications</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Data Retention */}
+          <Card role="region" aria-labelledby="data-retention-heading">
+            <CardHeader>
+              <CardTitle id="data-retention-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Clock className="h-5 w-5" aria-hidden="true" />
+                Data Retention
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-[clamp(0.875rem,2.5vw,1rem)]">
+                <li className="flex items-start">
+                  <span className="mr-2 text-gray-600">•</span>
+                  <span><strong>Active Accounts:</strong> We retain your data while your account is active and you're using our services</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-gray-600">•</span>
+                  <span><strong>Inactive Accounts:</strong> Data is retained for 2 years after last login, then permanently deleted</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-gray-600">•</span>
+                  <span><strong>Deleted Accounts:</strong> When you delete your account, most data is removed within 30 days</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2 text-gray-600">•</span>
+                  <span><strong>Legal Requirements:</strong> Some data may be retained longer if required by law</span>
+                </li>
+              </ul>
             </CardContent>
           </Card>
 
           {/* Contact Information */}
-          <Card>
+          <Card role="region" aria-labelledby="contact-info-heading">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Mail className="h-5 w-5" />
-                Contact Us
+              <CardTitle id="contact-info-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Mail className="h-5 w-5" aria-hidden="true" />
+                Contact Us About Privacy
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm">
-                <p className="mb-4">
-                  If you have any questions about this Privacy Policy or our privacy practices, 
-                  please don't hesitate to contact us:
-                </p>
-                
-                <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> help@heyMemory.app</p>
-                  <p><strong>Mail:</strong></p>
-                  <address className="not-italic ml-4">
-                    Biltsite<br />
-                    Attn: Privacy Officer<br />
-                    Donklaan 79 bus 16<br />
-                    9290 Berlare, Belgium
-                  </address>
-                </div>
-                
-                <p className="mt-4">
-                  We are committed to resolving any privacy concerns promptly and transparently.
-                </p>
+              <p className="text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed mb-4">
+                If you have questions about this Privacy Policy or want to exercise your privacy rights, please contact us:
+              </p>
+              
+              <div className="space-y-2 text-[clamp(0.875rem,2.5vw,1rem)]">
+                <p><strong>Email:</strong> <Link href="mailto:help@heyMemory.app" 
+                    className="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                    aria-label="Send email to heyMemory support">help@heyMemory.app</Link></p>
+                <p><strong>Mail:</strong></p>
+                <address className="not-italic ml-4">
+                  Biltsite<br />
+                  Attn: Privacy Officer<br />
+                  Donklaan 79 bus 16<br />
+                  9290 Berlare, Belgium
+                </address>
               </div>
+              
+              <p className="mt-4 text-[clamp(0.875rem,2.5vw,1rem)]">
+                We are committed to resolving any privacy concerns promptly and transparently.
+              </p>
             </CardContent>
           </Card>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-6">
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild 
+                    className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    aria-label="Navigate to Cookie Policy page">
               <Link href="/cookie-policy">View Cookie Policy</Link>
             </Button>
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild
+                    className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    aria-label="Navigate to Contact Us page">
               <Link href="/contact">Contact Us</Link>
             </Button>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
       <MainFooter />
     </div>
