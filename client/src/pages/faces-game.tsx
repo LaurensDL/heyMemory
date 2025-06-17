@@ -264,30 +264,33 @@ export default function FacesGamePage() {
                     </CardContent>)
                   ) : (
                     /* Back of Card - Answer */
-                    (<CardContent className="p-8 h-full flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-purple-50">
-                      <div className="text-center space-y-6">
-                        <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                          <Heart className="w-10 h-10 text-red-500" />
-                        </div>
-                        
-                        <div>
-                          <h2 className="text-4xl font-bold text-gray-900 mb-2">
-                            {currentPhoto?.name}
-                          </h2>
-                          <Badge variant="secondary" className="text-lg px-4 py-2">
-                            {currentPhoto?.relationship}
-                          </Badge>
-                        </div>
-
-                        {currentPhoto?.description && (
-                          <div className="bg-white/50 rounded-lg p-4 max-w-md mx-auto">
-                            <p className="text-gray-700 text-lg leading-relaxed">
-                              {currentPhoto.description}
-                            </p>
+                    (<CardContent className="p-0 h-full flex flex-col justify-center items-center relative">
+                      <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 rounded-t-lg flex items-center justify-center overflow-hidden">
+                        <div className="text-center space-y-4 p-6">
+                          <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto">
+                            <Heart className="w-10 h-10 text-red-500" />
                           </div>
-                        )}
+                          
+                          <div>
+                            <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                              {currentPhoto?.name}
+                            </h2>
+                            <Badge variant="secondary" className="text-lg px-4 py-2">
+                              {currentPhoto?.relationship}
+                            </Badge>
+                          </div>
 
-                        <div className="pt-6 space-y-4">
+                          {currentPhoto?.description && (
+                            <div className="bg-white/50 rounded-lg p-4 max-w-sm mx-auto">
+                              <p className="text-gray-700 text-base leading-relaxed">
+                                {currentPhoto.description}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="p-8 w-full">
+                        <div className="space-y-4">
                           <Button 
                             size="lg" 
                             onClick={() => setIsFlipped(false)} 
