@@ -215,12 +215,29 @@ export default function CaregiverPage() {
       // Snapshot the previous value
       const previousPhotos = queryClient.getQueryData(['/api/face-photos']);
       
+      // Convert photo to URL if provided for optimistic update
+      let optimisticPhotoUrl = undefined;
+      if (newData.photo && newData.photo.length > 0) {
+        const file = newData.photo[0];
+        optimisticPhotoUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+      }
+      
       // Optimistically update to the new value
       queryClient.setQueryData(['/api/face-photos'], (old: FacePhotoType[] | undefined) => {
         if (!old) return [];
         return old.map(photo => 
           photo.id === newData.id 
-            ? { ...photo, name: newData.name, relationship: newData.relationship || "", description: newData.description || "" }
+            ? { 
+                ...photo, 
+                name: newData.name, 
+                relationship: newData.relationship || "", 
+                description: newData.description || "",
+                ...(optimisticPhotoUrl && { photoUrl: optimisticPhotoUrl })
+              }
             : photo
         );
       });
@@ -274,7 +291,8 @@ export default function CaregiverPage() {
     photoForm.reset({
       name: photo.name,
       relationship: photo.relationship || "",
-      description: photo.description || ""
+      description: photo.description || "",
+      photo: undefined // Clear photo field for new selection
     });
     setIsPhotoDialogOpen(true);
   };
@@ -284,7 +302,8 @@ export default function CaregiverPage() {
     photoForm.reset({
       name: "",
       relationship: "",
-      description: ""
+      description: "",
+      photo: undefined // Clear photo field
     });
     setIsPhotoDialogOpen(false);
   };
@@ -414,13 +433,14 @@ export default function CaregiverPage() {
                                   capture="environment"
                                   onChange={(e) => field.onChange(e.target.files)}
                                   className="hidden"
-                                  id="camera-input"
+                                  id={`camera-input-${editingPhoto?.id || 'new'}`}
+                                  key={`camera-${editingPhoto?.id || 'new'}`}
                                 />
                                 <Button 
                                   type="button"
                                   variant="outline"
                                   className="w-full h-12 border-2 border-dashed"
-                                  onClick={() => document.getElementById('camera-input')?.click()}
+                                  onClick={() => document.getElementById(`camera-input-${editingPhoto?.id || 'new'}`)?.click()}
                                 >
                                   <Camera className="w-5 h-5 mr-2" />
                                   Take Photo
@@ -432,13 +452,14 @@ export default function CaregiverPage() {
                                   accept="image/*"
                                   onChange={(e) => field.onChange(e.target.files)}
                                   className="hidden"
-                                  id="gallery-input"
+                                  id={`gallery-input-${editingPhoto?.id || 'new'}`}
+                                  key={`gallery-${editingPhoto?.id || 'new'}`}
                                 />
                                 <Button 
                                   type="button"
                                   variant="outline"
                                   className="w-full h-12 border-2 border-dashed"
-                                  onClick={() => document.getElementById('gallery-input')?.click()}
+                                  onClick={() => document.getElementById(`gallery-input-${editingPhoto?.id || 'new'}`)?.click()}
                                 >
                                   <Upload className="w-5 h-5 mr-2" />
                                   From Gallery
@@ -446,7 +467,16 @@ export default function CaregiverPage() {
                               </div>
                             </div>
                             <FormMessage />
-                            <p className="text-sm text-gray-500 text-center mt-2">Take a new photo or choose from your gallery</p>
+                            {editingPhoto && (
+                              <p className="text-sm text-blue-600 text-center mt-2">
+                                Current photo will be replaced if you select a new one
+                              </p>
+                            )}
+                            {!editingPhoto && (
+                              <p className="text-sm text-gray-500 text-center mt-2">
+                                Take a new photo or choose from your gallery
+                              </p>
+                            )}
                           </FormItem>
                         )}
                       />
