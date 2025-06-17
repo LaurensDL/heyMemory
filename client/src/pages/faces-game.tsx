@@ -114,28 +114,36 @@ export default function FacesGamePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      {/* Navigation Bar */}
+      {/* Navigation Bar - Mobile Optimized */}
       <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Faces game navigation">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
           <div className="flex items-center justify-between">
             <Link href="/">
-              <div className="flex items-center space-x-3 cursor-pointer">
-                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-                <span className="text-2xl font-bold">heyMemory</span>
+              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
+                <span className="text-lg md:text-2xl font-bold">heyMemory</span>
               </div>
             </Link>
             
-            <div className="absolute left-1/2 transform -translate-x-1/2">
-              <h1 className="text-2xl font-bold text-gray-900">Faces Game</h1>
+            {/* Desktop: Centered title */}
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2">
+              <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Faces Game</h1>
             </div>
-            <div className="flex items-center space-x-4">
+            
+            <div className="flex items-center">
               <Link href="/dashboard">
-                <Button variant="outline" className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
-                  <ArrowLeft className="w-5 h-5 mr-2" />
-                  Back to Dashboard
+                <Button variant="outline" className="touch-button bg-white text-black font-bold text-sm md:text-lg px-3 md:px-6 py-2 md:py-3 rounded-lg md:rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-gray-400 transition-colors">
+                  <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
+                  <span className="hidden sm:inline">Back to Dashboard</span>
+                  <span className="sm:hidden">Back</span>
                 </Button>
               </Link>
             </div>
+          </div>
+          
+          {/* Mobile: Title below nav */}
+          <div className="md:hidden text-center mt-2 pb-2">
+            <h1 className="text-xl font-bold text-gray-900">Faces Game</h1>
           </div>
         </div>
       </nav>
