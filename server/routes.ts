@@ -164,10 +164,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Verification email sent to ${email}`);
+        const info = await transporter.sendMail(mailOptions);
+        console.log(`Verification email sent to ${email}:`, {
+          messageId: info.messageId,
+          response: info.response,
+          accepted: info.accepted,
+          rejected: info.rejected,
+          pending: info.pending
+        });
       } catch (emailError) {
         console.error('Failed to send verification email:', emailError);
+        console.error('Email error details:', {
+          code: emailError.code,
+          response: emailError.response,
+          responseCode: emailError.responseCode,
+          command: emailError.command
+        });
         // Continue with registration even if email fails
       }
       
