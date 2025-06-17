@@ -82,7 +82,10 @@ export const loginSchema = z.object({
 
 export const registerSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string()
+    .min(8, "Password must be at least 8 characters long")
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -104,24 +107,30 @@ export const updateProfileSchema = z.object({
   newPassword: z.string().optional(),
   confirmNewPassword: z.string().optional(),
 }).refine((data) => {
-  // Only validate passwords if newPassword is provided and not empty
   if (data.newPassword && data.newPassword.length > 0) {
-    if (data.newPassword.length < 6) {
-      return false;
-    }
-    if (!data.confirmNewPassword || data.newPassword !== data.confirmNewPassword) {
-      return false;
-    }
+    return data.newPassword.length >= 8 && 
+           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(data.newPassword);
   }
   return true;
 }, {
-  message: "New password must be at least 6 characters and passwords must match",
+  message: "New password must be at least 8 characters long and contain uppercase, lowercase, number, and special character",
   path: ["newPassword"],
+}).refine((data) => {
+  if (data.newPassword && data.newPassword.length > 0) {
+    return data.newPassword === data.confirmNewPassword;
+  }
+  return true;
+}, {
+  message: "New passwords don't match",
+  path: ["confirmNewPassword"],
 });
 
 export const adminCreateUserSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string()
+    .min(8, "Password must be at least 8 characters long")
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"),
   isAdmin: z.boolean().default(false),
   isEmailVerified: z.boolean().default(false),
 });

@@ -103,11 +103,31 @@ async function requireAdmin(req: any, res: any, next: any) {
   }
 }
 
+// Rate limiting configurations
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 requests per windowMs
+  message: { message: "Too many authentication attempts, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: { message: "Too many requests, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 export async function registerRoutes(app: Express): Promise<Server> {
   setupSession(app);
+  
+  // Apply general rate limiting to all routes
+  app.use(generalLimiter);
 
   // Register endpoint
-  app.post("/api/register", async (req, res) => {
+  app.post("/api/register", authLimiter, async (req, res) => {
     try {
       const { email, password, confirmPassword } = registerSchema.parse(req.body);
       
@@ -203,7 +223,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Login endpoint
-  app.post("/api/login", async (req, res) => {
+  app.post("/api/login", authLimiter, async (req, res) => {
     try {
       const { email, password } = loginSchema.parse(req.body);
       

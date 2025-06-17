@@ -34,8 +34,11 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
-// Set session secret for development
+// Set session secret for development - ensure strong secret in production
 if (!process.env.SESSION_SECRET) {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('SESSION_SECRET must be set in production');
+  }
   process.env.SESSION_SECRET = 'heymemory-dev-secret-key-change-in-production';
 }
 
