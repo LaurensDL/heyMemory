@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Users, Lightbulb, Phone, Mail } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
+import { MainNavigation } from "@/components/MainNavigation";
 import heroImage from "../../../server/uploads/images/Senior Man Using heyMemory on Smartphone - heyMemory The Alzheimer App.png";
 
 export default function Home() {
@@ -17,49 +18,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      {/* Navigation Bar - Mobile Optimized */}
-      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
-        <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo and Brand */}
-            <Link href="/">
-              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
-                <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
-                <span className="text-xl md:text-2xl font-bold">heyMemory</span>
-              </div>
-            </Link>
-            
-            {/* Mobile Navigation - Always visible CTA */}
-            <div className="flex items-center space-x-2 md:space-x-4">
-              <Link href="/dashboard" className="md:hidden">
-                <Button className="touch-button bg-blue-600 text-white font-bold text-base px-4 py-2 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
-                  Join
-                </Button>
-              </Link>
-              
-              {/* Desktop Navigation Links */}
-              <div className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard">
-                  <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                    Join
-                  </button>
-                </Link>
-                <Link href="/contact">
-                  <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                    Contact
-                  </button>
-                </Link>
-                
-                {/* Accessibility Indicator - Desktop only */}
-                <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
-                  <span className="text-xl font-black text-green-700 mr-2">A+</span>
-                  <span className="text-base font-bold text-green-700">Accessible</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <MainNavigation showJoinButton={true} />
       <main role="main">
         {/* Hero Section - Mobile Optimized */}
         <section className="bg-blue-50 py-8 md:py-16 lg:py-24" aria-labelledby="hero-heading">
