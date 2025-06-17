@@ -352,14 +352,14 @@ export default function FacesGamePage() {
               </div>
 
               {/* Quit Game Button - Always visible for easy access */}
-              <div className="mt-8 flex justify-center">
+              <div className="mt-6 md:mt-8 flex justify-center">
                 <Button 
                   size="lg" 
                   onClick={handleQuitGame} 
                   variant="destructive" 
-                  className="bg-red-600 text-white font-bold text-xl py-4 px-8 rounded-xl border-2 border-red-600 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-400 transition-colors flex items-center gap-3"
+                  className="touch-button bg-red-600 text-white font-bold text-lg md:text-xl py-3 md:py-4 px-6 md:px-8 rounded-xl border-2 border-red-600 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-red-400 transition-colors flex items-center gap-2 md:gap-3"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5 md:w-6 md:h-6" />
                   Quit Game
                 </Button>
               </div>
