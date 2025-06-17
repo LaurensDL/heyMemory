@@ -178,12 +178,6 @@ export default function Home() {
                     Practice recognizing faces of people you love with our gentle, interactive game. 
                     Completely private and secure, designed to help maintain connections with family and friends.
                   </p>
-                  <div className="mt-4 text-center">
-                    <Link href="/faces-game" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm" 
-                          aria-label="Learn more about the Faces Game feature">
-                      Learn more <ChevronRight size={16} className="ml-1" aria-hidden="true" />
-                    </Link>
-                  </div>
                 </CardContent>
               </Card>
               
@@ -198,12 +192,6 @@ export default function Home() {
                     Store important information, tasks, and reminders in an easy-to-access format. 
                     Organize your thoughts and memories with simple, clear tools.
                   </p>
-                  <div className="mt-4 text-center">
-                    <Link href="/remember" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
-                          aria-label="Learn more about the Remember This feature">
-                      Learn more <ChevronRight size={16} className="ml-1" aria-hidden="true" />
-                    </Link>
-                  </div>
                 </CardContent>
               </Card>
             </div>
