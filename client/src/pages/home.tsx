@@ -263,9 +263,9 @@ export default function Home() {
                   Cookie Policy
                 </button>
               </Link>
-              <Link href="/contact">
+              <Link href="/terms-of-service">
                 <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                  Contact Us
+                  Terms of Service
                 </button>
               </Link>
             </div>
