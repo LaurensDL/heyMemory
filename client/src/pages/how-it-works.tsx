@@ -226,7 +226,7 @@ export default function HowItWorksPage() {
     {
       number: 2,
       title: "Add Photos & People",
-      description: "Upload photos of family, friends, and caregivers with their names.",
+      description: "Upload photos of family, friends, pets, and caregivers with their names.",
       icon: Camera,
       details: [
         "Go to Caregiver Tools",
