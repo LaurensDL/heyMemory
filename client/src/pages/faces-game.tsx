@@ -299,7 +299,7 @@ export default function FacesGamePage() {
                   {!isFlipped ? (
                     /* Front of Card - Photo */
                     (<div className="p-0 flex flex-col h-full w-full">
-                      <div className="w-full aspect-square max-h-80 md:max-h-96 bg-gray-100 flex items-center justify-center overflow-hidden">
+                      <div className="w-full aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
                         {currentPhoto?.photoUrl ? (
                           <img
                             src={currentPhoto.photoUrl}
