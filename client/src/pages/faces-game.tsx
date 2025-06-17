@@ -289,8 +289,8 @@ export default function FacesGamePage() {
                           )}
                         </div>
                       </div>
-                      <div className="p-6 w-full">
-                        <div className="space-y-3">
+                      <div className="p-4 w-full">
+                        <div className="space-y-2">
                           <Button 
                             size="lg" 
                             onClick={() => setIsFlipped(false)} 
