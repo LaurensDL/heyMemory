@@ -16,6 +16,7 @@ interface AuthUser {
   state?: string;
   zipCode?: string;
   country?: string;
+  caregiverPhoneNumber?: string;
 }
 
 export function useAuth() {
