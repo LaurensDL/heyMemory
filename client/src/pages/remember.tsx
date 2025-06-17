@@ -107,7 +107,7 @@ export default function RememberPage() {
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
-                      <CardTitle className="text-2xl font-black text-gray-900 flex-1 pr-2">
+                      <CardTitle className="tracking-tight font-black text-gray-900 flex-1 pr-2 text-[32px]">
                         {item.title}
                       </CardTitle>
                       <Eye className="w-6 h-6 text-gray-600 flex-shrink-0" />
