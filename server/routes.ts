@@ -105,11 +105,12 @@ async function requireAdmin(req: any, res: any, next: any) {
 
 // Rate limiting configurations
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 requests per windowMs
+  windowMs: 1 * 60 * 1000, // 1 minute for debugging
+  max: 50, // Very high limit for debugging
   message: { message: "Too many authentication attempts, please try again later" },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === 'development', // Skip rate limiting in development
 });
 
 const generalLimiter = rateLimit({
@@ -232,19 +233,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
+      // Debug logging
+      console.log('Login attempt:', { 
+        email, 
+        providedPassword: password, 
+        storedPassword: user.password,
+        isHashed: user.password.startsWith('$2b$') || user.password.startsWith('$2a$') || user.password.startsWith('$2y$')
+      });
+
       // Check if password is hashed (bcrypt hashes start with $2b$, $2a$, or $2y$)
       let isPasswordValid = false;
       if (user.password.startsWith('$2b$') || user.password.startsWith('$2a$') || user.password.startsWith('$2y$')) {
         // Password is already hashed, use bcrypt comparison
         isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log('Bcrypt comparison result:', isPasswordValid);
       } else {
         // Password is plain text, compare directly and then hash it
-        if (user.password === password) {
-          isPasswordValid = true;
+        isPasswordValid = user.password === password;
+        console.log('Plain text comparison result:', isPasswordValid);
+        if (isPasswordValid) {
           // Migrate to hashed password
           const saltRounds = 12;
           const hashedPassword = await bcrypt.hash(password, saltRounds);
           await storage.updateUser(user.id, { password: hashedPassword });
+          console.log('Password migrated to hash');
         }
       }
       
