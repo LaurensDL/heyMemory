@@ -69,60 +69,132 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
   
-  /* Enhanced typography for Alzheimer's accessibility */
+  /* Enhanced typography for Alzheimer's accessibility - Mobile First */
   .text-hero {
-    font-size: 52px;
-    line-height: 64px;
+    font-size: 32px;
+    line-height: 40px;
     font-weight: 700;
     color: var(--text-primary);
   }
   
+  @media (min-width: 768px) {
+    .text-hero {
+      font-size: 48px;
+      line-height: 56px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .text-hero {
+      font-size: 52px;
+      line-height: 64px;
+    }
+  }
+  
   .text-body {
-    font-size: 22px;
-    line-height: 36px;
+    font-size: 18px;
+    line-height: 28px;
     font-weight: 500;
     color: var(--text-primary);
   }
   
+  @media (min-width: 768px) {
+    .text-body {
+      font-size: 20px;
+      line-height: 32px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .text-body {
+      font-size: 22px;
+      line-height: 36px;
+    }
+  }
+  
   .text-button {
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 18px;
+    line-height: 24px;
     font-weight: 700;
+  }
+  
+  @media (min-width: 768px) {
+    .text-button {
+      font-size: 20px;
+      line-height: 28px;
+    }
   }
   
   .text-section-heading {
-    font-size: 40px;
-    line-height: 48px;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-  
-  .text-card-heading {
     font-size: 28px;
     line-height: 36px;
     font-weight: 700;
     color: var(--text-primary);
   }
   
-  @media (max-width: 768px) {
-    .text-hero {
+  @media (min-width: 768px) {
+    .text-section-heading {
+      font-size: 36px;
+      line-height: 44px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .text-section-heading {
       font-size: 40px;
       line-height: 48px;
     }
-    
-    .text-body {
-      font-size: 20px;
-      line-height: 32px;
-    }
-    
-    .text-section-heading {
-      font-size: 32px;
-      line-height: 40px;
-    }
-    
+  }
+  
+  .text-card-heading {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  @media (min-width: 768px) {
     .text-card-heading {
-      font-size: 24px;
-      line-height: 32px;
+      font-size: 28px;
+      line-height: 36px;
+    }
+  }
+  
+  /* Mobile-optimized spacing */
+  .mobile-padding {
+    padding: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .mobile-padding {
+      padding: 2rem;
+    }
+  }
+  
+  /* Touch-friendly buttons */
+  .touch-button {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .touch-button {
+      min-height: 56px;
+      padding: 1rem 2rem;
+    }
+  }
+  
+  /* Mobile-first card spacing */
+  .mobile-card {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .mobile-card {
+      margin: 1rem;
+      padding: 2rem;
     }
   }
 }

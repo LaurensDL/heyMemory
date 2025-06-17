@@ -41,41 +41,36 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Bar */}
+      {/* Navigation Bar - Mobile Optimized */}
       <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Dashboard navigation">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
           <div className="flex items-center justify-between">
             {/* Logo and Brand */}
             <Link href="/">
-              <div className="flex items-center space-x-3 cursor-pointer">
-                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-                <span className="text-2xl font-bold">heyMemory</span>
+              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
+                <span className="text-xl md:text-2xl font-bold">heyMemory</span>
               </div>
             </Link>
             
-            {/* User Actions */}
-            <div className="flex items-center space-x-4">
+            {/* Mobile Actions - Stacked menu for small screens */}
+            <div className="flex items-center space-x-2 md:hidden">
               <Link href="/profile">
-                <Button variant="outline" className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
-                  <Settings className="w-5 h-5 mr-2" />
-                  Settings
+                <Button variant="outline" className="touch-button bg-white text-black font-bold text-sm px-3 py-2 rounded-lg border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100">
+                  <Settings className="w-4 h-4" />
                 </Button>
               </Link>
               
               <Link href="/caregiver">
-                <Button variant="outline" className="bg-pink-100 text-pink-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-pink-300 hover:bg-pink-200 focus:bg-pink-200 focus:outline-none focus:ring-4 focus:ring-pink-400 transition-colors">
-                  <Heart className="w-5 h-5 mr-2" />
-                  Caregiver Tools
+                <Button variant="outline" className="touch-button bg-pink-100 text-pink-800 font-bold text-sm px-3 py-2 rounded-lg border-2 border-pink-300 hover:bg-pink-200 focus:bg-pink-200">
+                  <Heart className="w-4 h-4" />
                 </Button>
               </Link>
 
-
-
               {user?.isAdmin && (
                 <Link href="/admin">
-                  <Button variant="outline" className="bg-purple-100 text-purple-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-purple-300 hover:bg-purple-200 focus:bg-purple-200 focus:outline-none focus:ring-4 focus:ring-purple-400 transition-colors">
-                    <Users className="w-5 h-5 mr-2" />
-                    Admin Panel
+                  <Button variant="outline" className="touch-button bg-purple-100 text-purple-800 font-bold text-sm px-3 py-2 rounded-lg border-2 border-purple-300 hover:bg-purple-200 focus:bg-purple-200">
+                    <Users className="w-4 h-4" />
                   </Button>
                 </Link>
               )}
