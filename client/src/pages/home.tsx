@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Users, Lightbulb, Phone, Mail } from "lucide-react";
 import { Link } from "wouter";
-import { Footer } from "@/components/Footer";
 import heroImage from "../../../server/uploads/images/Senior Man Using heyMemory on Smartphone - heyMemory The Alzheimer App.png";
 
 export default function Home() {
