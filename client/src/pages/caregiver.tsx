@@ -126,7 +126,7 @@ export default function CaregiverPage() {
   });
 
   const addRememberMutation = useMutation({
-    mutationFn: async (data: RememberItemData) => {
+    mutationFn: async (data: RememberItemData): Promise<RememberItem> => {
       let photoUrl = "";
       
       // Convert file to data URL if photo is provided
@@ -139,12 +139,13 @@ export default function CaregiverPage() {
         });
       }
       
-      return apiRequest("POST", "/api/remember-items", {
+      const response = await apiRequest("POST", "/api/remember-items", {
         title: data.title,
         content: data.content,
         category: data.category,
         photoUrl: photoUrl || undefined
       });
+      return response.json();
     },
     onSuccess: () => {
       toast({ title: "Memory item added successfully" });
@@ -162,7 +163,7 @@ export default function CaregiverPage() {
   });
 
   const updateRememberMutation = useMutation({
-    mutationFn: async (data: RememberItemData) => {
+    mutationFn: async (data: RememberItemData): Promise<RememberItem> => {
       if (!editingRemember) throw new Error("No item being edited");
       
       let photoUrl = editingRemember.photoUrl;
@@ -177,12 +178,13 @@ export default function CaregiverPage() {
         });
       }
       
-      return apiRequest("PUT", `/api/remember-items/${editingRemember.id}`, {
+      const response = await apiRequest("PUT", `/api/remember-items/${editingRemember.id}`, {
         title: data.title,
         content: data.content,
         category: data.category,
         photoUrl: photoUrl || undefined
       });
+      return response.json();
     },
     onMutate: async (newData) => {
       await queryClient.cancelQueries({ queryKey: ['/api/remember-items'] });
@@ -209,7 +211,9 @@ export default function CaregiverPage() {
       );
     },
     onError: (error: Error, newData, context) => {
-      queryClient.setQueryData(['/api/remember-items'], context?.previousItems);
+      if (context?.previousItems) {
+        queryClient.setQueryData(['/api/remember-items'], context.previousItems);
+      }
       toast({ 
         title: "Error updating memory item", 
         description: error.message,
@@ -682,6 +686,11 @@ export default function CaregiverPage() {
               <p className="text-gray-600 mt-2">
                 Add important information and memories
               </p>
+              <div className="mt-3 text-center">
+                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                  {rememberItems.length} item{rememberItems.length !== 1 ? 's' : ''} added
+                </span>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Add Remember Item Button */}
@@ -822,11 +831,6 @@ export default function CaregiverPage() {
               {rememberItems.length > 0 ? (
                 <div className="space-y-3">
                   <h4 className="font-semibold text-gray-700 mb-3">Memory Items:</h4>
-                  <div className="space-y-3">
-                    <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
-                      {rememberItems.length} item{rememberItems.length !== 1 ? 's' : ''} added
-                    </span>
-                  </div>
                   {rememberItems.map((item) => (
                     <div key={item.id} className="p-4 bg-gray-50 rounded-lg border">
                       <div className="flex items-start justify-between mb-3">
