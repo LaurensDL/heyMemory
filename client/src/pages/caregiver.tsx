@@ -478,7 +478,7 @@ export default function CaregiverPage() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Caregiver Tools</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Help your loved one by adding photos for the faces game and important information they should remember. 
+            Help your loved one by adding photos of family, friends, pets, and caregivers for the faces game and important information they should remember. 
             These tools are designed for caregivers, family, and friends to support memory care.
           </p>
         </div>

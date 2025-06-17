@@ -195,7 +195,7 @@ export default function FacesGamePage() {
                   <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">
                     Need More Photos
                   </h2>
-                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">To play the faces game, you need at least 3 photos of family, friends, pets or caregivers.</p>
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">To play the faces game, you need at least 3 photos of family, friends, pets, or caregivers.</p>
                 </div>
 
                 <div className="bg-blue-50 rounded-lg p-6 mb-8">

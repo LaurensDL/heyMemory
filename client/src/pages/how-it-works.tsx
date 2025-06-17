@@ -230,7 +230,7 @@ export default function HowItWorksPage() {
       icon: Camera,
       details: [
         "Go to Caregiver Tools",
-        "Add photos of important people",
+        "Add photos of important people and pets",
         "Include names and relationships",
         "Add at least 3 photos for the game"
       ]
