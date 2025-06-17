@@ -79,6 +79,41 @@ export default function Dashboard() {
                 onClick={handleLogout}
                 disabled={logoutMutation.isPending}
                 variant="outline"
+                className="touch-button bg-red-100 text-red-800 font-bold text-sm px-3 py-2 rounded-lg border-2 border-red-300 hover:bg-red-200 focus:bg-red-200"
+              >
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </div>
+            
+            {/* Desktop Actions - Full size with text */}
+            <div className="hidden md:flex items-center space-x-4">
+              <Link href="/profile">
+                <Button variant="outline" className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
+                  <Settings className="w-5 h-5 mr-2" />
+                  Settings
+                </Button>
+              </Link>
+              
+              <Link href="/caregiver">
+                <Button variant="outline" className="bg-pink-100 text-pink-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-pink-300 hover:bg-pink-200 focus:bg-pink-200 focus:outline-none focus:ring-4 focus:ring-pink-400 transition-colors">
+                  <Heart className="w-5 h-5 mr-2" />
+                  Caregiver Tools
+                </Button>
+              </Link>
+
+              {user?.isAdmin && (
+                <Link href="/admin">
+                  <Button variant="outline" className="bg-purple-100 text-purple-800 font-bold text-lg px-6 py-3 rounded-xl border-2 border-purple-300 hover:bg-purple-200 focus:bg-purple-200 focus:outline-none focus:ring-4 focus:ring-purple-400 transition-colors">
+                    <Users className="w-5 h-5 mr-2" />
+                    Admin Panel
+                  </Button>
+                </Link>
+              )}
+              
+              <Button 
+                onClick={handleLogout}
+                disabled={logoutMutation.isPending}
+                variant="outline"
                 className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
               >
                 <LogOut className="w-5 h-5 mr-2" />
@@ -89,15 +124,15 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      <main role="main" className="py-16">
-        {/* Welcome Section */}
-        <section className="max-w-6xl mx-auto px-6 mb-16">
+      <main role="main" className="py-8 md:py-16">
+        {/* Welcome Section - Mobile Optimized */}
+        <section className="max-w-6xl mx-auto px-4 md:px-6 mb-8 md:mb-16">
           <div className="text-center">
-            <h1 className="text-hero mb-6">
+            <h1 className="text-hero mb-4 md:mb-6">
               Hello {user?.firstName || user?.email?.split('@')[0] || 'there'}!
             </h1>
             {user && !user.isEmailVerified && (
-              <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 max-w-2xl mx-auto mb-8">
+              <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4 md:p-6 max-w-2xl mx-auto mb-6 md:mb-8">
                 <p className="text-body font-bold text-yellow-800">
                   Please verify your email address to access all features.
                 </p>
@@ -106,26 +141,26 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="max-w-6xl mx-auto px-6">
-          <h2 className="text-section-heading text-center mb-16">
+        {/* Features Section - Mobile Optimized */}
+        <section className="max-w-6xl mx-auto px-4 md:px-6">
+          <h2 className="text-section-heading text-center mb-8 md:mb-16">
             Choose What You'd Like to Do
           </h2>
           
-          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <div className="grid gap-6 md:grid-cols-2 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
             {/* Feature Card 1: Faces Game */}
-            <Card className="bg-white p-10 rounded-xl border-2 border-gray-300 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="mobile-card bg-white rounded-xl border-2 border-gray-300 shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-0">
-                <div className="text-center mb-8">
-                  <Users className="text-[var(--button-primary)] w-16 h-16 mx-auto mb-6" aria-hidden="true" />
-                  <h3 className="text-card-heading mb-6">Faces Game</h3>
+                <div className="text-center mb-4 md:mb-8">
+                  <Users className="text-[var(--button-primary)] w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6" aria-hidden="true" />
+                  <h3 className="text-card-heading mb-3 md:mb-6">Faces Game</h3>
                 </div>
-                <p className="text-body leading-relaxed text-center mb-8">
+                <p className="text-body leading-relaxed text-center mb-6 md:mb-8">
                   Practice recognizing and remembering important people in your life with our interactive faces game.
                 </p>
                 <Link href="/faces-game">
                   <Button 
-                    className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+                    className="w-full touch-button bg-black text-white font-black text-lg md:text-xl py-4 md:py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors border-3 border-black"
                     disabled={user && !user.isEmailVerified}
                   >
                     {user && !user.isEmailVerified ? "Verify Email First" : "Start Faces Game"}
@@ -135,18 +170,18 @@ export default function Dashboard() {
             </Card>
             
             {/* Feature Card 2: Remember This */}
-            <Card className="bg-white p-10 rounded-xl border-2 border-gray-300 shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="mobile-card bg-white rounded-xl border-2 border-gray-300 shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-0">
-                <div className="text-center mb-8">
-                  <Lightbulb className="text-[var(--button-primary)] w-16 h-16 mx-auto mb-6" aria-hidden="true" />
-                  <h3 className="text-card-heading mb-6">Remember This</h3>
+                <div className="text-center mb-4 md:mb-8">
+                  <Lightbulb className="text-[var(--button-primary)] w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6" aria-hidden="true" />
+                  <h3 className="text-card-heading mb-3 md:mb-6">Remember This</h3>
                 </div>
-                <p className="text-body leading-relaxed text-center mb-8">
+                <p className="text-body leading-relaxed text-center mb-6 md:mb-8">
                   Store important facts, locations, and memories in an easy-to-access format.
                 </p>
                 <Link href="/remember">
                   <Button 
-                    className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+                    className="w-full touch-button bg-black text-white font-black text-lg md:text-xl py-4 md:py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors border-3 border-black"
                     disabled={user && !user.isEmailVerified}
                   >
                     {user && !user.isEmailVerified ? "Verify Email First" : "Start Remembering"}
