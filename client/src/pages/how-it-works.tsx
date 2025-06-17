@@ -82,7 +82,13 @@ export default function HowItWorksPage() {
       "@type": "HowTo",
       "name": "How to Setup heyMemory for Memory Support",
       "description": "Complete guide to setting up heyMemory app for people with Alzheimer's, dementia, autism, brain injury, and other cognitive challenges",
-      "image": "https://heymemory.app/images/heymemory-setup-guide.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://heymemory.app/images/heymemory-setup-guide.png",
+        "width": 1200,
+        "height": 630,
+        "caption": "heyMemory setup guide for people with cognitive challenges"
+      },
       "totalTime": "PT15M",
       "estimatedCost": {
         "@type": "MonetaryAmount",
