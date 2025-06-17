@@ -38,8 +38,8 @@ export function Footer() {
             <h4 className="text-sm font-semibold">Support</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/contact" className="text-muted-foreground hover:text-foreground">
-                  Contact Us
+                <Link href="/terms-of-service" className="text-muted-foreground hover:text-foreground">
+                  Terms of Service
                 </Link>
               </li>
               <li>
