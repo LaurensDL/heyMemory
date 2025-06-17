@@ -23,7 +23,7 @@ export default function FacesGamePage() {
   // Shuffle photos when game starts or photos change
   useEffect(() => {
     if (facePhotos.length >= 3) {
-      const shuffled = [...facePhotos].sort(() => Math.random() - 0.5);
+      const shuffled = shuffleArray(facePhotos);
       setShuffledPhotos(shuffled);
       setCurrentPhotoIndex(0);
       setIsFlipped(false);
@@ -33,13 +33,32 @@ export default function FacesGamePage() {
   const currentPhoto = shuffledPhotos[currentPhotoIndex];
   const hasEnoughPhotos = facePhotos.length >= 3;
 
+  // Fisher-Yates shuffle algorithm for true randomization
+  const shuffleArray = (array: FacePhoto[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   const handleFlipCard = () => {
     setIsFlipped(true);
   };
 
   const handleNextPhoto = () => {
     setIsFlipped(false);
-    setCurrentPhotoIndex((prev) => (prev + 1) % shuffledPhotos.length);
+    const nextIndex = (currentPhotoIndex + 1) % shuffledPhotos.length;
+    
+    // Re-shuffle when we complete a full cycle to keep it random
+    if (nextIndex === 0) {
+      const newShuffled = shuffleArray(facePhotos);
+      setShuffledPhotos(newShuffled);
+      setCurrentPhotoIndex(0);
+    } else {
+      setCurrentPhotoIndex(nextIndex);
+    }
   };
 
   const handlePrevPhoto = () => {
@@ -58,7 +77,7 @@ export default function FacesGamePage() {
   };
 
   const handleRestart = () => {
-    const shuffled = [...facePhotos].sort(() => Math.random() - 0.5);
+    const shuffled = shuffleArray(facePhotos);
     setShuffledPhotos(shuffled);
     setCurrentPhotoIndex(0);
     setIsFlipped(false);
