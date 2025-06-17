@@ -404,15 +404,7 @@ export default function CaregiverPage() {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => {
-                            setEditingPhoto(photo);
-                            photoForm.reset({
-                              name: photo.name,
-                              relationship: photo.relationship || "",
-                              description: photo.description || ""
-                            });
-                            setIsPhotoDialogOpen(true);
-                          }}
+                          onClick={() => handleEditPhoto(photo)}
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -420,6 +412,8 @@ export default function CaregiverPage() {
                           variant="outline" 
                           size="sm"
                           className="text-red-600 hover:text-red-700"
+                          onClick={() => handleDeletePhoto(photo.id)}
+                          disabled={deletePhotoMutation.isPending}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
