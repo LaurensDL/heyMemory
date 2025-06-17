@@ -65,7 +65,7 @@ export const rememberItems = pgTable("remember_items", {
   title: text("title").notNull(),
   content: text("content").notNull(),
   category: text("category").notNull(),
-  photoUrls: text("photo_urls").array(),
+  photoUrl: text("photo_url"),
   userId: integer("user_id").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -156,8 +156,6 @@ export const insertRememberItemSchema = createInsertSchema(rememberItems).omit({
   id: true,
   userId: true,
   createdAt: true,
-}).extend({
-  photoUrls: z.array(z.string()).max(3, "Maximum 3 photos allowed").optional(),
 });
 
 export const contactSchema = z.object({
