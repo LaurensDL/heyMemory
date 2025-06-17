@@ -289,8 +289,8 @@ export default function FacesGamePage() {
                           )}
                         </div>
                       </div>
-                      <div className="p-8 w-full">
-                        <div className="space-y-4">
+                      <div className="p-6 w-full">
+                        <div className="space-y-3">
                           <Button 
                             size="lg" 
                             onClick={() => setIsFlipped(false)} 
@@ -322,16 +322,6 @@ export default function FacesGamePage() {
                               <ChevronRight className="w-5 h-5 ml-2" />
                             </Button>
                           </div>
-                          
-                          <Button 
-                            size="lg" 
-                            onClick={handleQuitGame} 
-                            variant="destructive" 
-                            className="w-full"
-                          >
-                            <X className="w-5 h-5 mr-2" />
-                            Quit Game
-                          </Button>
                         </div>
                       </div>
                     </CardContent>)
@@ -339,6 +329,20 @@ export default function FacesGamePage() {
                 </Card>
               </div>
 
+              {/* Quit Game Button - Outside the card to prevent misclicks */}
+              {isFlipped && (
+                <div className="mt-6">
+                  <Button 
+                    size="lg" 
+                    onClick={handleQuitGame} 
+                    variant="destructive" 
+                    className="w-full max-w-xs mx-auto block"
+                  >
+                    <X className="w-5 h-5 mr-2" />
+                    Quit Game
+                  </Button>
+                </div>
+              )}
 
             </div>
           </div>)
