@@ -163,8 +163,7 @@ export default function RememberPage() {
               <div className="space-y-6">
                 {/* Photo */}
                 {selectedItem.photoUrl && (
-                  <div className="space-y-3">
-                    <h4 className="text-2xl font-black text-gray-900">Reference Photo:</h4>
+                  <div>
                     <img 
                       src={selectedItem.photoUrl} 
                       alt={selectedItem.title}
@@ -174,8 +173,7 @@ export default function RememberPage() {
                 )}
 
                 {/* Content */}
-                <div className="space-y-3">
-                  <h4 className="text-2xl font-black text-gray-900">Details:</h4>
+                <div>
                   <p className="text-gray-800 text-2xl font-bold leading-relaxed whitespace-pre-wrap">
                     {selectedItem.content}
                   </p>
