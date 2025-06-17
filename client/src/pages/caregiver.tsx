@@ -29,7 +29,7 @@ import { Link } from "wouter";
 import { z } from "zod";
 
 // Schema for face photos - using the shared schema from backend
-import { insertFacePhotoSchema, type FacePhoto as FacePhotoType } from "@shared/schema";
+import { insertFacePhotoSchema, insertRememberItemSchema, type FacePhoto as FacePhotoType, type RememberItem } from "@shared/schema";
 
 // Schema for face photos - makes photo optional for edits
 const facePhotoFormSchema = z.object({
@@ -49,16 +49,6 @@ const rememberItemSchema = z.object({
 
 type FacePhotoFormData = z.infer<typeof facePhotoFormSchema>;
 type RememberItemData = z.infer<typeof rememberItemSchema>;
-
-interface RememberItem {
-  id: number;
-  title: string;
-  content: string;
-  category: string;
-  photoUrl?: string;
-  userId: number;
-  createdAt: Date;
-}
 
 export default function CaregiverPage() {
   const { user } = useAuth();
@@ -93,10 +83,9 @@ export default function CaregiverPage() {
     queryKey: ['/api/face-photos'],
   });
 
-  // Fetch remember items (placeholder for now)
+  // Fetch remember items
   const { data: rememberItems = [] } = useQuery<RememberItem[]>({
-    queryKey: ['/api/caregiver/remember'],
-    enabled: false // Will implement API later
+    queryKey: ['/api/remember-items'],
   });
 
   // Mutations
@@ -138,13 +127,111 @@ export default function CaregiverPage() {
 
   const addRememberMutation = useMutation({
     mutationFn: async (data: RememberItemData) => {
-      // Will implement API call
-      console.log("Adding remember item:", data);
+      let photoUrl = "";
+      
+      // Convert file to data URL if photo is provided
+      if (data.photo && data.photo.length > 0) {
+        const file = data.photo[0];
+        photoUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+      }
+      
+      return apiRequest("POST", "/api/remember-items", {
+        title: data.title,
+        content: data.content,
+        category: data.category,
+        photoUrl: photoUrl || undefined
+      });
     },
     onSuccess: () => {
       toast({ title: "Memory item added successfully" });
       setIsRememberDialogOpen(false);
       rememberForm.reset();
+      queryClient.invalidateQueries({ queryKey: ['/api/remember-items'] });
+    },
+    onError: (error: Error) => {
+      toast({ 
+        title: "Error adding memory item", 
+        description: error.message,
+        variant: "destructive" 
+      });
+    }
+  });
+
+  const updateRememberMutation = useMutation({
+    mutationFn: async (data: RememberItemData) => {
+      if (!editingRemember) throw new Error("No item being edited");
+      
+      let photoUrl = editingRemember.photoUrl;
+      
+      // Convert file to data URL if photo is provided
+      if (data.photo && data.photo.length > 0) {
+        const file = data.photo[0];
+        photoUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+      }
+      
+      return apiRequest("PUT", `/api/remember-items/${editingRemember.id}`, {
+        title: data.title,
+        content: data.content,
+        category: data.category,
+        photoUrl: photoUrl || undefined
+      });
+    },
+    onMutate: async (newData) => {
+      await queryClient.cancelQueries({ queryKey: ['/api/remember-items'] });
+      const previousItems = queryClient.getQueryData(['/api/remember-items']);
+      
+      queryClient.setQueryData(['/api/remember-items'], (old: RememberItem[] = []) => 
+        old.map(item => 
+          item.id === editingRemember?.id 
+            ? { ...item, ...newData } 
+            : item
+        )
+      );
+      
+      return { previousItems };
+    },
+    onSuccess: (updatedItem: RememberItem) => {
+      toast({ title: "Memory item updated successfully" });
+      setIsRememberDialogOpen(false);
+      setEditingRemember(null);
+      rememberForm.reset();
+      
+      queryClient.setQueryData(['/api/remember-items'], (old: RememberItem[] = []) => 
+        old.map(item => item.id === updatedItem.id ? updatedItem : item)
+      );
+    },
+    onError: (error: Error, newData, context) => {
+      queryClient.setQueryData(['/api/remember-items'], context?.previousItems);
+      toast({ 
+        title: "Error updating memory item", 
+        description: error.message,
+        variant: "destructive" 
+      });
+    }
+  });
+
+  const deleteRememberMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return apiRequest("DELETE", `/api/remember-items/${id}`);
+    },
+    onSuccess: () => {
+      toast({ title: "Memory item deleted successfully" });
+      queryClient.invalidateQueries({ queryKey: ['/api/remember-items'] });
+    },
+    onError: (error: Error) => {
+      toast({ 
+        title: "Error deleting memory item", 
+        description: error.message,
+        variant: "destructive" 
+      });
     }
   });
 
@@ -281,7 +368,39 @@ export default function CaregiverPage() {
   };
 
   const onSubmitRemember = (data: RememberItemData) => {
-    addRememberMutation.mutate(data);
+    if (editingRemember) {
+      updateRememberMutation.mutate(data);
+    } else {
+      addRememberMutation.mutate(data);
+    }
+  };
+
+  const handleDeleteRemember = (id: number) => {
+    if (confirm("Are you sure you want to delete this memory item?")) {
+      deleteRememberMutation.mutate(id);
+    }
+  };
+
+  const handleEditRemember = (item: RememberItem) => {
+    setEditingRemember(item);
+    rememberForm.reset({
+      title: item.title,
+      content: item.content,
+      category: item.category,
+      photo: undefined // Clear photo field for editing
+    });
+    setIsRememberDialogOpen(true);
+  };
+
+  const handleCancelRememberEdit = () => {
+    setEditingRemember(null);
+    rememberForm.reset({
+      title: "",
+      content: "",
+      category: "",
+      photo: undefined
+    });
+    setIsRememberDialogOpen(false);
   };
 
   const handleDeletePhoto = (photoId: number) => {
@@ -575,7 +694,7 @@ export default function CaregiverPage() {
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Add Remember This Item</DialogTitle>
+                    <DialogTitle>{editingRemember ? 'Edit Memory Item' : 'Add Remember This Item'}</DialogTitle>
                   </DialogHeader>
                   <Form {...rememberForm}>
                     <form onSubmit={rememberForm.handleSubmit(onSubmitRemember)} className="space-y-4">
@@ -584,7 +703,7 @@ export default function CaregiverPage() {
                         name="title"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Title</FormLabel>
+                            <FormLabel>Title *</FormLabel>
                             <FormControl>
                               <Input {...field} placeholder="What should they remember?" />
                             </FormControl>
@@ -598,7 +717,7 @@ export default function CaregiverPage() {
                         name="category"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Category</FormLabel>
+                            <FormLabel>Category *</FormLabel>
                             <FormControl>
                               <Input {...field} placeholder="e.g., Family, Medical, Daily Routine" />
                             </FormControl>
@@ -612,7 +731,7 @@ export default function CaregiverPage() {
                         name="content"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Details</FormLabel>
+                            <FormLabel>Details *</FormLabel>
                             <FormControl>
                               <Textarea {...field} placeholder="Important details to remember" />
                             </FormControl>
@@ -621,18 +740,77 @@ export default function CaregiverPage() {
                         )}
                       />
                       
-                      <div className="space-y-2">
-                        <Label>Photo (Optional)</Label>
-                        <Input type="file" accept="image/*" />
-                        <p className="text-sm text-gray-500">Upload a helpful reference photo</p>
-                      </div>
+                      <FormField
+                        control={rememberForm.control}
+                        name="photo"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Photo (Optional)</FormLabel>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  capture="environment"
+                                  onChange={(e) => field.onChange(e.target.files)}
+                                  className="hidden"
+                                  id={`camera-input-remember-${editingRemember?.id || 'new'}`}
+                                  key={`camera-remember-${editingRemember?.id || 'new'}`}
+                                />
+                                <Button 
+                                  type="button"
+                                  variant="outline"
+                                  className="w-full h-12 border-2 border-dashed"
+                                  onClick={() => document.getElementById(`camera-input-remember-${editingRemember?.id || 'new'}`)?.click()}
+                                >
+                                  <Camera className="w-5 h-5 mr-2" />
+                                  Take Photo
+                                </Button>
+                              </div>
+                              <div>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => field.onChange(e.target.files)}
+                                  className="hidden"
+                                  id={`gallery-input-remember-${editingRemember?.id || 'new'}`}
+                                  key={`gallery-remember-${editingRemember?.id || 'new'}`}
+                                />
+                                <Button 
+                                  type="button"
+                                  variant="outline"
+                                  className="w-full h-12 border-2 border-dashed"
+                                  onClick={() => document.getElementById(`gallery-input-remember-${editingRemember?.id || 'new'}`)?.click()}
+                                >
+                                  <Upload className="w-5 h-5 mr-2" />
+                                  From Gallery
+                                </Button>
+                              </div>
+                            </div>
+                            <FormMessage />
+                            {editingRemember && (
+                              <p className="text-sm text-blue-600 text-center mt-2">
+                                Current photo will be replaced if you select a new one
+                              </p>
+                            )}
+                            {!editingRemember && (
+                              <p className="text-sm text-gray-500 text-center mt-2">
+                                Take a new photo or choose from your gallery
+                              </p>
+                            )}
+                          </FormItem>
+                        )}
+                      />
                       
                       <div className="flex justify-end space-x-2">
-                        <Button type="button" variant="outline" onClick={() => setIsRememberDialogOpen(false)}>
+                        <Button type="button" variant="outline" onClick={handleCancelRememberEdit}>
                           Cancel
                         </Button>
-                        <Button type="submit" disabled={addRememberMutation.isPending}>
-                          {addRememberMutation.isPending ? "Adding..." : "Add Item"}
+                        <Button type="submit" disabled={addRememberMutation.isPending || updateRememberMutation.isPending}>
+                          {(addRememberMutation.isPending || updateRememberMutation.isPending) 
+                            ? (editingRemember ? "Updating..." : "Adding...") 
+                            : (editingRemember ? "Update Item" : "Add Item")
+                          }
                         </Button>
                       </div>
                     </form>
@@ -640,12 +818,65 @@ export default function CaregiverPage() {
                 </DialogContent>
               </Dialog>
 
-              {/* Items List Placeholder */}
-              <div className="text-center py-8 text-gray-500">
-                <Lightbulb className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                <p>No memory items added yet</p>
-                <p className="text-sm">Add important information to help with daily life</p>
-              </div>
+              {/* Items List */}
+              {rememberItems.length > 0 ? (
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-gray-700 mb-3">Memory Items:</h4>
+                  <div className="space-y-3">
+                    <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                      {rememberItems.length} item{rememberItems.length !== 1 ? 's' : ''} added
+                    </span>
+                  </div>
+                  {rememberItems.map((item) => (
+                    <div key={item.id} className="p-4 bg-gray-50 rounded-lg border">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-2">
+                            <h5 className="font-semibold text-gray-900">{item.title}</h5>
+                            <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full">
+                              {item.category}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">{item.content}</p>
+                          {item.photoUrl && (
+                            <div className="mt-3">
+                              <img 
+                                src={item.photoUrl} 
+                                alt={item.title}
+                                className="w-20 h-20 rounded-lg object-cover border"
+                              />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex items-center space-x-2 ml-4">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleEditRemember(item)}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="text-red-600 hover:text-red-700"
+                            onClick={() => handleDeleteRemember(item.id)}
+                            disabled={deleteRememberMutation.isPending}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <Lightbulb className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                  <p>No memory items added yet</p>
+                  <p className="text-sm">Add important information to help with daily life</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
