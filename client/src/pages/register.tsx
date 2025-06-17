@@ -21,6 +21,43 @@ export default function Register() {
   const [pendingEmail, setPendingEmail] = useState<string>("");
   const [showVerification, setShowVerification] = useState(false);
 
+  useEffect(() => {
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/register';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Registration page loaded. Create your heyMemory account to access memory support tools.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
+    return () => {
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
+    };
+  }, []);
+
   // Check if user already exists but unverified
   const checkUserMutation = useMutation({
     mutationFn: async (email: string) => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,42 @@ import { Link } from "wouter";
 import type { RememberItem } from "@shared/schema";
 
 export default function RememberPage() {
+  useEffect(() => {
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/remember';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Remember This page loaded. View and manage your important reminders, notes, and information.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
+    return () => {
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
+    };
+  }, []);
   const { user } = useAuth();
   const [selectedItem, setSelectedItem] = useState<RememberItem | null>(null);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
