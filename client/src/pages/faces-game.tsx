@@ -241,12 +241,12 @@ export default function FacesGamePage() {
                   {!isFlipped ? (
                     /* Front of Card - Photo */
                     <div className="p-0 flex flex-col h-full w-full">
-                      <div className="w-full aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
+                      <div className="w-full h-96 bg-gray-100 flex items-center justify-center overflow-hidden">
                         {currentPhoto?.photoUrl ? (
                           <img
                             src={currentPhoto.photoUrl}
                             alt="Person to remember"
-                            className="w-full h-full object-cover"
+                            className="w-96 h-96 object-cover"
                           />
                         ) : (
                           <div className="flex flex-col items-center text-gray-400">
