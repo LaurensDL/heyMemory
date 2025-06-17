@@ -224,23 +224,24 @@ export default function FacesGamePage() {
           </div>)
         ) : (
           /* Game Play Screen */
-          (<div className="text-center">
+          <div className="text-center">
             <div className="max-w-2xl mx-auto">
               {/* Game Card */}
               <div className="relative mb-8">
-                <Card 
-                  className={`w-full bg-white shadow-2xl transition-all duration-700 cursor-pointer ${
+                <div 
+                  className={`w-full bg-white shadow-2xl transition-all duration-700 cursor-pointer rounded-lg overflow-hidden ${
                     isFlipped ? 'rotate-y-180' : ''
                   }`}
                   onClick={!isFlipped ? handleFlipCard : undefined}
                   style={{ 
-                    transformStyle: 'preserve-3d'
+                    transformStyle: 'preserve-3d',
+                    height: '650px'
                   }}
                 >
                   {!isFlipped ? (
                     /* Front of Card - Photo */
-                    (<CardContent className="p-0 flex flex-col h-full w-full">
-                      <div className="w-full aspect-square bg-gray-100 rounded-t-lg flex items-center justify-center overflow-hidden">
+                    <div className="p-0 flex flex-col h-full w-full">
+                      <div className="w-full aspect-square bg-gray-100 flex items-center justify-center overflow-hidden">
                         {currentPhoto?.photoUrl ? (
                           <img
                             src={currentPhoto.photoUrl}
@@ -264,11 +265,11 @@ export default function FacesGamePage() {
                           Touch to See Answer
                         </Button>
                       </div>
-                    </CardContent>)
+                    </div>
                   ) : (
                     /* Back of Card - Answer */
-                    (<CardContent className="p-0 flex flex-col h-full w-full">
-                      <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 rounded-t-lg flex items-center justify-center overflow-hidden">
+                    <div className="p-0 flex flex-col h-full w-full">
+                      <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden">
                         <div className="text-center space-y-4 p-6">
                           <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
                             <Heart className="w-10 h-10 text-red-500" />
@@ -325,9 +326,9 @@ export default function FacesGamePage() {
                           </Button>
                         </div>
                       </div>
-                    </CardContent>)
+                    </div>
                   )}
-                </Card>
+                </div>
               </div>
 
               {/* Quit Game Button - Always visible for easy access */}
@@ -344,7 +345,7 @@ export default function FacesGamePage() {
               </div>
 
             </div>
-          </div>)
+          </div>
         )}
       </div>
     </div>
