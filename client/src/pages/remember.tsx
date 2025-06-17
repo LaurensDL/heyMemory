@@ -176,43 +176,75 @@ export default function RememberPage() {
           </div>
         )}
 
-        {/* Detail Dialog */}
+        {/* Detail Dialog - Elderly-Friendly Full Screen */}
         <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-4xl font-black text-gray-900">
-                {selectedItem?.title}
-              </DialogTitle>
-            </DialogHeader>
-            
-            {selectedItem && (
-              <div className="space-y-6">
-                {/* Photo */}
-                {selectedItem.photoUrl && (
-                  <div>
-                    <img 
-                      src={selectedItem.photoUrl} 
-                      alt={selectedItem.title}
-                      className="w-full max-w-md mx-auto rounded-lg border-3 border-gray-300 shadow-lg"
-                    />
-                  </div>
-                )}
-
-                {/* Content */}
-                <div>
-                  <p className="text-gray-800 text-2xl font-bold leading-relaxed whitespace-pre-wrap">
-                    {selectedItem.content}
-                  </p>
-                </div>
-
-                {/* Close Button */}
-                <div className="flex justify-end pt-6">
-                  <Button onClick={handleCloseDetail} className="bg-red-600 text-white font-black text-2xl px-8 py-4 rounded-xl border-3 border-red-600 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-400 transition-colors">
-                    Close
+          <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] h-auto p-0 bg-white rounded-lg">
+            <div className="flex flex-col h-full">
+              {/* Header with close button */}
+              <DialogHeader className="p-4 md:p-6 pb-2 border-b border-gray-200 flex-shrink-0">
+                <div className="flex items-center justify-between">
+                  <DialogTitle className="text-2xl md:text-3xl font-black text-gray-900 flex-1 text-center pr-8">
+                    {selectedItem?.title}
+                  </DialogTitle>
+                  <Button 
+                    onClick={handleCloseDetail} 
+                    variant="ghost" 
+                    className="h-8 w-8 p-0 hover:bg-gray-100 rounded-full"
+                  >
+                    <span className="sr-only">Close</span>
+                    ✕
                   </Button>
                 </div>
+              </DialogHeader>
+              
+              {selectedItem && (
+                <div className="flex-1 p-4 md:p-6 overflow-hidden">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 h-full">
+                    {/* Photo Column */}
+                    {selectedItem.photoUrl && (
+                      <div className="flex items-center justify-center">
+                        <img 
+                          src={selectedItem.photoUrl} 
+                          alt={selectedItem.title}
+                          className="max-w-full max-h-[60vh] object-contain rounded-lg border-2 border-gray-300 shadow-lg"
+                        />
+                      </div>
+                    )}
+
+                    {/* Content Column */}
+                    <div className={`flex flex-col justify-center ${!selectedItem.photoUrl ? 'lg:col-span-2' : ''}`}>
+                      <div className="space-y-4">
+                        <p className="text-gray-800 text-lg md:text-xl lg:text-2xl font-bold leading-relaxed whitespace-pre-wrap">
+                          {selectedItem.content}
+                        </p>
+                        
+                        {/* Metadata */}
+                        <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-200">
+                          <Badge variant="secondary" className="text-sm md:text-base px-3 py-1">
+                            <Tag className="w-4 h-4 mr-1" />
+                            {selectedItem.category}
+                          </Badge>
+                          <Badge variant="outline" className="text-sm md:text-base px-3 py-1">
+                            <Clock className="w-4 h-4 mr-1" />
+                            {formatDate(selectedItem.createdAt)}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Footer with close button */}
+              <div className="p-4 md:p-6 pt-2 border-t border-gray-200 flex justify-center flex-shrink-0">
+                <Button 
+                  onClick={handleCloseDetail} 
+                  className="touch-button bg-red-600 text-white font-black text-lg md:text-xl px-6 md:px-8 py-3 md:py-4 rounded-xl border-2 border-red-600 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-red-400 transition-colors"
+                >
+                  Close
+                </Button>
               </div>
-            )}
+            </div>
           </DialogContent>
         </Dialog>
       </div>
