@@ -79,14 +79,14 @@ export function Footer() {
             © 2025 heyMemory. All rights reserved.
           </p>
           <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-            <Link href="/terms-of-service" className="hover:text-foreground">
-              Terms
-            </Link>
             <Link href="/privacy-policy" className="hover:text-foreground">
-              Privacy
+              Privacy Policy
             </Link>
             <Link href="/cookie-policy" className="hover:text-foreground">
-              Cookie Settings
+              Cookie Policy
+            </Link>
+            <Link href="/terms-of-service" className="hover:text-foreground">
+              Terms of Service
             </Link>
           </div>
         </div>
