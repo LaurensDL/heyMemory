@@ -81,6 +81,51 @@ export default function ContactPage() {
       canonical.setAttribute('href', '/contact');
     }
 
+    // Add Contact Page Schema Markup
+    const contactSchema = {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact Support - heyMemory",
+      "description": "Get support for heyMemory app. Contact our team for help with memory support tools for cognitive challenges.",
+      "url": "/contact",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "heyMemory",
+        "url": "/",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+1-555-MEMORY",
+          "contactType": "Customer Support",
+          "email": "help@heymemory.app",
+          "availableLanguage": "English",
+          "areaServed": "US",
+          "hoursAvailable": "Mo-Fr 10:00-17:00"
+        }
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Contact",
+            "item": "/contact"
+          }
+        ]
+      }
+    };
+
+    const schemaScript = document.createElement('script');
+    schemaScript.type = 'application/ld+json';
+    schemaScript.textContent = JSON.stringify(contactSchema);
+    document.head.appendChild(schemaScript);
+
     // Cleanup function to restore homepage meta tags when component unmounts
     return () => {
       document.title = "heyMemory - Memory Support App for Alzheimer's, Dementia & Brain Injury";
@@ -259,11 +304,11 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12 mb-8 md:mb-16">
-              <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12">Send Us a Message</h2>
+            <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12 mb-8 md:mb-16" role="form" aria-labelledby="contact-form-heading">
+              <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12" id="contact-form-heading">Send Us a Message</h2>
               
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8" noValidate aria-describedby="contact-form-heading">
                 <FormField
                   control={form.control}
                   name="name"
@@ -358,28 +403,35 @@ export default function ContactPage() {
             </div>
 
           {/* Contact Information */}
-          <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12">
-            <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12">Get in Touch</h2>
+          <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12" role="complementary" aria-labelledby="contact-info-heading">
+            <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12" id="contact-info-heading">Get in Touch</h2>
             
-            <div className="space-y-6 md:space-y-8">
-              <div className="flex items-start space-x-4 md:space-x-6">
-                <div className="bg-blue-100 p-3 md:p-4 rounded-xl flex-shrink-0">
-                  <Mail className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
+            <div className="space-y-6 md:space-y-8" role="list" aria-label="Contact information">
+              <div className="flex items-start space-x-4 md:space-x-6" role="listitem">
+                <div className="bg-blue-100 p-3 md:p-4 rounded-xl flex-shrink-0" role="img" aria-label="Email contact method">
+                  <Mail className="w-6 h-6 md:w-8 md:h-8 text-blue-600" aria-hidden="true" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-lg md:text-2xl font-bold text-black mb-1 md:mb-2">Email</h3>
-                  <p className="text-base md:text-xl text-gray-700 mb-1 md:mb-2 break-words">help@heymemory.app</p>
+                  <h3 className="text-lg md:text-2xl font-bold text-black mb-1 md:mb-2" id="email-heading">Email</h3>
+                  <p className="text-base md:text-xl text-gray-700 mb-1 md:mb-2 break-words" aria-describedby="email-heading">
+                    <a href="mailto:help@heymemory.app" className="text-blue-600 hover:text-blue-800 underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded" aria-label="Send email to heyMemory support team">
+                      help@heymemory.app
+                    </a>
+                  </p>
                   <p className="text-sm md:text-lg text-gray-600">We try to respond within 24 hours</p>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-4 md:space-x-6">
-                <div className="bg-green-100 p-3 md:p-4 rounded-xl flex-shrink-0">
-                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
+              <div className="flex items-start space-x-4 md:space-x-6" role="listitem">
+                <div className="bg-green-100 p-3 md:p-4 rounded-xl flex-shrink-0" role="img" aria-label="Support hours information">
+                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-green-600" aria-hidden="true" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-lg md:text-2xl font-bold text-black mb-1 md:mb-2">Support Hours</h3>
-                  <p className="text-base md:text-xl text-gray-700">Monday - Friday: 10 AM - 5 PM</p>
+                  <h3 className="text-lg md:text-2xl font-bold text-black mb-1 md:mb-2" id="hours-heading">Support Hours</h3>
+                  <p className="text-base md:text-xl text-gray-700" aria-describedby="hours-heading">
+                    <time dateTime="10:00">10 AM</time> - <time dateTime="17:00">5 PM</time>, Monday - Friday
+                  </p>
+                  <p className="text-sm md:text-lg text-gray-600">Eastern Time (US)</p>
                 </div>
               </div>
             </div>
