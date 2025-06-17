@@ -194,8 +194,11 @@ export default function Home() {
                 <div className="flex justify-center items-center">
                   <div className="text-center">
                     <Mail className="text-[var(--button-primary)] w-12 h-12 mx-auto mb-4" aria-hidden="true" />
-                    <p className="text-body font-bold mb-2">Email Support</p>
-                    <p className="text-body">help@heymemory.app</p>
+                    <Link href="/contact">
+                      <Button className="touch-button bg-[var(--button-primary)] text-white font-bold text-lg px-8 py-4 rounded-xl hover:opacity-90 focus:opacity-90 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-all min-h-[56px] border-2 border-[var(--button-primary)]">
+                        Contact Support
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>
