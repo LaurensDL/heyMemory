@@ -141,12 +141,96 @@ export default function CaregiverPage() {
     }
   });
 
+  const deletePhotoMutation = useMutation({
+    mutationFn: async (photoId: number) => {
+      return apiRequest("DELETE", `/api/face-photos/${photoId}`, {});
+    },
+    onSuccess: () => {
+      toast({ title: "Photo deleted successfully" });
+      queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
+    },
+    onError: (error: Error) => {
+      toast({ 
+        title: "Error deleting photo", 
+        description: error.message,
+        variant: "destructive" 
+      });
+    }
+  });
+
+  const updatePhotoMutation = useMutation({
+    mutationFn: async (data: FacePhotoFormData & { id: number }) => {
+      let photoUrl = "";
+      
+      // Convert file to data URL if new photo is provided
+      if (data.photo && data.photo.length > 0) {
+        const file = data.photo[0];
+        photoUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+      }
+      
+      return apiRequest("PATCH", `/api/face-photos/${data.id}`, {
+        name: data.name,
+        relationship: data.relationship || "",
+        description: data.description || "",
+        ...(photoUrl && { photoUrl: photoUrl })
+      });
+    },
+    onSuccess: () => {
+      toast({ title: "Photo updated successfully" });
+      setIsPhotoDialogOpen(false);
+      setEditingPhoto(null);
+      photoForm.reset();
+      queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
+    },
+    onError: (error: Error) => {
+      toast({ 
+        title: "Error updating photo", 
+        description: error.message,
+        variant: "destructive" 
+      });
+    }
+  });
+
   const onSubmitPhoto = (data: FacePhotoFormData) => {
-    addPhotoMutation.mutate(data);
+    if (editingPhoto) {
+      updatePhotoMutation.mutate({ ...data, id: editingPhoto.id });
+    } else {
+      addPhotoMutation.mutate(data);
+    }
   };
 
   const onSubmitRemember = (data: RememberItemData) => {
     addRememberMutation.mutate(data);
+  };
+
+  const handleDeletePhoto = (photoId: number) => {
+    if (confirm('Are you sure you want to delete this photo?')) {
+      deletePhotoMutation.mutate(photoId);
+    }
+  };
+
+  const handleEditPhoto = (photo: FacePhotoType) => {
+    setEditingPhoto(photo);
+    photoForm.reset({
+      name: photo.name,
+      relationship: photo.relationship || "",
+      description: photo.description || ""
+    });
+    setIsPhotoDialogOpen(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPhoto(null);
+    photoForm.reset({
+      name: "",
+      relationship: "",
+      description: ""
+    });
+    setIsPhotoDialogOpen(false);
   };
 
   return (
@@ -197,6 +281,11 @@ export default function CaregiverPage() {
               <p className="text-gray-600 mt-2">
                 Add photos of important people for memory practice
               </p>
+              <div className="mt-3 text-center">
+                <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">
+                  {facePhotos.length} photo{facePhotos.length !== 1 ? 's' : ''} added
+                </span>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Add Photo Button */}
@@ -209,7 +298,7 @@ export default function CaregiverPage() {
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Add Face Photo</DialogTitle>
+                    <DialogTitle>{editingPhoto ? 'Edit Photo' : 'Add Face Photo'}</DialogTitle>
                   </DialogHeader>
                   <Form {...photoForm}>
                     <form onSubmit={photoForm.handleSubmit(onSubmitPhoto)} className="space-y-4">
@@ -275,11 +364,14 @@ export default function CaregiverPage() {
                       />
                       
                       <div className="flex justify-end space-x-2">
-                        <Button type="button" variant="outline" onClick={() => setIsPhotoDialogOpen(false)}>
+                        <Button type="button" variant="outline" onClick={handleCancelEdit}>
                           Cancel
                         </Button>
-                        <Button type="submit" disabled={addPhotoMutation.isPending}>
-                          {addPhotoMutation.isPending ? "Adding..." : "Add Photo"}
+                        <Button type="submit" disabled={addPhotoMutation.isPending || updatePhotoMutation.isPending}>
+                          {(addPhotoMutation.isPending || updatePhotoMutation.isPending) 
+                            ? (editingPhoto ? "Updating..." : "Adding...") 
+                            : (editingPhoto ? "Update Photo" : "Add Photo")
+                          }
                         </Button>
                       </div>
                     </form>
@@ -287,12 +379,61 @@ export default function CaregiverPage() {
                 </DialogContent>
               </Dialog>
 
-              {/* Photos List Placeholder */}
-              <div className="text-center py-8 text-gray-500">
-                <Users className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                <p>No photos added yet</p>
-                <p className="text-sm">Add photos to help with memory practice</p>
-              </div>
+              {/* Photos List */}
+              {facePhotos.length > 0 ? (
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-gray-700 mb-3">Added Photos:</h4>
+                  {facePhotos.map((photo) => (
+                    <div key={photo.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+                      <div className="flex items-center space-x-4">
+                        {photo.photoUrl && (
+                          <img 
+                            src={photo.photoUrl} 
+                            alt={photo.name}
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                        )}
+                        <div>
+                          <p className="font-semibold text-gray-900">{photo.name}</p>
+                          {photo.relationship && (
+                            <p className="text-sm text-gray-600">{photo.relationship}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            setEditingPhoto(photo);
+                            photoForm.reset({
+                              name: photo.name,
+                              relationship: photo.relationship || "",
+                              description: photo.description || ""
+                            });
+                            setIsPhotoDialogOpen(true);
+                          }}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <Users className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                  <p>No photos added yet</p>
+                  <p className="text-sm">Add photos to help with memory practice</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
