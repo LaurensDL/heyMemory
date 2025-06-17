@@ -260,7 +260,7 @@ export default function FacesGamePage() {
                         
                         <Button size="lg" className="w-full">
                           <Heart className="w-5 h-5 mr-2" />
-                          Touch to See Answer
+                          See Answer
                         </Button>
                       </div>
                     </div>)
