@@ -147,8 +147,12 @@ export default function Home() {
               <div className="flex justify-center lg:justify-end order-2 mb-6 lg:mb-0">
                 <img 
                   src={heroImage}
-                  alt="Senior man using heyMemory app on smartphone, demonstrating accessibility features"
+                  alt="Senior man with cognitive challenges using heyMemory app on smartphone, showing large buttons and clear interface designed for people with Alzheimer's, dementia, or brain injury"
                   className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg shadow-lg"
+                  loading="eager"
+                  decoding="async"
+                  width="400"
+                  height="600"
                 />
               </div>
             </div>
@@ -162,32 +166,44 @@ export default function Home() {
               How heyMemory Helps You
             </h2>
             
-            <div className="grid gap-6 md:grid-cols-2 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
+            <div className="grid gap-6 md:grid-cols-2 md:gap-8 lg:gap-12 max-w-4xl mx-auto" role="list" aria-label="Application features">
               {/* Feature Card 1: Faces Game */}
-              <Card className="mobile-card bg-white rounded-xl border-2 border-gray-300 shadow-lg">
-                <CardContent className="p-0">
+              <Card className="mobile-card bg-white rounded-xl border-2 border-gray-300 shadow-lg" role="listitem" tabIndex={0}>
+                <CardContent className="p-6 md:p-8">
                   <div className="text-center mb-4 md:mb-8">
                     <Users className="text-[var(--button-primary)] w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6" aria-hidden="true" />
-                    <h3 className="text-card-heading mb-3 md:mb-6">Faces Game</h3>
+                    <h3 className="text-card-heading mb-3 md:mb-6" id="faces-game-heading">Faces Game</h3>
                   </div>
-                  <p className="text-body leading-relaxed text-center">
-                    Help you remember faces of people you love. 
-                    Safe, private, and easy to use.
+                  <p className="text-body leading-relaxed text-center" aria-describedby="faces-game-heading">
+                    Practice recognizing faces of people you love with our gentle, interactive game. 
+                    Completely private and secure, designed to help maintain connections with family and friends.
                   </p>
+                  <div className="mt-4 text-center">
+                    <Link href="/faces-game" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm" 
+                          aria-label="Learn more about the Faces Game feature">
+                      Learn more <ChevronRight size={16} className="ml-1" aria-hidden="true" />
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
               
               {/* Feature Card 2: Remember This */}
-              <Card className="mobile-card bg-white rounded-xl border-2 border-gray-300 shadow-lg">
-                <CardContent className="p-0">
+              <Card className="mobile-card bg-white rounded-xl border-2 border-gray-300 shadow-lg" role="listitem" tabIndex={0}>
+                <CardContent className="p-6 md:p-8">
                   <div className="text-center mb-4 md:mb-8">
                     <Lightbulb className="text-[var(--button-primary)] w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6" aria-hidden="true" />
-                    <h3 className="text-card-heading mb-3 md:mb-6">Remember This</h3>
+                    <h3 className="text-card-heading mb-3 md:mb-6" id="remember-this-heading">Remember This</h3>
                   </div>
-                  <p className="text-body leading-relaxed text-center">
-                    Keep notes to help you remember tasks, places, and things. 
-                    Easy to use when you need to remember something.
+                  <p className="text-body leading-relaxed text-center" aria-describedby="remember-this-heading">
+                    Store important information, tasks, and reminders in an easy-to-access format. 
+                    Organize your thoughts and memories with simple, clear tools.
                   </p>
+                  <div className="mt-4 text-center">
+                    <Link href="/remember" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
+                          aria-label="Learn more about the Remember This feature">
+                      Learn more <ChevronRight size={16} className="ml-1" aria-hidden="true" />
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -201,49 +217,55 @@ export default function Home() {
               How It Works
             </h2>
             
-            <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+            <ol className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto" role="list" aria-label="How heyMemory works - 3 simple steps">
               {/* Step 1 */}
-              <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center">
-                <CardContent className="p-0">
-                  <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-white text-2xl font-bold">1</span>
-                  </div>
-                  <h3 className="text-card-heading mb-4">Family Sets Up</h3>
-                  <p className="text-body leading-relaxed">
-                    A caregiver, family member, or friend creates a profile and adds photos and information 
-                    to help support their loved one's memory.
-                  </p>
-                </CardContent>
-              </Card>
+              <li>
+                <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center" role="listitem" tabIndex={0}>
+                  <CardContent className="p-0">
+                    <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6" role="img" aria-label="Step 1">
+                      <span className="text-white text-2xl font-bold" aria-hidden="true">1</span>
+                    </div>
+                    <h3 className="text-card-heading mb-4" id="step1-heading">Family Sets Up</h3>
+                    <p className="text-body leading-relaxed" aria-describedby="step1-heading">
+                      A caregiver, family member, or friend creates a profile and adds photos and information 
+                      to help support their loved one's memory and daily activities.
+                    </p>
+                  </CardContent>
+                </Card>
+              </li>
               
               {/* Step 2 */}
-              <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center">
-                <CardContent className="p-0">
-                  <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-white text-2xl font-bold">2</span>
-                  </div>
-                  <h3 className="text-card-heading mb-4">Daily Practice</h3>
-                  <p className="text-body leading-relaxed">
-                    The user enjoys a simple, fun Faces Game each day that help exercise memory 
-                    and keep important information about loved ones fresh in mind.
-                  </p>
-                </CardContent>
-              </Card>
+              <li>
+                <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center" role="listitem" tabIndex={0}>
+                  <CardContent className="p-0">
+                    <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6" role="img" aria-label="Step 2">
+                      <span className="text-white text-2xl font-bold" aria-hidden="true">2</span>
+                    </div>
+                    <h3 className="text-card-heading mb-4" id="step2-heading">Daily Practice</h3>
+                    <p className="text-body leading-relaxed" aria-describedby="step2-heading">
+                      Enjoy gentle, accessible games and exercises designed to support memory function 
+                      and help maintain connections with important people and information.
+                    </p>
+                  </CardContent>
+                </Card>
+              </li>
               
               {/* Step 3 */}
-              <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center">
-                <CardContent className="p-0">
-                  <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-white text-2xl font-bold">3</span>
-                  </div>
-                  <h3 className="text-card-heading mb-4">Find & Remember</h3>
-                  <p className="text-body leading-relaxed">
-                    Quick overview of important things to remember, like "Where do I live?" or "Where are my pills?" 
-                    Caregivers can add helpful notes, photos, or directions so everything is easy to find when needed.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+              <li>
+                <Card className="bg-white p-8 rounded-xl border-2 border-gray-300 shadow-lg text-center" role="listitem" tabIndex={0}>
+                  <CardContent className="p-0">
+                    <div className="w-16 h-16 bg-[var(--button-primary)] rounded-full flex items-center justify-center mx-auto mb-6" role="img" aria-label="Step 3">
+                      <span className="text-white text-2xl font-bold" aria-hidden="true">3</span>
+                    </div>
+                    <h3 className="text-card-heading mb-4" id="step3-heading">Find & Remember</h3>
+                    <p className="text-body leading-relaxed" aria-describedby="step3-heading">
+                      Access important reminders and helpful information organized by caregivers, including locations, 
+                      instructions, and daily tasks to support independence.
+                    </p>
+                  </CardContent>
+                </Card>
+              </li>
+            </ol>
             
             <div className="text-center mt-12">
               <p className="text-body text-xl leading-relaxed max-w-3xl mx-auto">
@@ -264,13 +286,18 @@ export default function Home() {
               heyMemory was created with care and understanding. If you need assistance or have questions, 
               our support team is ready to help you every step of the way.
             </p>
-            <Card className="bg-[var(--background-light)] p-10 rounded-xl border-2 border-gray-300">
+            <Card className="bg-[var(--background-light)] p-10 rounded-xl border-2 border-gray-300" role="complementary" aria-labelledby="support-contact-heading">
               <CardContent className="p-0">
                 <div className="flex justify-center items-center">
                   <div className="text-center">
                     <Mail className="text-[var(--button-primary)] w-12 h-12 mx-auto mb-4" aria-hidden="true" />
+                    <h3 id="support-contact-heading" className="sr-only">Contact our support team</h3>
                     <Link href="/contact">
-                      <Button className="touch-button bg-[var(--button-primary)] text-white font-bold text-lg px-8 py-4 rounded-xl hover:opacity-90 focus:opacity-90 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-all min-h-[56px] border-2 border-[var(--button-primary)]">
+                      <Button 
+                        className="touch-button bg-[var(--button-primary)] text-white font-bold text-lg px-8 py-4 rounded-xl hover:opacity-90 focus:opacity-90 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-all min-h-[56px] border-2 border-[var(--button-primary)]"
+                        aria-label="Contact our support team for help with heyMemory"
+                        tabIndex={0}
+                      >
                         Contact Support
                       </Button>
                     </Link>
