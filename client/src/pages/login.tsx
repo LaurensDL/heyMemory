@@ -154,104 +154,85 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-6" lang="en">
-      {/* Invisible breadcrumb navigation for screen readers */}
-      <nav aria-label="Breadcrumb navigation" className="sr-only">
-        <ol>
-          <li><Link href="/" aria-label="Navigate to homepage">Home</Link></li>
-          <li aria-current="page">Login</li>
-        </ol>
-      </nav>
-
-      <main role="main" aria-labelledby="login-heading" className="w-full max-w-md focus:outline-none" tabIndex={-1}>
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
+      <div className="w-full max-w-md">
         {/* Logo */}
-        <header className="text-center mb-8">
+        <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <Brain className="text-[var(--button-primary)] w-10 h-10" aria-hidden="true" />
-            <h1 id="login-heading" className="text-4xl font-bold text-[var(--heading)] text-[clamp(1.5rem,4vw,4rem)] leading-tight">heyMemory</h1>
+            <span className="text-3xl font-bold">heyMemory</span>
           </div>
-          <p className="text-[var(--body)] text-[clamp(0.875rem,2.5vw,1rem)]">Sign in to your account</p>
-        </header>
+          <p className="text-body">Sign in to your account</p>
+        </div>
 
-        <Card role="region" aria-labelledby="login-form-heading">
-          <CardHeader>
-            <CardTitle id="login-form-heading" className="text-center text-[clamp(1.125rem,3vw,1.5rem)]">Welcome Back</CardTitle>
+        <Card className="bg-white border-2 border-gray-300 shadow-lg">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-card-heading">Login</CardTitle>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" aria-describedby="login-instructions">
-              <div id="login-instructions" className="sr-only">
-                Please enter your email address and password to log in to your heyMemory account. Both fields are required.
-              </div>
-
+          <CardContent className="px-8 pb-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-[clamp(0.875rem,2.5vw,1rem)]">Email</Label>
+                <Label htmlFor="email" className="text-body font-bold">
+                  Email Address
+                </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
                   {...register("email")}
-                  aria-invalid={errors.email ? "true" : "false"}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-[clamp(0.875rem,2.5vw,1rem)]"
-                  autoComplete="email"
+                  className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                  placeholder="Enter your email"
                 />
                 {errors.email && (
-                  <div id="email-error" className="flex items-center text-red-600 text-sm" role="alert" aria-live="polite">
-                    <AlertCircle className="w-4 h-4 mr-1" aria-hidden="true" />
-                    {errors.email.message}
-                  </div>
+                  <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-[clamp(0.875rem,2.5vw,1rem)]">Password</Label>
+                <Label htmlFor="password" className="text-body font-bold">
+                  Password
+                </Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
                   {...register("password")}
-                  aria-invalid={errors.password ? "true" : "false"}
-                  aria-describedby={errors.password ? "password-error" : undefined}
-                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-[clamp(0.875rem,2.5vw,1rem)]"
-                  autoComplete="current-password"
+                  className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                  placeholder="Enter your password"
                 />
                 {errors.password && (
-                  <div id="password-error" className="flex items-center text-red-600 text-sm" role="alert" aria-live="polite">
-                    <AlertCircle className="w-4 h-4 mr-1" aria-hidden="true" />
-                    {errors.password.message}
-                  </div>
+                  <p className="text-red-600 text-lg font-medium">{errors.password.message}</p>
                 )}
               </div>
 
               <Button
                 type="submit"
-                className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-[clamp(0.875rem,2.5vw,1rem)]"
                 disabled={loginMutation.isPending}
-                aria-describedby="submit-status"
+                className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
               >
                 {loginMutation.isPending ? "Signing In..." : "Sign In"}
               </Button>
-              
-              <div id="submit-status" className="sr-only" aria-live="polite">
-                {loginMutation.isPending ? "Processing login request..." : "Ready to sign in"}
-              </div>
             </form>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-[var(--body)] text-[clamp(0.75rem,2vw,0.875rem)]">
+            <div className="mt-8 text-center">
+              <p className="text-body">
                 Don't have an account?{" "}
-                <Link
-                  href="/register"
-                  className="text-[var(--button-primary)] hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-                  aria-label="Navigate to registration page to create a new account"
-                >
-                  Sign up
+                <Link href="/register">
+                  <button className="text-[var(--button-primary)] font-bold hover:underline focus:underline focus:outline-none">
+                    Sign up here
+                  </button>
                 </Link>
               </p>
             </div>
           </CardContent>
         </Card>
-      </main>
+
+        <div className="text-center mt-6">
+          <Link href="/">
+            <button className="text-body font-bold text-[var(--button-primary)] hover:underline focus:underline focus:outline-none">
+              ← Back to Home
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
