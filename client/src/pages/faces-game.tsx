@@ -111,15 +111,9 @@ export default function FacesGamePage() {
             </div>
             <div className="flex items-center space-x-4">
               {hasEnoughPhotos && gameStarted && (
-                <>
-                  <Badge variant="outline" className="text-sm">
-                    Photo {currentPhotoIndex + 1} of {shuffledPhotos.length}
-                  </Badge>
-                  <Button variant="outline" size="sm" onClick={handleRestart}>
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Restart
-                  </Button>
-                </>
+                <Badge variant="outline" className="text-sm">
+                  Photo {currentPhotoIndex + 1} of {shuffledPhotos.length}
+                </Badge>
               )}
               <Link href="/dashboard">
                 <Button variant="outline" className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
