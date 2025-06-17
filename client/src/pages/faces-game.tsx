@@ -88,16 +88,15 @@ export default function FacesGamePage() {
       <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Faces game navigation">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/">
-                <div className="flex items-center space-x-3 cursor-pointer">
-                  <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-                  <span className="text-2xl font-bold">heyMemory</span>
-                </div>
-              </Link>
-              <div className="flex items-center space-x-2">
-                <h1 className="text-2xl font-bold text-gray-900">Faces Game</h1>
+            <Link href="/">
+              <div className="flex items-center space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+                <span className="text-2xl font-bold">heyMemory</span>
               </div>
+            </Link>
+            
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <h1 className="text-2xl font-bold text-gray-900">Faces Game</h1>
             </div>
             <div className="flex items-center space-x-4">
               {hasEnoughPhotos && gameStarted && (
