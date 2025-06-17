@@ -11,7 +11,8 @@ import {
   FileText,
   Eye,
   Clock,
-  Tag
+  Tag,
+  Phone
 } from "lucide-react";
 import { Link } from "wouter";
 import type { RememberItem } from "@shared/schema";
@@ -86,6 +87,28 @@ export default function RememberPage() {
           </div>
         ) : rememberItems.length > 0 ? (
           <>
+            {/* Caregiver Phone Number Card - Always visible when user has caregiver phone */}
+            {user?.caregiverPhoneNumber && (
+              <div className="mb-8">
+                <Card className="max-w-md mx-auto bg-red-50 border-3 border-red-300 shadow-xl">
+                  <CardContent className="p-8 text-center">
+                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Phone className="w-8 h-8 text-red-600" />
+                    </div>
+                    <h3 className="text-3xl font-black text-red-800 mb-4">
+                      Call Your Caregiver
+                    </h3>
+                    <a href={`tel:${user.caregiverPhoneNumber}`}>
+                      <Button className="bg-red-600 text-white font-black text-2xl px-8 py-6 rounded-xl border-3 border-red-600 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-400 transition-colors w-full">
+                        <Phone className="w-6 h-6 mr-3" />
+                        {user.caregiverPhoneNumber}
+                      </Button>
+                    </a>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
             {/* Items Count */}
             <div className="text-center mb-8">
               <span className="inline-block bg-green-100 text-green-800 px-6 py-3 rounded-full font-black text-2xl border-2 border-green-300">

@@ -296,9 +296,26 @@ export default function Profile() {
                     {errors.email && (
                       <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
                     )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="caregiverPhoneNumber" className="text-body font-bold">
+                      Caregiver Phone Number
+                    </Label>
+                    <Input
+                      id="caregiverPhoneNumber"
+                      type="tel"
+                      {...register("caregiverPhoneNumber")}
+                      className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
+                      placeholder="Enter caregiver's phone number"
+                    />
+                    {errors.caregiverPhoneNumber && (
+                      <p className="text-red-600 text-lg font-medium">{errors.caregiverPhoneNumber.message}</p>
+                    )}
+                  </div>
                     
-                    {/* Pending Email Change Notice */}
-                    {user?.pendingEmail && (
+                  {/* Pending Email Change Notice */}
+                  {user?.pendingEmail && (
                       <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 space-y-3">
                         <div className="flex items-start space-x-3">
                           <Clock className="text-blue-600 w-5 h-5 mt-0.5 flex-shrink-0" />
@@ -349,7 +366,6 @@ export default function Profile() {
                         </div>
                       </div>
                     )}
-                  </div>
                 </div>
 
                 {/* Address Section */}
