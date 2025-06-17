@@ -248,36 +248,42 @@ export default function ContactPage() {
       <main role="main" id="main-content" tabIndex={-1}>
         <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-16">
           {/* Header */}
-        <div className="text-center mb-8 md:mb-16">
-          <h1 className="text-3xl md:text-6xl font-bold text-black mb-4 md:mb-8" id="contact-heading">
-            Contact Us
-          </h1>
-          <p className="text-lg md:text-2xl text-gray-700 leading-relaxed px-2" aria-describedby="contact-heading">
-            We're here to help. Send us a message and we'll respond as soon as possible.
-          </p>
-        </div>
+          <div className="text-center mb-8 md:mb-16">
+            <h1 className="text-3xl md:text-6xl font-bold text-black mb-4 md:mb-8" id="contact-heading">
+              Contact Us
+            </h1>
+            <p className="text-lg md:text-2xl text-gray-700 leading-relaxed px-2" aria-describedby="contact-heading">
+              We're here to help. Send us a message and we'll respond as soon as possible.
+            </p>
+          </div>
 
-        {/* Contact Form */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12 mb-8 md:mb-16">
-            <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12">Send Us a Message</h2>
-            
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+          {/* Contact Form */}
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12 mb-8 md:mb-16">
+              <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12">Send Us a Message</h2>
+              
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-lg md:text-2xl font-bold text-black mb-2 md:mb-4 block">Your Name</FormLabel>
+                      <FormLabel className="text-lg md:text-2xl font-bold text-black mb-2 md:mb-4 block" id="name-label">
+                        Your Name
+                      </FormLabel>
                       <FormControl>
                         <Input 
                           {...field} 
                           placeholder="Full name"
                           className="text-lg md:text-2xl p-4 md:p-6 rounded-xl border-2 md:border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white min-h-[56px] touch-manipulation"
+                          aria-labelledby="name-label"
+                          aria-required="true"
+                          aria-describedby="name-error"
+                          tabIndex={0}
                         />
                       </FormControl>
-                      <FormMessage className="text-base md:text-xl text-red-600 mt-2" />
+                      <FormMessage className="text-base md:text-xl text-red-600 mt-2" id="name-error" />
                     </FormItem>
                   )}
                 />
@@ -342,12 +348,14 @@ export default function ContactPage() {
                   type="submit" 
                   disabled={contactMutation.isPending}
                   className="w-full touch-button bg-[var(--button-primary)] hover:bg-[var(--button-primary-hover)] text-white font-bold text-lg md:text-2xl py-4 md:py-8 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors min-h-[56px] md:min-h-[64px]"
+                  aria-label="Submit contact form message"
+                  tabIndex={0}
                 >
                   {contactMutation.isPending ? "Sending..." : "Send Message"}
                 </Button>
-              </form>
-            </Form>
-          </div>
+                </form>
+              </Form>
+            </div>
 
           {/* Contact Information */}
           <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12">
@@ -375,6 +383,7 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </main>
