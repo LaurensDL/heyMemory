@@ -150,7 +150,7 @@ export default function Home() {
                     <h3 className="text-card-heading mb-3 md:mb-6">Remember This</h3>
                   </div>
                   <p className="text-body leading-relaxed text-center">
-                    Keep notes to help you remember names, places, and things. 
+                    Keep notes to help you remember tasks, places, and things. 
                     Easy to use when you need to remember something.
                   </p>
                 </CardContent>
