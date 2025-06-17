@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { z } from "zod";
 import nodemailer from "nodemailer";
+import bcrypt from "bcrypt";
 import { storage } from "./storage";
 import { 
   loginSchema, 
@@ -28,12 +29,12 @@ const contactSchema = z.object({
 
 // Email transporter setup
 const transporter = nodemailer.createTransport({
-  host: "smtp-auth.mailprotect.be",
-  port: 587,
-  secure: false,
+  host: process.env.SMTP_HOST || "smtp-auth.mailprotect.be",
+  port: parseInt(process.env.SMTP_PORT || "587"),
+  secure: process.env.SMTP_SECURE === "true",
   auth: {
-    user: "help@heymemory.app",
-    pass: "V3rg3t3n#v#"
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
   }
 });
 

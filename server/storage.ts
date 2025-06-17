@@ -13,6 +13,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and } from "drizzle-orm";
+import bcrypt from "bcrypt";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -23,6 +24,7 @@ export interface IStorage {
   verifyEmailToken(token: string): Promise<User | undefined>;
   generateEmailVerificationToken(userId: number): Promise<string>;
   updatePassword(userId: number, newPassword: string): Promise<void>;
+  verifyPassword(userId: number, password: string): Promise<boolean>;
   
   // Email change operations
   initiateEmailChange(userId: number, newEmail: string): Promise<string>;
@@ -61,6 +63,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(email: string, password: string): Promise<User> {
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     const emailVerificationToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     const emailVerificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
@@ -68,7 +72,7 @@ export class DatabaseStorage implements IStorage {
       .insert(users)
       .values({
         email,
-        password, // Note: In production, this should be hashed
+        password: hashedPassword,
         emailVerificationToken,
         emailVerificationExpires,
         isEmailVerified: false,
