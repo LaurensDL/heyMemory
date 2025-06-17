@@ -270,35 +270,35 @@ export default function FacesGamePage() {
                     /* Back of Card - Answer */
                     (<CardContent className="p-0 h-full flex flex-col relative">
                       <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 rounded-t-lg flex items-center justify-center overflow-hidden">
-                        <div className="text-center space-y-3 p-4 flex flex-col justify-center h-full">
-                          <div className="bg-white rounded-full p-3 w-16 h-16 flex items-center justify-center mx-auto">
-                            <Heart className="w-8 h-8 text-red-500" />
+                        <div className="text-center space-y-2 p-4 max-h-full overflow-hidden">
+                          <div className="bg-white rounded-full p-2 w-12 h-12 flex items-center justify-center mx-auto">
+                            <Heart className="w-6 h-6 text-red-500" />
                           </div>
                           
                           <div>
-                            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-1">
                               {currentPhoto?.name}
                             </h2>
-                            <Badge variant="secondary" className="text-lg px-4 py-2">
+                            <Badge variant="secondary" className="text-sm px-3 py-1">
                               {currentPhoto?.relationship}
                             </Badge>
                           </div>
 
                           {currentPhoto?.description && (
-                            <div className="bg-white/50 rounded-lg p-3 max-w-xs mx-auto">
-                              <p className="text-base text-gray-700 leading-relaxed">
+                            <div className="bg-white/50 rounded-lg p-2 max-w-xs mx-auto">
+                              <p className="text-sm text-gray-700 leading-tight line-clamp-3">
                                 {currentPhoto.description}
                               </p>
                             </div>
                           )}
 
                           <Button 
-                            size="lg" 
+                            size="sm" 
                             onClick={() => setIsFlipped(false)} 
                             variant="outline" 
-                            className="w-full max-w-xs mx-auto bg-white text-black font-bold text-lg py-3 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
+                            className="w-full max-w-xs mx-auto bg-white text-black font-bold text-sm py-2 px-4 rounded-lg border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors"
                           >
-                            <Eye className="w-5 h-5 mr-2" />
+                            <Eye className="w-4 h-4 mr-2" />
                             See Photo Again
                           </Button>
                         </div>
