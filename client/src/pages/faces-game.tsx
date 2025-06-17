@@ -234,8 +234,7 @@ export default function FacesGamePage() {
                   }`}
                   onClick={!isFlipped ? handleFlipCard : undefined}
                   style={{ 
-                    transformStyle: 'preserve-3d',
-                    height: '600px'
+                    transformStyle: 'preserve-3d'
                   }}
                 >
                   {!isFlipped ? (
