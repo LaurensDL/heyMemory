@@ -39,12 +39,12 @@ const facePhotoFormSchema = z.object({
   photo: z.any().optional()
 });
 
-// Schema for remember this items
+// Schema for remember this items - supports up to 3 photos
 const rememberItemSchema = z.object({
   title: z.string().min(1, "Title is required"),
   content: z.string().min(1, "Content is required"),
   category: z.string().min(1, "Category is required"),
-  photo: z.any().optional()
+  photos: z.any().optional()
 });
 
 type FacePhotoFormData = z.infer<typeof facePhotoFormSchema>;
@@ -127,23 +127,26 @@ export default function CaregiverPage() {
 
   const addRememberMutation = useMutation({
     mutationFn: async (data: RememberItemData): Promise<RememberItem> => {
-      let photoUrl = "";
+      let photoUrls: string[] = [];
       
-      // Convert file to data URL if photo is provided
-      if (data.photo && data.photo.length > 0) {
-        const file = data.photo[0];
-        photoUrl = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target?.result as string);
-          reader.readAsDataURL(file);
-        });
+      // Convert files to data URLs if photos are provided
+      if (data.photos && data.photos.length > 0) {
+        photoUrls = await Promise.all(
+          Array.from(data.photos).slice(0, 3).map(file => 
+            new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onload = (e) => resolve(e.target?.result as string);
+              reader.readAsDataURL(file);
+            })
+          )
+        );
       }
       
       const response = await apiRequest("POST", "/api/remember-items", {
         title: data.title,
         content: data.content,
         category: data.category,
-        photoUrl: photoUrl || undefined
+        photoUrls: photoUrls.length > 0 ? photoUrls : undefined
       });
       return response.json();
     },
@@ -166,23 +169,27 @@ export default function CaregiverPage() {
     mutationFn: async (data: RememberItemData): Promise<RememberItem> => {
       if (!editingRemember) throw new Error("No item being edited");
       
-      let photoUrl = editingRemember.photoUrl;
+      let photoUrls = editingRemember.photoUrls || [];
       
-      // Convert file to data URL if photo is provided
-      if (data.photo && data.photo.length > 0) {
-        const file = data.photo[0];
-        photoUrl = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target?.result as string);
-          reader.readAsDataURL(file);
-        });
+      // Convert files to data URLs if photos are provided
+      if (data.photos && data.photos.length > 0) {
+        const newPhotoUrls = await Promise.all(
+          Array.from(data.photos).slice(0, 3).map(file => 
+            new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onload = (e) => resolve(e.target?.result as string);
+              reader.readAsDataURL(file);
+            })
+          )
+        );
+        photoUrls = newPhotoUrls;
       }
       
       const response = await apiRequest("PUT", `/api/remember-items/${editingRemember.id}`, {
         title: data.title,
         content: data.content,
         category: data.category,
-        photoUrl: photoUrl || undefined
+        photoUrls: photoUrls || undefined
       });
       return response.json();
     },
