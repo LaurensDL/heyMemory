@@ -894,7 +894,7 @@ export default function CaregiverPage() {
                 <h4 className="font-bold mb-2">Faces Game Photos:</h4>
                 <ul className="space-y-1 text-sm">
                   <li>• Add photos of family members, friends, pets and caregivers</li>
-                  <li>• Include clear, recent photos showing the person's face</li>
+                  <li>• Include clear, recent photos showing the person's or animals face</li>
                   <li>• Add helpful details about their relationship</li>
                   <li>• Photos will appear in the faces game for practice</li>
                 </ul>
