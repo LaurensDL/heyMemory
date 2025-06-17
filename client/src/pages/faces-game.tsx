@@ -292,9 +292,9 @@ export default function FacesGamePage() {
                             size="lg" 
                             onClick={() => setIsFlipped(false)} 
                             variant="outline" 
-                            className="w-full max-w-sm mx-auto"
+                            className="w-full max-w-sm mx-auto bg-white text-black font-bold text-xl py-4 px-8 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors"
                           >
-                            <Eye className="w-5 h-5 mr-2" />
+                            <Eye className="w-6 h-6 mr-3" />
                             See Photo Again
                           </Button>
                         </div>
@@ -302,25 +302,25 @@ export default function FacesGamePage() {
                       <div className="p-4 w-full">
                         <div className="space-y-2">
                           
-                          <div className="flex gap-3">
+                          <div className="flex gap-4">
                             <Button 
                               size="lg" 
                               onClick={handlePrevPhoto} 
                               variant="outline" 
-                              className="flex-1"
+                              className="flex-1 bg-white text-black font-bold text-xl py-4 px-6 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                               disabled={currentPhotoIndex === 0}
                             >
-                              <ChevronLeft className="w-5 h-5 mr-2" />
+                              <ChevronLeft className="w-6 h-6 mr-2" />
                               Previous
                             </Button>
                             
                             <Button 
                               size="lg" 
                               onClick={handleNextPhoto} 
-                              className="flex-1"
+                              className="flex-1 bg-blue-600 text-white font-bold text-xl py-4 px-6 rounded-xl border-2 border-blue-600 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
                             >
                               Next
-                              <ChevronRight className="w-5 h-5 ml-2" />
+                              <ChevronRight className="w-6 h-6 ml-2" />
                             </Button>
                           </div>
                         </div>
@@ -332,14 +332,14 @@ export default function FacesGamePage() {
 
               {/* Quit Game Button - Outside the card to prevent misclicks */}
               {isFlipped && (
-                <div className="mt-6 flex justify-center">
+                <div className="mt-8 flex justify-center">
                   <Button 
                     size="lg" 
                     onClick={handleQuitGame} 
                     variant="destructive" 
-                    className="flex items-center gap-2 px-6"
+                    className="bg-red-600 text-white font-bold text-xl py-4 px-8 rounded-xl border-2 border-red-600 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-400 transition-colors flex items-center gap-3"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-6 h-6" />
                     Quit Game
                   </Button>
                 </div>
