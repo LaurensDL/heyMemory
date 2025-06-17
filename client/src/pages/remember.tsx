@@ -59,13 +59,13 @@ export default function RememberPage() {
             </Link>
             
             <div className="absolute left-1/2 transform -translate-x-1/2">
-              <h1 className="text-2xl font-bold text-gray-900">Remember This</h1>
+              <h1 className="text-4xl font-black text-gray-900">Remember This</h1>
             </div>
             
             <div className="flex items-center space-x-4">
               <Link href="/dashboard">
-                <Button variant="outline" className="bg-white text-black font-bold text-lg px-6 py-3 rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
-                  <ArrowLeft className="w-5 h-5 mr-2" />
+                <Button variant="outline" className="bg-white text-black font-black text-xl px-8 py-4 rounded-xl border-3 border-black hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
+                  <ArrowLeft className="w-6 h-6 mr-3" />
                   Back to Dashboard
                 </Button>
               </Link>
@@ -77,8 +77,8 @@ export default function RememberPage() {
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-4">Important Things to Remember</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-5xl font-black mb-6">Important Things to Remember</h2>
+          <p className="text-2xl font-bold text-gray-700 max-w-2xl mx-auto">
             Click on any card to view detailed information and helpful photos
           </p>
         </div>
@@ -86,13 +86,13 @@ export default function RememberPage() {
         {isLoading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading your memory items...</p>
+            <p className="mt-4 text-xl font-bold text-gray-700">Loading your memory items...</p>
           </div>
         ) : rememberItems.length > 0 ? (
           <>
             {/* Items Count */}
             <div className="text-center mb-8">
-              <span className="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold text-lg">
+              <span className="inline-block bg-green-100 text-green-800 px-6 py-3 rounded-full font-black text-2xl border-2 border-green-300">
                 {rememberItems.length} memory item{rememberItems.length !== 1 ? 's' : ''} available
               </span>
             </div>
@@ -107,10 +107,10 @@ export default function RememberPage() {
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
-                      <CardTitle className="text-lg font-bold text-gray-900 flex-1 pr-2">
+                      <CardTitle className="text-2xl font-black text-gray-900 flex-1 pr-2">
                         {item.title}
                       </CardTitle>
-                      <Eye className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <Eye className="w-6 h-6 text-gray-600 flex-shrink-0" />
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
@@ -133,15 +133,15 @@ export default function RememberPage() {
             <Card className="max-w-md mx-auto bg-white shadow-lg">
               <CardContent className="p-12">
                 <FileText className="w-16 h-16 text-gray-400 mx-auto mb-6" />
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                <h3 className="text-4xl font-black text-gray-900 mb-6">
                   No Memory Items Yet
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-xl font-bold text-gray-700 mb-8">
                   Ask your caregiver to add important information and reminders for you.
                 </p>
                 <Link href="/caregiver">
-                  <Button className="bg-green-600 hover:bg-green-700 text-white font-bold text-lg px-6 py-3">
-                    <FileText className="w-5 h-5 mr-2" />
+                  <Button className="bg-black text-white font-black text-2xl px-8 py-6 rounded-xl border-3 border-black hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
+                    <FileText className="w-6 h-6 mr-3" />
                     Caregiver Tools
                   </Button>
                 </Link>
@@ -154,7 +154,7 @@ export default function RememberPage() {
         <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
           <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-900">
+              <DialogTitle className="text-4xl font-black text-gray-900">
                 {selectedItem?.title}
               </DialogTitle>
             </DialogHeader>
@@ -163,27 +163,27 @@ export default function RememberPage() {
               <div className="space-y-6">
                 {/* Photo */}
                 {selectedItem.photoUrl && (
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-gray-900">Reference Photo:</h4>
+                  <div className="space-y-3">
+                    <h4 className="text-2xl font-black text-gray-900">Reference Photo:</h4>
                     <img 
                       src={selectedItem.photoUrl} 
                       alt={selectedItem.title}
-                      className="w-full max-w-md mx-auto rounded-lg border shadow-sm"
+                      className="w-full max-w-md mx-auto rounded-lg border-3 border-gray-300 shadow-lg"
                     />
                   </div>
                 )}
 
                 {/* Content */}
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-gray-900">Details:</h4>
-                  <p className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
+                <div className="space-y-3">
+                  <h4 className="text-2xl font-black text-gray-900">Details:</h4>
+                  <p className="text-gray-800 text-2xl font-bold leading-relaxed whitespace-pre-wrap">
                     {selectedItem.content}
                   </p>
                 </div>
 
                 {/* Close Button */}
-                <div className="flex justify-end pt-4">
-                  <Button onClick={handleCloseDetail} className="bg-green-600 hover:bg-green-700 text-white">
+                <div className="flex justify-end pt-6">
+                  <Button onClick={handleCloseDetail} className="bg-black text-white font-black text-2xl px-8 py-4 rounded-xl border-3 border-black hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
                     Close
                   </Button>
                 </div>
