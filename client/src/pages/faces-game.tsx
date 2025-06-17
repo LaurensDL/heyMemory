@@ -287,19 +287,20 @@ export default function FacesGamePage() {
                               </p>
                             </div>
                           )}
-                        </div>
-                      </div>
-                      <div className="p-4 w-full">
-                        <div className="space-y-2">
+
                           <Button 
                             size="lg" 
                             onClick={() => setIsFlipped(false)} 
                             variant="outline" 
-                            className="w-full"
+                            className="w-full max-w-sm mx-auto"
                           >
                             <Eye className="w-5 h-5 mr-2" />
                             See Photo Again
                           </Button>
+                        </div>
+                      </div>
+                      <div className="p-4 w-full">
+                        <div className="space-y-2">
                           
                           <div className="flex gap-3">
                             <Button 
