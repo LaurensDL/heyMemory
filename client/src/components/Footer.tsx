@@ -35,7 +35,7 @@ export function Footer() {
           </div>
           
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold">Support</h4>
+            <h4 className="text-sm font-semibold">Account</h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/terms-of-service" className="text-muted-foreground hover:text-foreground">
