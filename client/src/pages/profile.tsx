@@ -496,7 +496,7 @@ export default function Profile() {
                         type="password"
                         {...register("newPassword")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Enter new password (optional)"
+                        placeholder="New password"
                       />
                       {errors.newPassword && (
                         <p className="text-red-600 text-lg font-medium">{errors.newPassword.message}</p>
@@ -512,7 +512,7 @@ export default function Profile() {
                         type="password"
                         {...register("confirmNewPassword")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Confirm new password"
+                        placeholder="Confirm password"
                       />
                       {errors.confirmNewPassword && (
                         <p className="text-red-600 text-lg font-medium">{errors.confirmNewPassword.message}</p>
