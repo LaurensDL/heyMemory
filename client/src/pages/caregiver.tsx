@@ -187,7 +187,7 @@ export default function CaregiverPage() {
     }
   });
 
-  const updatePhotoMutation = useMutation({
+  const updatePhotoMutation = useMutation<FacePhotoType, Error, FacePhotoFormData & { id: number }>({
     mutationFn: async (data: FacePhotoFormData & { id: number }) => {
       let photoUrl = "";
       
@@ -201,12 +201,14 @@ export default function CaregiverPage() {
         });
       }
       
-      return apiRequest("PATCH", `/api/face-photos/${data.id}`, {
+      const response = await apiRequest("PATCH", `/api/face-photos/${data.id}`, {
         name: data.name,
         relationship: data.relationship || "",
         description: data.description || "",
         ...(photoUrl && { photoUrl: photoUrl })
       });
+      
+      return response.json() as Promise<FacePhotoType>;
     },
     onMutate: async (newData) => {
       // Cancel any outgoing refetches
@@ -245,7 +247,7 @@ export default function CaregiverPage() {
       // Return a context object with the snapshotted value
       return { previousPhotos };
     },
-    onSuccess: (updatedPhoto) => {
+    onSuccess: (updatedPhoto: FacePhotoType) => {
       // Update the cache with the server response immediately
       queryClient.setQueryData(['/api/face-photos'], (old: FacePhotoType[] | undefined) => {
         if (!old) return [updatedPhoto];
