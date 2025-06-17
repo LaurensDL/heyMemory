@@ -4,7 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Shield, BarChart3, Target, User, ArrowLeft, Settings } from "lucide-react";
+import { Shield, BarChart3, Target, User, ArrowLeft, Settings, Brain } from "lucide-react";
 import { useCookies, CookieCategories } from "@/hooks/useCookies";
 import { useState } from "react";
 import { Link } from "wouter";
@@ -89,13 +89,35 @@ export default function CookiePolicyPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation Bar - Mobile Optimized */}
+      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+        <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo and Brand */}
+            <Link href="/">
+              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
+                <span className="text-xl md:text-2xl font-bold">heyMemory</span>
+              </div>
+            </Link>
+            
+            {/* Navigation Links - Mobile Responsive */}
+            <div className="flex items-center">
+              <Link href="/">
+                <Button variant="outline" className="touch-button bg-white text-black font-bold text-sm md:text-lg px-3 md:px-6 py-2 md:py-3 rounded-lg md:rounded-xl border-2 border-gray-300 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 md:focus:ring-4 focus:ring-gray-400 transition-colors">
+                  <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
+                  <span className="hidden sm:inline">Back to Home</span>
+                  <span className="sm:hidden">Back</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-6">
-          <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </Link>
           <h1 className="text-3xl font-bold mb-2">Cookie Policy</h1>
           <p className="text-muted-foreground">
             Learn about how we use cookies and manage your preferences
@@ -249,6 +271,38 @@ export default function CookiePolicyPage() {
           </Card>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-50 border-t-2 border-gray-200 py-12" role="contentinfo">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-3 mb-6">
+              <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+              <span className="text-2xl font-bold">heyMemory</span>
+            </div>
+            
+            <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 mb-6">
+              <Link href="/privacy-policy">
+                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                  Privacy Policy
+                </button>
+              </Link>
+              <Link href="/cookie-policy">
+                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                  Cookie Policy
+                </button>
+              </Link>
+              <Link href="/terms-of-service">
+                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                  Terms of Service
+                </button>
+              </Link>
+            </div>
+            
+            <p className="text-body">© 2025 heyMemory. Designed with care for memory support.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
