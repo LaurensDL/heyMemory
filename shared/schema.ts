@@ -137,6 +137,7 @@ export const adminUpdateUserSchema = z.object({
   state: z.string().optional(),
   zipCode: z.string().optional(),
   country: z.string().optional(),
+  caregiverPhoneNumber: z.string().optional(),
   isAdmin: z.boolean().optional(),
   isEmailVerified: z.boolean().optional(),
 });

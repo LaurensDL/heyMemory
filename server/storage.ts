@@ -160,19 +160,22 @@ export class DatabaseStorage implements IStorage {
 
   async adminUpdateUser(id: number, updates: AdminUpdateUserData): Promise<User | undefined> {
     const updateData: Partial<typeof users.$inferInsert> = {
-      email: updates.email,
-      password: updates.password,
-      isEmailVerified: updates.isEmailVerified,
-      isAdmin: updates.isAdmin,
-      firstName: updates.firstName,
-      lastName: updates.lastName,
-      address: updates.address,
-      city: updates.city,
-      state: updates.state,
-      zipCode: updates.zipCode,
-      country: updates.country,
       updatedAt: new Date(),
     };
+
+    // Only include fields that are actually provided
+    if (updates.email !== undefined) updateData.email = updates.email;
+    if (updates.password !== undefined && updates.password !== '') updateData.password = updates.password;
+    if (updates.isEmailVerified !== undefined) updateData.isEmailVerified = updates.isEmailVerified;
+    if (updates.isAdmin !== undefined) updateData.isAdmin = updates.isAdmin;
+    if (updates.firstName !== undefined) updateData.firstName = updates.firstName;
+    if (updates.lastName !== undefined) updateData.lastName = updates.lastName;
+    if (updates.address !== undefined) updateData.address = updates.address;
+    if (updates.city !== undefined) updateData.city = updates.city;
+    if (updates.state !== undefined) updateData.state = updates.state;
+    if (updates.zipCode !== undefined) updateData.zipCode = updates.zipCode;
+    if (updates.country !== undefined) updateData.country = updates.country;
+    if ('caregiverPhoneNumber' in updates && updates.caregiverPhoneNumber !== undefined) updateData.caregiverPhoneNumber = updates.caregiverPhoneNumber;
 
     // Handle date conversion for dateOfBirth
     if (updates.dateOfBirth) {
