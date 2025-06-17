@@ -19,6 +19,7 @@ import Remember from "@/pages/remember";
 import Contact from "@/pages/contact";
 import CookiePolicy from "@/pages/cookie-policy";
 import PrivacyPolicy from "@/pages/privacy-policy";
+import TermsOfService from "@/pages/terms-of-service";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -55,6 +56,7 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/cookie-policy" component={CookiePolicy} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/terms-of-service" component={TermsOfService} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

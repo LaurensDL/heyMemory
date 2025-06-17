@@ -51,7 +51,7 @@ export function Footer() {
           </div>
           
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold">Privacy</h4>
+            <h4 className="text-sm font-semibold">Legal</h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <Link href="/privacy-policy" className="text-muted-foreground hover:text-foreground">
@@ -61,6 +61,11 @@ export function Footer() {
               <li>
                 <Link href="/cookie-policy" className="text-muted-foreground hover:text-foreground">
                   Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-of-service" className="text-muted-foreground hover:text-foreground">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
@@ -74,6 +79,12 @@ export function Footer() {
             © 2025 heyMemory. All rights reserved.
           </p>
           <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+            <Link href="/terms-of-service" className="hover:text-foreground">
+              Terms
+            </Link>
+            <Link href="/privacy-policy" className="hover:text-foreground">
+              Privacy
+            </Link>
             <Link href="/cookie-policy" className="hover:text-foreground">
               Cookie Settings
             </Link>
