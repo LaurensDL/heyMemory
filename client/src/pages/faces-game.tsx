@@ -224,7 +224,7 @@ export default function FacesGamePage() {
           </div>)
         ) : (
           /* Game Play Screen */
-          <div className="text-center">
+          (<div className="text-center">
             <div className="max-w-2xl mx-auto">
               {/* Game Card */}
               <div className="relative mb-8">
@@ -240,7 +240,7 @@ export default function FacesGamePage() {
                 >
                   {!isFlipped ? (
                     /* Front of Card - Photo */
-                    <div className="p-0 flex flex-col h-full w-full">
+                    (<div className="p-0 flex flex-col h-full w-full">
                       <div className="w-full h-96 bg-gray-100 flex items-center justify-center overflow-hidden">
                         {currentPhoto?.photoUrl ? (
                           <img
@@ -256,19 +256,17 @@ export default function FacesGamePage() {
                         )}
                       </div>
                       <div className="p-8 flex-1 flex flex-col justify-center">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-4">Who is this?</h3>
-                        <p className="text-gray-600 mb-6">
-                          Take your time to remember their name and relationship to you.
-                        </p>
+                        <h3 className="font-bold text-gray-900 mb-4 text-[32px]">Who is this?</h3>
+                        
                         <Button size="lg" className="w-full">
                           <Heart className="w-5 h-5 mr-2" />
                           Touch to See Answer
                         </Button>
                       </div>
-                    </div>
+                    </div>)
                   ) : (
                     /* Back of Card - Answer */
-                    <div className="p-0 flex flex-col h-full w-full">
+                    (<div className="p-0 flex flex-col h-full w-full">
                       <div className="w-full aspect-square bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden">
                         <div className="text-center space-y-4 p-6">
                           <div className="bg-white rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
@@ -326,7 +324,7 @@ export default function FacesGamePage() {
                           </Button>
                         </div>
                       </div>
-                    </div>
+                    </div>)
                   )}
                 </div>
               </div>
@@ -345,7 +343,7 @@ export default function FacesGamePage() {
               </div>
 
             </div>
-          </div>
+          </div>)
         )}
       </div>
     </div>
