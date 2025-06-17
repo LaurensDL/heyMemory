@@ -203,7 +203,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-card-heading mb-4">Find & Remember</h3>
                   <p className="text-body leading-relaxed">
-                    Quick answers to important personal questions, like "Where do I live?" or "Where are my pills?" 
+                    Quick overview of important things to remember, like "Where do I live?" or "Where are my pills?" 
                     Caregivers can add helpful notes, photos, or directions so everything is easy to find when needed.
                   </p>
                 </CardContent>

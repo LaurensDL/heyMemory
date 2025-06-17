@@ -78,20 +78,93 @@ export default function ContactPage() {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-white text-black">
-        {/* Navigation Bar - Same as homepage */}
+        {/* Navigation Bar - Mobile Optimized */}
         <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
-          <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
             <div className="flex items-center justify-between">
               {/* Logo and Brand */}
               <Link href="/">
-                <div className="flex items-center space-x-3 cursor-pointer">
-                  <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-                  <span className="text-2xl font-bold">heyMemory</span>
+                <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
+                  <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
+                  <span className="text-xl md:text-2xl font-bold">heyMemory</span>
                 </div>
               </Link>
               
-              {/* Navigation Links - Hidden on mobile, shown on desktop */}
-              <div className="hidden md:flex items-center space-x-8">
+              {/* Mobile Navigation - Always visible CTA */}
+              <div className="flex items-center space-x-2 md:space-x-4">
+                <Link href="/dashboard" className="md:hidden">
+                  <Button className="touch-button bg-blue-600 text-white font-bold text-base px-4 py-2 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
+                    Dashboard
+                  </Button>
+                </Link>
+                
+                {/* Desktop Navigation Links */}
+                <div className="hidden md:flex items-center space-x-6">
+                  <Link href="/dashboard">
+                    <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                      Dashboard
+                    </button>
+                  </Link>
+                  <Link href="/contact">
+                    <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                      Contact
+                    </button>
+                  </Link>
+                  
+                  {/* Accessibility Indicator - Desktop only */}
+                  <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
+                    <span className="text-xl font-black text-green-700 mr-2">A+</span>
+                    <span className="text-base font-bold text-green-700">Accessible</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <div className="max-w-2xl mx-auto px-4 py-8 md:px-8 md:py-16 text-center">
+          <div className="w-20 h-20 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-8">
+            <Mail className="w-12 h-12 text-green-600" />
+          </div>
+          <h1 className="text-3xl md:text-5xl font-bold text-black mb-4 md:mb-6">Thank You!</h1>
+          <p className="text-lg md:text-2xl text-gray-700 mb-8 md:mb-12 leading-relaxed px-2">
+            Your message has been sent successfully. We'll get back to you as soon as possible.
+          </p>
+          <Button 
+            onClick={() => setIsSubmitted(false)}
+            className="w-full sm:w-auto touch-button bg-[var(--button-primary)] hover:bg-[var(--button-primary-hover)] text-white font-bold text-lg md:text-2xl px-8 md:px-12 py-4 md:py-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors min-h-[56px] md:min-h-[64px]"
+          >
+            Send Another Message
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white text-black">
+      {/* Navigation Bar - Mobile Optimized */}
+      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+        <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo and Brand */}
+            <Link href="/">
+              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
+                <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
+                <span className="text-xl md:text-2xl font-bold">heyMemory</span>
+              </div>
+            </Link>
+            
+            {/* Mobile Navigation - Always visible CTA */}
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <Link href="/" className="md:hidden">
+                <Button className="touch-button bg-blue-600 text-white font-bold text-base px-4 py-2 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
+                  Back
+                </Button>
+              </Link>
+              
+              {/* Desktop Navigation Links */}
+              <div className="hidden md:flex items-center space-x-6">
                 <Link href="/dashboard">
                   <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
                     Dashboard
@@ -103,84 +176,29 @@ export default function ContactPage() {
                   </button>
                 </Link>
                 
-                {/* Accessibility Indicator */}
+                {/* Accessibility Indicator - Desktop only */}
                 <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
-                  <span className="text-2xl font-black text-green-700 mr-2">A+</span>
-                  <span className="text-lg font-bold text-green-700">Accessible</span>
+                  <span className="text-xl font-black text-green-700 mr-2">A+</span>
+                  <span className="text-base font-bold text-green-700">Accessible</span>
                 </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        <div className="max-w-2xl mx-auto px-8 py-16 text-center">
-          <div className="w-20 h-20 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-8">
-            <Mail className="w-12 h-12 text-green-600" />
-          </div>
-          <h1 className="text-5xl font-bold text-black mb-6">Thank You!</h1>
-          <p className="text-2xl text-gray-700 mb-12 leading-relaxed">
-            Your message has been sent successfully. We'll get back to you as soon as possible.
-          </p>
-          <Button 
-            onClick={() => setIsSubmitted(false)}
-            className="bg-[var(--button-primary)] hover:bg-[var(--button-primary-hover)] text-white font-bold text-2xl px-12 py-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
-          >
-            Send Another Message
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-white text-black">
-      {/* Navigation Bar - Same as homepage */}
-      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo and Brand */}
-            <Link href="/">
-              <div className="flex items-center space-x-3 cursor-pointer">
-                <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-                <span className="text-2xl font-bold">heyMemory</span>
-              </div>
-            </Link>
-            
-            {/* Navigation Links - Hidden on mobile, shown on desktop */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link href="/dashboard">
-                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                  Dashboard
-                </button>
-              </Link>
-              <Link href="/contact">
-                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                  Contact
-                </button>
-              </Link>
-              
-              {/* Accessibility Indicator */}
-              <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
-                <span className="text-2xl font-black text-green-700 mr-2">A+</span>
-                <span className="text-lg font-bold text-green-700">Accessible</span>
               </div>
             </div>
           </div>
         </div>
       </nav>
-      <div className="max-w-4xl mx-auto px-8 py-16">
+      <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-16">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-6xl font-bold text-black mb-8">Contact Us</h1>
-          <p className="text-2xl text-gray-700 leading-relaxed">
+        <div className="text-center mb-8 md:mb-16">
+          <h1 className="text-3xl md:text-6xl font-bold text-black mb-4 md:mb-8">Contact Us</h1>
+          <p className="text-lg md:text-2xl text-gray-700 leading-relaxed px-2">
             We're here to help. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
 
         {/* Contact Form */}
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white border-4 border-gray-300 rounded-xl p-12 mb-16">
-            <h2 className="text-4xl font-bold text-black mb-12">Send Us a Message</h2>
+          <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12 mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12">Send Us a Message</h2>
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
