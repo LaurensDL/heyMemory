@@ -120,7 +120,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const verificationToken = await storage.generateEmailVerificationToken(user.id);
       
       // Send verification email
-      const verificationUrl = `${req.protocol}://${req.get('host')}/api/verify-email/${verificationToken}`;
+      const verificationUrl = `https://heymemory.app/api/verify-email/${verificationToken}`;
       
       const mailOptions = {
         from: '"heyMemory Support" <help@heymemory.app>',
@@ -177,10 +177,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } catch (emailError) {
         console.error('Failed to send verification email:', emailError);
         console.error('Email error details:', {
-          code: emailError.code,
-          response: emailError.response,
-          responseCode: emailError.responseCode,
-          command: emailError.command
+          code: (emailError as any).code,
+          response: (emailError as any).response,
+          responseCode: (emailError as any).responseCode,
+          command: (emailError as any).command
         });
         // Continue with registration even if email fails
       }
@@ -418,7 +418,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const verificationToken = await storage.generateEmailVerificationToken(user.id);
       
       // Send verification email
-      const verificationUrl = `${req.protocol}://${req.get('host')}/api/verify-email/${verificationToken}`;
+      const verificationUrl = `https://heymemory.app/api/verify-email/${verificationToken}`;
       
       const mailOptions = {
         from: '"heyMemory Support" <help@heymemory.app>',
@@ -515,7 +515,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const token = await storage.initiateEmailChange(userId, newEmail);
       
       // Send email change verification email
-      const verificationUrl = `${req.protocol}://${req.get('host')}/api/confirm-email-change/${token}`;
+      const verificationUrl = `https://heymemory.app/api/confirm-email-change/${token}`;
       
       const mailOptions = {
         from: 'heyMemory <help@heymemory.app>',
