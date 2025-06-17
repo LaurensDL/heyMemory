@@ -126,6 +126,13 @@ export default function CaregiverPage() {
       setIsPhotoDialogOpen(false);
       photoForm.reset();
       queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
+    },
+    onError: (error: Error) => {
+      toast({ 
+        title: "Error adding photo", 
+        description: error.message,
+        variant: "destructive" 
+      });
     }
   });
 
@@ -145,16 +152,38 @@ export default function CaregiverPage() {
     mutationFn: async (photoId: number) => {
       return apiRequest("DELETE", `/api/face-photos/${photoId}`, {});
     },
+    onMutate: async (photoId) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['/api/face-photos'] });
+      
+      // Snapshot the previous value
+      const previousPhotos = queryClient.getQueryData(['/api/face-photos']);
+      
+      // Optimistically update to remove the photo
+      queryClient.setQueryData(['/api/face-photos'], (old: FacePhotoType[] | undefined) => {
+        if (!old) return [];
+        return old.filter(photo => photo.id !== photoId);
+      });
+      
+      // Return a context object with the snapshotted value
+      return { previousPhotos };
+    },
     onSuccess: () => {
       toast({ title: "Photo deleted successfully" });
       queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
     },
-    onError: (error: Error) => {
+    onError: (error: Error, photoId, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      queryClient.setQueryData(['/api/face-photos'], context?.previousPhotos);
       toast({ 
         title: "Error deleting photo", 
         description: error.message,
         variant: "destructive" 
       });
+    },
+    onSettled: () => {
+      // Always refetch after error or success
+      queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
     }
   });
 
@@ -179,19 +208,46 @@ export default function CaregiverPage() {
         ...(photoUrl && { photoUrl: photoUrl })
       });
     },
+    onMutate: async (newData) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['/api/face-photos'] });
+      
+      // Snapshot the previous value
+      const previousPhotos = queryClient.getQueryData(['/api/face-photos']);
+      
+      // Optimistically update to the new value
+      queryClient.setQueryData(['/api/face-photos'], (old: FacePhotoType[] | undefined) => {
+        if (!old) return [];
+        return old.map(photo => 
+          photo.id === newData.id 
+            ? { ...photo, name: newData.name, relationship: newData.relationship || "", description: newData.description || "" }
+            : photo
+        );
+      });
+      
+      // Return a context object with the snapshotted value
+      return { previousPhotos };
+    },
     onSuccess: () => {
       toast({ title: "Photo updated successfully" });
       setIsPhotoDialogOpen(false);
       setEditingPhoto(null);
       photoForm.reset();
+      // Refetch to get the latest data from server
       queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
     },
-    onError: (error: Error) => {
+    onError: (error: Error, newData, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      queryClient.setQueryData(['/api/face-photos'], context?.previousPhotos);
       toast({ 
         title: "Error updating photo", 
         description: error.message,
         variant: "destructive" 
       });
+    },
+    onSettled: () => {
+      // Always refetch after error or success
+      queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
     }
   });
 
