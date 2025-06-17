@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Mail, Phone, MapPin, Clock, ArrowLeft, Brain } from "lucide-react";
 import { Link } from "wouter";
+import { MainFooter } from "@/components/MainFooter";
 
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -317,36 +318,7 @@ export default function ContactPage() {
         </div>
       </div>
       
-      {/* Spacing before footer */}
-      <div className="py-8 md:py-16"></div>
-      
-      {/* Footer - Mobile Optimized */}
-      <footer className="bg-gray-50 border-t-2 border-gray-200 py-8 md:py-12" role="contentinfo">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 md:space-x-3 mb-4 md:mb-6">
-              <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
-              <span className="text-xl md:text-2xl font-bold">heyMemory</span>
-            </div>
-            
-            <div className="flex flex-col md:flex-row justify-center items-center space-y-3 md:space-y-0 md:space-x-8 mb-4 md:mb-6">
-              <button className="touch-button text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2 min-h-[44px]">
-                Privacy Policy
-              </button>
-              <button className="touch-button text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2 min-h-[44px]">
-                Accessibility
-              </button>
-              <Link href="/contact">
-                <button className="touch-button text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2 min-h-[44px]">
-                  Contact Us
-                </button>
-              </Link>
-            </div>
-            
-            <p className="text-sm md:text-body px-4">© 2025 heyMemory. Designed with care for memory support.</p>
-          </div>
-        </div>
-      </footer>
+      <MainFooter />
     </div>
   );
 }
