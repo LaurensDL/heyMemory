@@ -31,21 +31,53 @@ export default function Login() {
     },
   });
 
+  useEffect(() => {
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/login';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Login page loaded. Fill in your email and password to access your heyMemory account.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
+    return () => {
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
+    };
+  }, []);
+
   const onSubmit = async (data: LoginData) => {
     try {
       await loginMutation.mutateAsync(data);
       toast({
-        title: "Success",
-        description: "You have been logged in successfully.",
+        title: "Login Successful",
+        description: "Welcome back to heyMemory!",
       });
       setLocation("/dashboard");
     } catch (error: any) {
-      // Check if error is due to unverified email
-      if (error.message && error.message.includes("verify")) {
-        toast({
-          title: "Email Verification Required",
-          description: "Please verify your email address before logging in.",
-        });
+      if (error.message && error.message.includes("email not verified")) {
         setPendingEmail(data.email);
         setShowVerification(true);
         return;
@@ -79,85 +111,104 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-white flex items-center justify-center px-6" lang="en">
+      {/* Invisible breadcrumb navigation for screen readers */}
+      <nav aria-label="Breadcrumb navigation" className="sr-only">
+        <ol>
+          <li><Link href="/" aria-label="Navigate to homepage">Home</Link></li>
+          <li aria-current="page">Login</li>
+        </ol>
+      </nav>
+
+      <main role="main" aria-labelledby="login-heading" className="w-full max-w-md focus:outline-none" tabIndex={-1}>
         {/* Logo */}
-        <div className="text-center mb-8">
+        <header className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <Brain className="text-[var(--button-primary)] w-10 h-10" aria-hidden="true" />
-            <span className="text-3xl font-bold">heyMemory</span>
+            <h1 id="login-heading" className="text-4xl font-bold text-[var(--heading)] text-[clamp(1.5rem,4vw,4rem)] leading-tight">heyMemory</h1>
           </div>
-          <p className="text-body">Welcome back</p>
-        </div>
+          <p className="text-[var(--body)] text-[clamp(0.875rem,2.5vw,1rem)]">Sign in to your account</p>
+        </header>
 
-        <Card className="bg-white border-2 border-gray-300 shadow-lg">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-card-heading">Log In</CardTitle>
+        <Card role="form" aria-labelledby="login-form-heading">
+          <CardHeader>
+            <CardTitle id="login-form-heading" className="text-center text-[clamp(1.125rem,3vw,1.5rem)]">Welcome Back</CardTitle>
           </CardHeader>
-          <CardContent className="px-8 pb-8">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" aria-describedby="login-instructions">
+              <div id="login-instructions" className="sr-only">
+                Please enter your email address and password to log in to your heyMemory account. Both fields are required.
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-body font-bold">
-                  Email Address
-                </Label>
+                <Label htmlFor="email" className="text-[clamp(0.875rem,2.5vw,1rem)]">Email</Label>
                 <Input
                   id="email"
                   type="email"
-                  {...register("email")}
-                  className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
                   placeholder="Enter your email"
+                  {...register("email")}
+                  aria-invalid={errors.email ? "true" : "false"}
+                  aria-describedby={errors.email ? "email-error" : undefined}
+                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-[clamp(0.875rem,2.5vw,1rem)]"
+                  autoComplete="email"
                 />
                 {errors.email && (
-                  <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
+                  <div id="email-error" className="flex items-center text-red-600 text-sm" role="alert" aria-live="polite">
+                    <AlertCircle className="w-4 h-4 mr-1" aria-hidden="true" />
+                    {errors.email.message}
+                  </div>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-body font-bold">
-                  Password
-                </Label>
+                <Label htmlFor="password" className="text-[clamp(0.875rem,2.5vw,1rem)]">Password</Label>
                 <Input
                   id="password"
                   type="password"
-                  {...register("password")}
-                  className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
                   placeholder="Enter your password"
+                  {...register("password")}
+                  aria-invalid={errors.password ? "true" : "false"}
+                  aria-describedby={errors.password ? "password-error" : undefined}
+                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-[clamp(0.875rem,2.5vw,1rem)]"
+                  autoComplete="current-password"
                 />
                 {errors.password && (
-                  <p className="text-red-600 text-lg font-medium">{errors.password.message}</p>
+                  <div id="password-error" className="flex items-center text-red-600 text-sm" role="alert" aria-live="polite">
+                    <AlertCircle className="w-4 h-4 mr-1" aria-hidden="true" />
+                    {errors.password.message}
+                  </div>
                 )}
               </div>
 
               <Button
                 type="submit"
+                className="w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-[clamp(0.875rem,2.5vw,1rem)]"
                 disabled={loginMutation.isPending}
-                className="w-full bg-black text-white font-black text-xl py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[64px] border-3 border-black"
+                aria-describedby="submit-status"
               >
-                {loginMutation.isPending ? "Logging In..." : "Log In"}
+                {loginMutation.isPending ? "Signing In..." : "Sign In"}
               </Button>
+              
+              <div id="submit-status" className="sr-only" aria-live="polite">
+                {loginMutation.isPending ? "Processing login request..." : "Ready to sign in"}
+              </div>
             </form>
 
-            <div className="mt-8 text-center">
-              <p className="text-body">
+            <div className="mt-6 text-center">
+              <p className="text-sm text-[var(--body)] text-[clamp(0.75rem,2vw,0.875rem)]">
                 Don't have an account?{" "}
-                <Link href="/register">
-                  <button className="text-[var(--button-primary)] font-bold hover:underline focus:underline focus:outline-none">
-                    Register here
-                  </button>
+                <Link
+                  href="/register"
+                  className="text-[var(--button-primary)] hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                  aria-label="Navigate to registration page to create a new account"
+                >
+                  Sign up
                 </Link>
               </p>
             </div>
           </CardContent>
         </Card>
-
-        <div className="text-center mt-6">
-          <Link href="/">
-            <button className="text-body font-bold text-[var(--button-primary)] hover:underline focus:underline focus:outline-none">
-              ← Back to Home
-            </button>
-          </Link>
-        </div>
-      </div>
+      </main>
     </div>
   );
 }
