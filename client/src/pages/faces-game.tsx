@@ -84,9 +84,9 @@ export default function FacesGamePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-6 py-4">
+      {/* Navigation Bar */}
+      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Faces game navigation">
+        <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/">
@@ -120,7 +120,7 @@ export default function FacesGamePage() {
             </div>
           </div>
         </div>
-      </div>
+      </nav>
       <div className="max-w-4xl mx-auto px-6 py-8">
         {!hasEnoughPhotos ? (
           /* Not Enough Photos Screen */
