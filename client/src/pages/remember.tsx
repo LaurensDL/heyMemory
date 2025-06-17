@@ -73,14 +73,10 @@ export default function RememberPage() {
           </div>
         </div>
       </nav>
-
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="text-5xl font-black mb-6">Important Things to Remember</h2>
-          <p className="text-2xl font-bold text-gray-700 max-w-2xl mx-auto">
-            Click on any card to view detailed information and helpful photos
-          </p>
+          <h2 className="text-5xl font-black mb-6">Things to Remember</h2>
         </div>
 
         {isLoading ? (
