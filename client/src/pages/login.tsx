@@ -130,7 +130,7 @@ export default function Login() {
           <p className="text-[var(--body)] text-[clamp(0.875rem,2.5vw,1rem)]">Sign in to your account</p>
         </header>
 
-        <Card role="form" aria-labelledby="login-form-heading">
+        <Card role="region" aria-labelledby="login-form-heading">
           <CardHeader>
             <CardTitle id="login-form-heading" className="text-center text-[clamp(1.125rem,3vw,1.5rem)]">Welcome Back</CardTitle>
           </CardHeader>

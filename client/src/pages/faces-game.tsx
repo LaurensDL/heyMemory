@@ -15,6 +15,43 @@ export default function FacesGamePage() {
   const [gameStarted, setGameStarted] = useState(false);
   const [shuffledPhotos, setShuffledPhotos] = useState<FacePhoto[]>([]);
 
+  useEffect(() => {
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/faces-game';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Faces Game loaded. Practice recognizing faces of your loved ones in a private, secure environment.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
+    return () => {
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
+    };
+  }, []);
+
   // Fetch face photos
   const { data: facePhotos = [], isLoading } = useQuery<FacePhoto[]>({
     queryKey: ['/api/face-photos'],

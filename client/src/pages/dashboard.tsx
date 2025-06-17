@@ -4,12 +4,50 @@ import { Brain, Users, Lightbulb, Settings, LogOut, Heart, Mail } from "lucide-r
 import { useAuth, useLogout } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
+import { useEffect } from "react";
 
 export default function Dashboard() {
   const { user, isLoading } = useAuth();
   const { toast } = useToast();
   const logoutMutation = useLogout();
   const [location, setLocation] = useLocation();
+
+  useEffect(() => {
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/dashboard';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Dashboard loaded. Navigate using the menu options to access your memory tools and account settings.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
+    return () => {
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -40,16 +78,24 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" lang="en">
+      {/* Invisible breadcrumb navigation for screen readers */}
+      <nav aria-label="Breadcrumb navigation" className="sr-only">
+        <ol>
+          <li><Link href="/" aria-label="Navigate to homepage">Home</Link></li>
+          <li aria-current="page">Dashboard</li>
+        </ol>
+      </nav>
+
       {/* Navigation Bar - Mobile Optimized */}
       <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Dashboard navigation">
         <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
           <div className="flex items-center justify-between">
             {/* Logo and Brand */}
-            <Link href="/">
-              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
+            <Link href="/" aria-label="Return to heyMemory homepage">
+              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">
                 <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
-                <span className="text-xl md:text-2xl font-bold">heyMemory</span>
+                <span className="text-xl md:text-2xl font-bold text-[clamp(1.125rem,3vw,1.5rem)]">heyMemory</span>
               </div>
             </Link>
             
