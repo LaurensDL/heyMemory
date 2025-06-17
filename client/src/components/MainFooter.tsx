@@ -6,10 +6,12 @@ export function MainFooter() {
     <footer className="bg-gray-50 border-t-2 border-gray-200 py-12" role="contentinfo">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-3 mb-6">
-            <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-            <span className="text-2xl font-bold">heyMemory</span>
-          </div>
+          <Link href="/">
+            <div className="flex items-center justify-center space-x-3 mb-6 cursor-pointer hover:opacity-80 transition-opacity">
+              <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
+              <span className="text-2xl font-bold">heyMemory</span>
+            </div>
+          </Link>
           
           <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 mb-6">
             <Link href="/privacy-policy">
