@@ -245,13 +245,19 @@ export default function CaregiverPage() {
       // Return a context object with the snapshotted value
       return { previousPhotos };
     },
-    onSuccess: () => {
+    onSuccess: (updatedPhoto) => {
+      // Update the cache with the server response immediately
+      queryClient.setQueryData(['/api/face-photos'], (old: FacePhotoType[] | undefined) => {
+        if (!old) return [updatedPhoto];
+        return old.map(photo => 
+          photo.id === updatedPhoto.id ? updatedPhoto : photo
+        );
+      });
+      
       toast({ title: "Photo updated successfully" });
       setIsPhotoDialogOpen(false);
       setEditingPhoto(null);
       photoForm.reset();
-      // Refetch to get the latest data from server
-      queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
     },
     onError: (error: Error, newData, context) => {
       // If the mutation fails, use the context returned from onMutate to roll back
@@ -261,10 +267,6 @@ export default function CaregiverPage() {
         description: error.message,
         variant: "destructive" 
       });
-    },
-    onSettled: () => {
-      // Always refetch after error or success
-      queryClient.invalidateQueries({ queryKey: ['/api/face-photos'] });
     }
   });
 

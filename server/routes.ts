@@ -964,7 +964,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update face photo (PUT)
   app.put("/api/face-photos/:id", requireAuth, async (req: any, res) => {
+    try {
+      const userId = (req.session as any).userId;
+      const photoId = parseInt(req.params.id);
+      const validatedData = insertFacePhotoSchema.partial().parse(req.body);
+      const photo = await storage.updateFacePhoto(photoId, userId, validatedData);
+      
+      if (!photo) {
+        return res.status(404).json({ message: "Face photo not found" });
+      }
+      
+      res.json(photo);
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ message: error.errors[0]?.message || "Invalid input" });
+      }
+      console.error("Update face photo error:", error);
+      res.status(500).json({ message: "Failed to update face photo" });
+    }
+  });
+
+  // Update face photo (PATCH) - same as PUT for compatibility
+  app.patch("/api/face-photos/:id", requireAuth, async (req: any, res) => {
     try {
       const userId = (req.session as any).userId;
       const photoId = parseInt(req.params.id);
