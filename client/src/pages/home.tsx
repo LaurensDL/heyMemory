@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, Users, Lightbulb, Phone, Mail } from "lucide-react";
+import { Brain, Users, Lightbulb, Phone, Mail, Home as HomeIcon, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";
 import heroImage from "../../../server/uploads/images/Senior Man Using heyMemory on Smartphone - heyMemory The Alzheimer App.png";
+import { useEffect } from "react";
 
 export default function Home() {
 
@@ -13,13 +14,83 @@ export default function Home() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       element.focus();
+      // Announce to screen readers
+      const announcement = `Navigated to ${element.getAttribute('aria-label') || element.textContent?.slice(0, 50) || 'section'}`;
+      announceToScreenReader(announcement);
     }
   };
 
+  const announceToScreenReader = (message: string) => {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+    
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
+  };
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        // Enhanced tab navigation - ensure visible focus indicators
+        const focusedElement = document.activeElement as HTMLElement;
+        if (focusedElement) {
+          focusedElement.style.outline = '3px solid #2563eb';
+          focusedElement.style.outlineOffset = '2px';
+        }
+      }
+    };
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        // Remove manual outline after a short delay to let default focus styles show
+        setTimeout(() => {
+          const focusedElement = document.activeElement as HTMLElement;
+          if (focusedElement) {
+            focusedElement.style.outline = '';
+            focusedElement.style.outlineOffset = '';
+          }
+        }, 100);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white text-black">
+      {/* Invisible Breadcrumb Navigation for Screen Readers */}
+      <nav aria-label="Breadcrumb" className="sr-only">
+        <ol className="flex items-center space-x-2">
+          <li className="flex items-center">
+            <HomeIcon size={16} aria-hidden="true" />
+            <span className="ml-2">Home</span>
+          </li>
+        </ol>
+      </nav>
+
+      {/* Skip to main content link for keyboard navigation */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        tabIndex={0}
+      >
+        Skip to main content
+      </a>
+
       <MainNavigation showJoinButton={true} />
-      <main role="main">
+      <main role="main" id="main-content" tabIndex={-1}>
         {/* Hero Section - Mobile Optimized */}
         <section className="bg-blue-50 py-8 md:py-16 lg:py-24" aria-labelledby="hero-heading">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
@@ -42,10 +113,12 @@ export default function Home() {
                 </p>
                 
                 {/* CTA Buttons - Mobile First, Desktop Horizontal */}
-                <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center lg:justify-start items-center">
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center lg:justify-start items-center" role="group" aria-label="Get started with heyMemory">
                   <Link href="/login" className="w-full sm:w-auto md:w-auto">
                     <Button 
                       className="w-full md:w-auto touch-button bg-black text-white font-black text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-xl hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[56px] md:min-h-[64px] border-3 border-black"
+                      aria-label="Log in to your existing heyMemory account"
+                      tabIndex={0}
                     >
                       <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -58,11 +131,13 @@ export default function Home() {
                     <Button 
                       variant="outline"
                       className="w-full md:w-auto touch-button bg-white text-black font-black text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-xl border-3 md:border-4 border-black hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors min-h-[56px] md:min-h-[64px]"
+                      aria-label="Create a new heyMemory account to get started"
+                      tabIndex={0}
                     >
                       <svg className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
                       </svg>
-                      Register
+                      Create Account
                     </Button>
                   </Link>
                 </div>
