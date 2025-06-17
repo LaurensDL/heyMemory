@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, UserPlus, Camera, Brain, Heart, ArrowRight } from "lucide-react";
+import { CheckCircle, UserPlus, Camera, Brain, Heart, ArrowRight, ArrowDown } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";
@@ -337,7 +337,7 @@ export default function HowItWorksPage() {
                   {/* Arrow for desktop */}
                   {index < steps.length - 1 && (
                     <div className="hidden md:block flex-shrink-0" aria-hidden="true">
-                      <ArrowRight className="w-6 h-6 text-gray-400" aria-label="Next step" />
+                      <ArrowDown className="w-6 h-6 text-gray-400" aria-label="Next step" />
                     </div>
                   )}
                 </div>
