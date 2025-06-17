@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { z } from "zod";
 import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
+import rateLimit from "express-rate-limit";
 import { storage } from "./storage";
 import { 
   loginSchema, 
@@ -53,8 +54,10 @@ function setupSession(app: Express) {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // Set to true in production with HTTPS
+      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+      httpOnly: true, // Prevent XSS attacks
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      sameSite: 'strict', // CSRF protection
     },
   }));
 }
@@ -209,8 +212,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
-      // Simple password check (in production, use bcrypt)
-      if (user.password !== password) {
+      // Verify password using bcrypt
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
@@ -696,8 +700,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Verify current password
-      if (user.password !== currentPassword) {
+      // Verify current password using bcrypt
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+      if (!isPasswordValid) {
         return res.status(401).json({ message: "Current password is incorrect" });
       }
 

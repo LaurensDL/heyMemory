@@ -135,13 +135,23 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updatePassword(userId: number, newPassword: string): Promise<void> {
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     await db
       .update(users)
       .set({ 
-        password: newPassword, // Note: In production, this should be hashed
+        password: hashedPassword,
         updatedAt: new Date()
       })
       .where(eq(users.id, userId));
+  }
+
+  async verifyPassword(userId: number, password: string): Promise<boolean> {
+    const user = await this.getUser(userId);
+    if (!user) {
+      return false;
+    }
+    return await bcrypt.compare(password, user.password);
   }
 
   // Admin operations
@@ -150,11 +160,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async adminCreateUser(userData: AdminCreateUserData): Promise<User> {
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
     const [user] = await db
       .insert(users)
       .values({
         email: userData.email,
-        password: userData.password, // Note: In production, this should be hashed
+        password: hashedPassword,
         isAdmin: userData.isAdmin,
         isEmailVerified: userData.isEmailVerified,
       })
