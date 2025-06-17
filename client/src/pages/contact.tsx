@@ -201,21 +201,21 @@ export default function ContactPage() {
             <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12">Send Us a Message</h2>
             
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-2xl font-bold text-black mb-4 block">Your Name</FormLabel>
+                      <FormLabel className="text-lg md:text-2xl font-bold text-black mb-2 md:mb-4 block">Your Name</FormLabel>
                       <FormControl>
                         <Input 
                           {...field} 
-                          placeholder="Enter your full name"
-                          className="text-2xl p-6 rounded-xl border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white"
+                          placeholder="Full name"
+                          className="text-lg md:text-2xl p-4 md:p-6 rounded-xl border-2 md:border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white min-h-[56px] touch-manipulation"
                         />
                       </FormControl>
-                      <FormMessage className="text-xl text-red-600 mt-2" />
+                      <FormMessage className="text-base md:text-xl text-red-600 mt-2" />
                     </FormItem>
                   )}
                 />
@@ -225,16 +225,16 @@ export default function ContactPage() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-2xl font-bold text-black mb-4 block">Email Address</FormLabel>
+                      <FormLabel className="text-lg md:text-2xl font-bold text-black mb-2 md:mb-4 block">Email Address</FormLabel>
                       <FormControl>
                         <Input 
                           {...field} 
                           type="email"
                           placeholder="your.email@example.com"
-                          className="text-2xl p-6 rounded-xl border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white"
+                          className="text-lg md:text-2xl p-4 md:p-6 rounded-xl border-2 md:border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white min-h-[56px] touch-manipulation"
                         />
                       </FormControl>
-                      <FormMessage className="text-xl text-red-600 mt-2" />
+                      <FormMessage className="text-base md:text-xl text-red-600 mt-2" />
                     </FormItem>
                   )}
                 />
@@ -244,15 +244,15 @@ export default function ContactPage() {
                   name="subject"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-2xl font-bold text-black mb-4 block">Subject</FormLabel>
+                      <FormLabel className="text-lg md:text-2xl font-bold text-black mb-2 md:mb-4 block">Subject</FormLabel>
                       <FormControl>
                         <Input 
                           {...field} 
                           placeholder="What's this about?"
-                          className="text-2xl p-6 rounded-xl border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white"
+                          className="text-lg md:text-2xl p-4 md:p-6 rounded-xl border-2 md:border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white min-h-[56px] touch-manipulation"
                         />
                       </FormControl>
-                      <FormMessage className="text-xl text-red-600 mt-2" />
+                      <FormMessage className="text-base md:text-xl text-red-600 mt-2" />
                     </FormItem>
                   )}
                 />
@@ -262,16 +262,16 @@ export default function ContactPage() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-2xl font-bold text-black mb-4 block">Message</FormLabel>
+                      <FormLabel className="text-lg md:text-2xl font-bold text-black mb-2 md:mb-4 block">Message</FormLabel>
                       <FormControl>
                         <Textarea 
                           {...field} 
-                          placeholder="Tell us how we can help you..."
-                          className="text-2xl p-6 rounded-xl border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white min-h-48"
-                          rows={6}
+                          placeholder="Tell us how we can help..."
+                          className="text-lg md:text-2xl p-4 md:p-6 rounded-xl border-2 md:border-4 border-gray-300 focus:border-[var(--button-primary)] focus:outline-none focus:ring-4 focus:ring-blue-200 bg-white min-h-[120px] md:min-h-48 touch-manipulation"
+                          rows={4}
                         />
                       </FormControl>
-                      <FormMessage className="text-xl text-red-600 mt-2" />
+                      <FormMessage className="text-base md:text-xl text-red-600 mt-2" />
                     </FormItem>
                   )}
                 />
@@ -279,7 +279,7 @@ export default function ContactPage() {
                 <Button 
                   type="submit" 
                   disabled={contactMutation.isPending}
-                  className="w-full bg-[var(--button-primary)] hover:bg-[var(--button-primary-hover)] text-white font-bold text-2xl py-8 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors"
+                  className="w-full touch-button bg-[var(--button-primary)] hover:bg-[var(--button-primary-hover)] text-white font-bold text-lg md:text-2xl py-4 md:py-8 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-400 transition-colors min-h-[56px] md:min-h-[64px]"
                 >
                   {contactMutation.isPending ? "Sending..." : "Send Message"}
                 </Button>
@@ -288,28 +288,28 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Information */}
-          <div className="bg-white border-4 border-gray-300 rounded-xl p-12">
-            <h2 className="text-4xl font-bold text-black mb-12">Get in Touch</h2>
+          <div className="bg-white border-2 md:border-4 border-gray-300 rounded-xl p-6 md:p-12">
+            <h2 className="text-2xl md:text-4xl font-bold text-black mb-6 md:mb-12">Get in Touch</h2>
             
-            <div className="space-y-8">
-              <div className="flex items-start space-x-6">
-                <div className="bg-blue-100 p-4 rounded-xl">
-                  <Mail className="w-8 h-8 text-blue-600" />
+            <div className="space-y-6 md:space-y-8">
+              <div className="flex items-start space-x-4 md:space-x-6">
+                <div className="bg-blue-100 p-3 md:p-4 rounded-xl flex-shrink-0">
+                  <Mail className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-black mb-2">Email</h3>
-                  <p className="text-xl text-gray-700 mb-2">help@heymemory.app</p>
-                  <p className="text-lg text-gray-600">We try to respond within 24 hours</p>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-lg md:text-2xl font-bold text-black mb-1 md:mb-2">Email</h3>
+                  <p className="text-base md:text-xl text-gray-700 mb-1 md:mb-2 break-words">help@heymemory.app</p>
+                  <p className="text-sm md:text-lg text-gray-600">We try to respond within 24 hours</p>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-6">
-                <div className="bg-green-100 p-4 rounded-xl">
-                  <Clock className="w-8 h-8 text-green-600" />
+              <div className="flex items-start space-x-4 md:space-x-6">
+                <div className="bg-green-100 p-3 md:p-4 rounded-xl flex-shrink-0">
+                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-black mb-2">Support Hours</h3>
-                  <p className="text-xl text-gray-700">Monday - Friday: 10 AM - 5 PM</p>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-lg md:text-2xl font-bold text-black mb-1 md:mb-2">Support Hours</h3>
+                  <p className="text-base md:text-xl text-gray-700">Monday - Friday: 10 AM - 5 PM</p>
                 </div>
               </div>
             </div>
@@ -318,32 +318,32 @@ export default function ContactPage() {
       </div>
       
       {/* Spacing before footer */}
-      <div className="py-16"></div>
+      <div className="py-8 md:py-16"></div>
       
-      {/* Footer - Same as homepage */}
-      <footer className="bg-gray-50 border-t-2 border-gray-200 py-12" role="contentinfo">
-        <div className="max-w-6xl mx-auto px-6">
+      {/* Footer - Mobile Optimized */}
+      <footer className="bg-gray-50 border-t-2 border-gray-200 py-8 md:py-12" role="contentinfo">
+        <div className="max-w-6xl mx-auto px-4 md:px-6">
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-3 mb-6">
-              <Brain className="text-[var(--button-primary)] w-8 h-8" aria-hidden="true" />
-              <span className="text-2xl font-bold">heyMemory</span>
+            <div className="flex items-center justify-center space-x-2 md:space-x-3 mb-4 md:mb-6">
+              <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
+              <span className="text-xl md:text-2xl font-bold">heyMemory</span>
             </div>
             
-            <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 mb-6">
-              <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+            <div className="flex flex-col md:flex-row justify-center items-center space-y-3 md:space-y-0 md:space-x-8 mb-4 md:mb-6">
+              <button className="touch-button text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2 min-h-[44px]">
                 Privacy Policy
               </button>
-              <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+              <button className="touch-button text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2 min-h-[44px]">
                 Accessibility
               </button>
               <Link href="/contact">
-                <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
+                <button className="touch-button text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2 min-h-[44px]">
                   Contact Us
                 </button>
               </Link>
             </div>
             
-            <p className="text-body">© 2025 heyMemory. Designed with care for memory support.</p>
+            <p className="text-sm md:text-body px-4">© 2025 heyMemory. Designed with care for memory support.</p>
           </div>
         </div>
       </footer>
