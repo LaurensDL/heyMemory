@@ -13,6 +13,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { Mail, Phone, MapPin, Clock, ArrowLeft, Brain } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
+import { MainNavigation } from "@/components/MainNavigation";
 
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -79,49 +80,7 @@ export default function ContactPage() {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-white text-black">
-        {/* Navigation Bar - Mobile Optimized */}
-        <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
-          <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
-            <div className="flex items-center justify-between">
-              {/* Logo and Brand */}
-              <Link href="/">
-                <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
-                  <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
-                  <span className="text-xl md:text-2xl font-bold">heyMemory</span>
-                </div>
-              </Link>
-              
-              {/* Mobile Navigation - Always visible CTA */}
-              <div className="flex items-center space-x-2 md:space-x-4">
-                <Link href="/dashboard" className="md:hidden">
-                  <Button className="touch-button bg-blue-600 text-white font-bold text-base px-4 py-2 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
-                    Dashboard
-                  </Button>
-                </Link>
-                
-                {/* Desktop Navigation Links */}
-                <div className="hidden md:flex items-center space-x-6">
-                  <Link href="/dashboard">
-                    <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                      Dashboard
-                    </button>
-                  </Link>
-                  <Link href="/contact">
-                    <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                      Contact
-                    </button>
-                  </Link>
-                  
-                  {/* Accessibility Indicator - Desktop only */}
-                  <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
-                    <span className="text-xl font-black text-green-700 mr-2">A+</span>
-                    <span className="text-base font-bold text-green-700">Accessible</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
+        <MainNavigation />
 
         <div className="max-w-2xl mx-auto px-4 py-8 md:px-8 md:py-16 text-center">
           <div className="w-20 h-20 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-8">
@@ -144,49 +103,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      {/* Navigation Bar - Mobile Optimized */}
-      <nav className="bg-white border-b-2 border-gray-200 sticky top-0 z-50" role="navigation" aria-label="Main navigation">
-        <div className="max-w-6xl mx-auto px-4 py-3 md:px-6 md:py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo and Brand */}
-            <Link href="/">
-              <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer">
-                <Brain className="text-[var(--button-primary)] w-6 h-6 md:w-8 md:h-8" aria-hidden="true" />
-                <span className="text-xl md:text-2xl font-bold">heyMemory</span>
-              </div>
-            </Link>
-            
-            {/* Mobile Navigation - Always visible CTA */}
-            <div className="flex items-center space-x-2 md:space-x-4">
-              <Link href="/" className="md:hidden">
-                <Button className="touch-button bg-blue-600 text-white font-bold text-base px-4 py-2 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
-                  Back
-                </Button>
-              </Link>
-              
-              {/* Desktop Navigation Links */}
-              <div className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard">
-                  <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                    Dashboard
-                  </button>
-                </Link>
-                <Link href="/contact">
-                  <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                    Contact
-                  </button>
-                </Link>
-                
-                {/* Accessibility Indicator - Desktop only */}
-                <div className="flex items-center bg-green-100 border-2 border-green-200 rounded-lg px-3 py-2">
-                  <span className="text-xl font-black text-green-700 mr-2">A+</span>
-                  <span className="text-base font-bold text-green-700">Accessible</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <MainNavigation backTo={{ href: "/", label: "Back to Home", shortLabel: "Back" }} />
       <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-16">
         {/* Header */}
         <div className="text-center mb-8 md:mb-16">

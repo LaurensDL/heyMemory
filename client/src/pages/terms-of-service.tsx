@@ -1,6 +1,5 @@
 import { Link } from "wouter";
-import { ArrowLeft, Brain, Shield, AlertTriangle, Users, Smartphone, Clock, Scale } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Brain, Shield, AlertTriangle, Users, Smartphone, Clock, Scale } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MainFooter } from "@/components/MainFooter";

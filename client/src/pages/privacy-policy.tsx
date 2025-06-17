@@ -1,8 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Mail, Shield, Eye, Database, Users, Clock, Brain } from "lucide-react";
-import { Link } from "wouter";
+import { Mail, Shield, Eye, Database, Users, Clock } from "lucide-react";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";
 
