@@ -5,8 +5,24 @@ import { Mail, Shield, Eye, Database, Users, Clock } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";
+import { useEffect } from "react";
 
 export default function PrivacyPolicyPage() {
+  useEffect(() => {
+    // Add noindex meta tag to prevent search engine indexing
+    const metaRobots = document.createElement('meta');
+    metaRobots.name = 'robots';
+    metaRobots.content = 'noindex, nofollow';
+    document.head.appendChild(metaRobots);
+
+    return () => {
+      // Cleanup on component unmount
+      const existingMeta = document.querySelector('meta[name="robots"]');
+      if (existingMeta) {
+        document.head.removeChild(existingMeta);
+      }
+    };
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50">
       <MainNavigation backTo={{ href: "/", label: "Back to Home", shortLabel: "Back" }} />

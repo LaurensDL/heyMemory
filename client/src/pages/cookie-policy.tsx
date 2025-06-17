@@ -6,12 +6,27 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Shield, BarChart3, Target, User, Settings } from "lucide-react";
 import { useCookies, CookieCategories } from "@/hooks/useCookies";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";
 
 export default function CookiePolicyPage() {
+  useEffect(() => {
+    // Add noindex meta tag to prevent search engine indexing
+    const metaRobots = document.createElement('meta');
+    metaRobots.name = 'robots';
+    metaRobots.content = 'noindex, nofollow';
+    document.head.appendChild(metaRobots);
+
+    return () => {
+      // Cleanup on component unmount
+      const existingMeta = document.querySelector('meta[name="robots"]');
+      if (existingMeta) {
+        document.head.removeChild(existingMeta);
+      }
+    };
+  }, []);
   const { consent, updateConsent, resetConsent } = useCookies();
   const [categories, setCategories] = useState<CookieCategories>(consent.categories);
   const [hasChanges, setHasChanges] = useState(false);

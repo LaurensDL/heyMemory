@@ -1,19 +1,72 @@
 User-agent: *
 Allow: /
+# Block thank you pages
+Disallow: /thank-you
+Disallow: /message-sent
+# Block legal pages from indexing
+Disallow: /privacy-policy
+Disallow: /terms-of-service
+Disallow: /cookie-policy
+# Block protected app routes
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /faces-game
+Disallow: /remember
+Disallow: /caregiver
+Disallow: /admin
+Disallow: /verify-email
 
 # Sitemap location
 Sitemap: /sitemap.xml
 
-# Allow all search engines to crawl the site
-# Specifically important for health-related applications
+# Allow all search engines to crawl public pages only
 User-agent: Googlebot
 Allow: /
+Allow: /login
+Allow: /register
+Allow: /contact
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /faces-game
+Disallow: /remember
+Disallow: /caregiver
+Disallow: /admin
+Disallow: /verify-email
+Disallow: /privacy-policy
+Disallow: /terms-of-service
+Disallow: /cookie-policy
 
 User-agent: Bingbot
 Allow: /
+Allow: /login
+Allow: /register
+Allow: /contact
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /faces-game
+Disallow: /remember
+Disallow: /caregiver
+Disallow: /admin
+Disallow: /verify-email
+Disallow: /privacy-policy
+Disallow: /terms-of-service
+Disallow: /cookie-policy
 
 User-agent: Slurp
 Allow: /
+Allow: /login
+Allow: /register
+Allow: /contact
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /faces-game
+Disallow: /remember
+Disallow: /caregiver
+Disallow: /admin
+Disallow: /verify-email
+Disallow: /privacy-policy
+Disallow: /terms-of-service
+Disallow: /cookie-policy
 
 # Crawl delay for better server performance
 Crawl-delay: 1
