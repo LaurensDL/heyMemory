@@ -161,14 +161,6 @@ export default function RememberPage() {
             
             {selectedItem && (
               <div className="space-y-6">
-                {/* Category Badge */}
-                <div>
-                  <Badge variant="secondary" className="text-sm">
-                    <Tag className="w-4 h-4 mr-1" />
-                    {selectedItem.category}
-                  </Badge>
-                </div>
-
                 {/* Photo */}
                 {selectedItem.photoUrl && (
                   <div className="space-y-2">
@@ -187,12 +179,6 @@ export default function RememberPage() {
                   <p className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
                     {selectedItem.content}
                   </p>
-                </div>
-
-                {/* Date */}
-                <div className="flex items-center text-sm text-gray-500 pt-4 border-t">
-                  <Clock className="w-4 h-4 mr-2" />
-                  Added on {formatDate(selectedItem.createdAt)}
                 </div>
 
                 {/* Close Button */}
