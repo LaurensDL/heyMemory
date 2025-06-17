@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, RotateCcw, Users, Brain, Heart } from "lucide-react";
+import { ArrowLeft, RotateCcw, Users, Brain, Heart, Eye, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Link } from "wouter";
 import { type FacePhoto } from "@shared/schema";
 
@@ -42,8 +42,19 @@ export default function FacesGamePage() {
     setCurrentPhotoIndex((prev) => (prev + 1) % shuffledPhotos.length);
   };
 
+  const handlePrevPhoto = () => {
+    setIsFlipped(false);
+    setCurrentPhotoIndex((prev) => (prev - 1 + shuffledPhotos.length) % shuffledPhotos.length);
+  };
+
   const handleStartGame = () => {
     setGameStarted(true);
+  };
+
+  const handleQuitGame = () => {
+    setGameStarted(false);
+    setIsFlipped(false);
+    setCurrentPhotoIndex(0);
   };
 
   const handleRestart = () => {
@@ -268,9 +279,47 @@ export default function FacesGamePage() {
                           </div>
                         )}
 
-                        <div className="pt-6">
-                          <Button size="lg" onClick={handleNextPhoto} className="px-8">
-                            Next Photo
+                        <div className="pt-6 space-y-4">
+                          <Button 
+                            size="lg" 
+                            onClick={() => setIsFlipped(false)} 
+                            variant="outline" 
+                            className="w-full"
+                          >
+                            <Eye className="w-5 h-5 mr-2" />
+                            See Photo Again
+                          </Button>
+                          
+                          <div className="flex gap-3">
+                            <Button 
+                              size="lg" 
+                              onClick={handlePrevPhoto} 
+                              variant="outline" 
+                              className="flex-1"
+                              disabled={currentPhotoIndex === 0}
+                            >
+                              <ChevronLeft className="w-5 h-5 mr-2" />
+                              Previous
+                            </Button>
+                            
+                            <Button 
+                              size="lg" 
+                              onClick={handleNextPhoto} 
+                              className="flex-1"
+                            >
+                              Next
+                              <ChevronRight className="w-5 h-5 ml-2" />
+                            </Button>
+                          </div>
+                          
+                          <Button 
+                            size="lg" 
+                            onClick={handleQuitGame} 
+                            variant="destructive" 
+                            className="w-full"
+                          >
+                            <X className="w-5 h-5 mr-2" />
+                            Quit Game
                           </Button>
                         </div>
                       </div>
@@ -279,25 +328,7 @@ export default function FacesGamePage() {
                 </Card>
               </div>
 
-              {/* Instructions */}
-              <Card className="bg-white/70 backdrop-blur-sm">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-center space-x-6 text-sm text-gray-600">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                      <span>Look carefully at the photo</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span>Try to remember their name</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                      <span>Touch card to reveal answer</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+
             </div>
           </div>)
         )}
