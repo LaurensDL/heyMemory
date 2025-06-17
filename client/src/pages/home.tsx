@@ -32,7 +32,7 @@ export default function Home() {
             <div className="flex items-center space-x-2 md:space-x-4">
               <Link href="/dashboard" className="md:hidden">
                 <Button className="touch-button bg-blue-600 text-white font-bold text-base px-4 py-2 rounded-lg hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
-                  Dashboard
+                  Join
                 </Button>
               </Link>
               
@@ -40,7 +40,7 @@ export default function Home() {
               <div className="hidden md:flex items-center space-x-6">
                 <Link href="/dashboard">
                   <button className="text-body font-bold hover:text-[var(--button-primary)] focus:text-[var(--button-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--button-primary)] focus:ring-offset-2 rounded px-4 py-2">
-                    Dashboard
+                    Join
                   </button>
                 </Link>
                 <Link href="/contact">
