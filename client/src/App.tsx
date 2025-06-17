@@ -18,6 +18,7 @@ import FacesGame from "@/pages/faces-game";
 import Remember from "@/pages/remember";
 import Contact from "@/pages/contact";
 import CookiePolicy from "@/pages/cookie-policy";
+import PrivacyPolicy from "@/pages/privacy-policy";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -53,6 +54,7 @@ function Router() {
       <Route path="/remember" component={isAuthenticated ? Remember : Login} />
       <Route path="/contact" component={Contact} />
       <Route path="/cookie-policy" component={CookiePolicy} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

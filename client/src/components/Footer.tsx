@@ -54,6 +54,11 @@ export function Footer() {
             <h4 className="text-sm font-semibold">Privacy</h4>
             <ul className="space-y-2 text-xs">
               <li>
+                <Link href="/privacy-policy" className="text-muted-foreground hover:text-foreground">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
                 <Link href="/cookie-policy" className="text-muted-foreground hover:text-foreground">
                   Cookie Policy
                 </Link>
