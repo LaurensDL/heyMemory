@@ -19,12 +19,44 @@ export default function CookiePolicyPage() {
     metaRobots.content = 'noindex, nofollow';
     document.head.appendChild(metaRobots);
 
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/cookie-policy';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute to html element
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Cookie Policy page loaded. Use headings navigation to browse content.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
     return () => {
       // Cleanup on component unmount
       const existingMeta = document.querySelector('meta[name="robots"]');
       if (existingMeta) {
         document.head.removeChild(existingMeta);
       }
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
     };
   }, []);
   const { consent, updateConsent, resetConsent } = useCookies();
@@ -106,31 +138,40 @@ export default function CookiePolicyPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" lang="en">
       <MainNavigation backTo={{ href: "/", label: "Back to Home", shortLabel: "Back" }} />
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Cookie Policy</h1>
-          <p className="text-muted-foreground">
+      {/* Invisible breadcrumb navigation for screen readers */}
+      <nav aria-label="Breadcrumb navigation" className="sr-only">
+        <ol>
+          <li><Link href="/" aria-label="Navigate to homepage">Home</Link></li>
+          <li aria-current="page">Cookie Policy</li>
+        </ol>
+      </nav>
+
+      <main role="main" aria-labelledby="cookie-policy-heading" className="container mx-auto px-4 py-8 max-w-4xl focus:outline-none" tabIndex={-1}>
+        <header className="mb-6">
+          <h1 id="cookie-policy-heading" className="text-3xl font-bold mb-2 text-[clamp(1.5rem,4vw,3rem)] leading-tight">Cookie Policy</h1>
+          <p className="text-muted-foreground text-[clamp(0.875rem,2.5vw,1rem)]" aria-live="polite">
             Learn about how we use cookies and manage your preferences
           </p>
-        </div>
+        </header>
 
-        {/* Cookie Consent Status */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="h-5 w-5" />
-              Your Cookie Preferences
-            </CardTitle>
-            <CardDescription>
-              {consent.hasConsented 
-                ? `Last updated: ${new Date(consent.consentDate).toLocaleDateString()}`
-                : 'You have not provided cookie consent yet'
-              }
-            </CardDescription>
-          </CardHeader>
+        <section aria-label="Cookie policy content">
+          {/* Cookie Consent Status */}
+          <Card className="mb-6" role="region" aria-labelledby="cookie-preferences-heading">
+            <CardHeader>
+              <CardTitle id="cookie-preferences-heading" className="flex items-center gap-2 text-[clamp(1.125rem,3vw,1.5rem)]">
+                <Settings className="h-5 w-5" aria-hidden="true" />
+                Your Cookie Preferences
+              </CardTitle>
+              <CardDescription className="text-[clamp(0.875rem,2.5vw,1rem)]" aria-live="polite">
+                {consent.hasConsented 
+                  ? `Last updated: ${new Date(consent.consentDate).toLocaleDateString()}`
+                  : 'You have not provided cookie consent yet'
+                }
+              </CardDescription>
+            </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {cookieTypes.map((type) => {
@@ -263,7 +304,8 @@ export default function CookiePolicyPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
+        </section>
+      </main>
 
       <MainFooter />
     </div>

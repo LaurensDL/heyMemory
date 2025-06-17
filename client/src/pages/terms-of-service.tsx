@@ -54,314 +54,236 @@ export default function TermsOfServicePage() {
       clearTimeout(announcementTimer);
     };
   }, []);
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900" lang="en">
       <MainNavigation backTo={{ href: "/", label: "Back to Home", shortLabel: "Back" }} />
 
+      {/* Invisible breadcrumb navigation for screen readers */}
+      <nav aria-label="Breadcrumb navigation" className="sr-only">
+        <ol>
+          <li><Link href="/" aria-label="Navigate to homepage">Home</Link></li>
+          <li aria-current="page">Terms of Service</li>
+        </ol>
+      </nav>
+
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Terms of Service</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Last updated: June 17, 2025
+      <main role="main" aria-labelledby="terms-heading" className="max-w-4xl mx-auto px-4 py-8 focus:outline-none" tabIndex={-1}>
+        <header className="mb-8">
+          <h1 id="terms-heading" className="text-4xl font-bold text-gray-900 dark:text-white mb-4 text-[clamp(1.5rem,4vw,4rem)] leading-tight">Terms of Service</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 text-[clamp(0.875rem,2.5vw,1.125rem)]" aria-live="polite">
+            Last updated: <time dateTime="2025-06-17">June 17, 2025</time>
           </p>
-        </div>
+        </header>
 
-        <Card className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-          <CardContent className="p-6">
-            <div className="flex items-start space-x-3">
-              <AlertTriangle className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                  Important Medical Disclaimer
-                </h3>
-                <p className="text-blue-800 dark:text-blue-200">
-                  heyMemory is a digital tool designed to support memory and cognitive wellness. 
-                  It is not a substitute for professional medical advice, diagnosis, or treatment. 
-                  Always consult with qualified healthcare professionals regarding your health concerns.
-                </p>
+        <section className="space-y-6" aria-label="Terms of service content">
+          <Card className="mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800" role="region" aria-labelledby="important-notice-heading">
+            <CardContent className="p-6">
+              <div className="flex items-start space-x-3">
+                <AlertTriangle className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-1 flex-shrink-0" aria-hidden="true" />
+                <div>
+                  <h2 id="important-notice-heading" className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2 text-[clamp(1rem,2.5vw,1.125rem)]">
+                    Important Notice for Cognitive Health Users
+                  </h2>
+                  <p className="text-blue-800 dark:text-blue-200 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                    heyMemory is designed to support individuals with cognitive challenges. These terms have been written in clear, 
+                    simple language. If you need assistance understanding any part of these terms, please contact us or ask a 
+                    caregiver to help explain them to you.
+                  </p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <div className="space-y-8">
-          {/* Section 1: Acceptance of Terms */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Scale className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">1. Acceptance of Terms</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                By accessing and using heyMemory ("the Service", "the App"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+          {/* Acceptance */}
+          <Card role="region" aria-labelledby="acceptance-heading">
+            <CardContent className="p-6">
+              <h2 id="acceptance-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center text-[clamp(1.125rem,3vw,1.25rem)]">
+                <Scale className="w-5 h-5 mr-2" aria-hidden="true" />
+                1. Acceptance of Terms
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                By using heyMemory, you agree to follow these rules. If you don't agree with these terms, please don't use our app.
               </p>
-              <p>
-                These Terms of Service ("Terms") govern your use of our memory support application and related services operated by heyMemory ("we", "us", or "our").
+              <p className="text-gray-700 dark:text-gray-300 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                These terms apply to everyone who uses heyMemory, including users with cognitive challenges and their caregivers.
               </p>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
-          <Separator />
-
-          {/* Section 2: Description of Service */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Brain className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">2. Description of Service</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                heyMemory is an intelligent memory support application designed to empower users with cognitive challenges through adaptive, user-friendly digital tools. Our services include:
+          {/* Service Description */}
+          <Card role="region" aria-labelledby="service-description-heading">
+            <CardContent className="p-6">
+              <h2 id="service-description-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center text-[clamp(1.125rem,3vw,1.25rem)]">
+                <Brain className="w-5 h-5 mr-2" aria-hidden="true" />
+                2. What heyMemory Does
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                heyMemory helps you practice remembering faces and important information. Our app includes:
               </p>
-              <ul>
-                <li><strong>Memory Games:</strong> Interactive cognitive exercises including face recognition games</li>
-                <li><strong>Remember Items:</strong> Personal memory aids for important information and reminders</li>
-                <li><strong>Caregiver Tools:</strong> Features designed to assist caregivers in supporting their loved ones</li>
-                <li><strong>Profile Management:</strong> Secure user accounts with personalized settings</li>
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 text-[clamp(0.875rem,2.5vw,1rem)]" aria-labelledby="service-description-heading">
+                <li>A faces game to help you recognize family and friends</li>
+                <li>A place to store important reminders and notes</li>
+                <li>Tools to help caregivers support you</li>
+                <li>Secure storage of your personal information</li>
               </ul>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
-          <Separator />
+          {/* User Responsibilities */}
+          <Card role="region" aria-labelledby="user-responsibilities-heading">
+            <CardContent className="p-6">
+              <h2 id="user-responsibilities-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center text-[clamp(1.125rem,3vw,1.25rem)]">
+                <Users className="w-5 h-5 mr-2" aria-hidden="true" />
+                3. Your Responsibilities
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                When you use heyMemory, you agree to:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 text-[clamp(0.875rem,2.5vw,1rem)]" aria-labelledby="user-responsibilities-heading">
+                <li>Provide true and accurate information</li>
+                <li>Keep your password safe and don't share it with others</li>
+                <li>Use the app only for its intended purpose</li>
+                <li>Be respectful to our support team</li>
+                <li>Not try to break or damage the app</li>
+                <li>Follow all applicable laws</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-          {/* Section 3: Medical Disclaimer */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Shield className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">3. Medical Disclaimer</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
+          {/* Privacy and Data */}
+          <Card role="region" aria-labelledby="privacy-data-heading">
+            <CardContent className="p-6">
+              <h2 id="privacy-data-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center text-[clamp(1.125rem,3vw,1.25rem)]">
+                <Shield className="w-5 h-5 mr-2" aria-hidden="true" />
+                4. Your Privacy and Data
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                We take your privacy seriously. Here's what you should know:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 text-[clamp(0.875rem,2.5vw,1rem)]" aria-labelledby="privacy-data-heading">
+                <li>Your photos and memories are stored securely</li>
+                <li>We don't sell your personal information</li>
+                <li>You can delete your account and data at any time</li>
+                <li>Caregivers you authorize can access your information to help you</li>
+                <li>Read our <Link href="/privacy-policy" 
+                    className="text-blue-600 dark:text-blue-400 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                    aria-label="Navigate to Privacy Policy page">Privacy Policy</Link> for complete details</li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Medical Disclaimer */}
+          <Card role="region" aria-labelledby="medical-disclaimer-heading">
+            <CardContent className="p-6">
+              <h2 id="medical-disclaimer-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center text-[clamp(1.125rem,3vw,1.25rem)]">
+                <Smartphone className="w-5 h-5 mr-2" aria-hidden="true" />
+                5. Important Medical Information
+              </h2>
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-4">
-                <p className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
-                  NOT A MEDICAL DEVICE OR TREATMENT
-                </p>
-                <p className="text-yellow-700 dark:text-yellow-300">
-                  heyMemory is not intended to diagnose, treat, cure, or prevent any medical condition or disease. 
-                  The app is designed as a supportive tool for cognitive wellness and memory exercises.
+                <p className="text-yellow-800 dark:text-yellow-200 font-medium text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                  ⚠️ heyMemory is NOT a medical device or treatment. It's a memory support tool.
                 </p>
               </div>
-              <p>
-                <strong>Professional Medical Advice:</strong> Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or experienced through heyMemory.
-              </p>
-              <p>
-                <strong>Emergency Situations:</strong> If you think you may have a medical emergency, call your doctor or emergency services immediately. heyMemory is not designed for emergency situations.
-              </p>
-            </div>
-          </section>
-
-          <Separator />
-
-          {/* Section 4: User Responsibilities */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Users className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">4. User Responsibilities</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>By using heyMemory, you agree to:</p>
-              <ul>
-                <li>Provide accurate and complete information when creating your account</li>
-                <li>Maintain the security of your password and accept responsibility for all activities under your account</li>
-                <li>Use the service only for lawful purposes and in accordance with these Terms</li>
-                <li>Not attempt to gain unauthorized access to any portion of the service</li>
-                <li>Not use the service to transmit viruses, malware, or other harmful code</li>
-                <li>Respect the privacy and rights of other users</li>
-                <li>Not reverse engineer, decompile, or disassemble any part of the service</li>
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 text-[clamp(0.875rem,2.5vw,1rem)]" aria-labelledby="medical-disclaimer-heading">
+                <li>Always follow your doctor's advice</li>
+                <li>Don't use heyMemory instead of medical care</li>
+                <li>If you have medical emergencies, call emergency services</li>
+                <li>We are not responsible for medical decisions based on our app</li>
               </ul>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
-          <Separator />
-
-          {/* Section 5: Privacy and Data Protection */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Shield className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">5. Privacy and Data Protection</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                Your privacy is important to us. Our collection and use of personal information is governed by our{" "}
-                <Link href="/privacy-policy" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  Privacy Policy
-                </Link>, which is incorporated into these Terms by reference.
+          {/* Limitations */}
+          <Card role="region" aria-labelledby="limitations-heading">
+            <CardContent className="p-6">
+              <h2 id="limitations-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center text-[clamp(1.125rem,3vw,1.25rem)]">
+                <AlertTriangle className="w-5 h-5 mr-2" aria-hidden="true" />
+                6. What We're Not Responsible For
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                While we work hard to make heyMemory helpful and reliable, we can't guarantee everything will always work perfectly:
               </p>
-              <p>
-                <strong>Sensitive Health Information:</strong> We understand that memory and cognitive data is particularly sensitive. We implement appropriate technical and organizational measures to protect your personal information.
-              </p>
-              <p>
-                <strong>Data Retention:</strong> We retain your personal data only as long as necessary for the purposes outlined in our Privacy Policy or as required by law.
-              </p>
-            </div>
-          </section>
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 text-[clamp(0.875rem,2.5vw,1rem)]" aria-labelledby="limitations-heading">
+                <li>Technical problems or app downtime</li>
+                <li>Lost data (though we try our best to prevent this)</li>
+                <li>How well the memory exercises work for you</li>
+                <li>Problems caused by your device or internet connection</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-          <Separator />
-
-          {/* Section 6: Intellectual Property */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Scale className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">6. Intellectual Property</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                The heyMemory service and its original content, features, and functionality are and will remain the exclusive property of heyMemory and its licensors. The service is protected by copyright, trademark, and other laws.
+          {/* Termination */}
+          <Card role="region" aria-labelledby="termination-heading">
+            <CardContent className="p-6">
+              <h2 id="termination-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center text-[clamp(1.125rem,3vw,1.25rem)]">
+                <Clock className="w-5 h-5 mr-2" aria-hidden="true" />
+                7. Ending Your Account
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                You can stop using heyMemory anytime:
               </p>
-              <p>
-                <strong>User Content:</strong> You retain ownership of any content you create or upload to the service. By using the service, you grant us a limited license to use, store, and process your content solely for the purpose of providing the service to you.
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4 text-[clamp(0.875rem,2.5vw,1rem)]" aria-labelledby="termination-heading">
+                <li>You can delete your account in your profile settings</li>
+                <li>We may close accounts that break these rules</li>
+                <li>If we close your account, we'll try to tell you why</li>
+                <li>Your data will be deleted according to our Privacy Policy</li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Changes to Terms */}
+          <Card role="region" aria-labelledby="changes-heading">
+            <CardContent className="p-6">
+              <h2 id="changes-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-[clamp(1.125rem,3vw,1.25rem)]">
+                8. Changes to These Terms
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                Sometimes we need to update these terms. When we do, we'll let you know by email and show the changes 
+                in the app. If you keep using heyMemory after we make changes, it means you agree to the new terms.
               </p>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
-          <Separator />
-
-          {/* Section 7: Limitation of Liability */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <AlertTriangle className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">7. Limitation of Liability</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
-                <p className="font-semibold text-red-800 dark:text-red-200 mb-2">
-                  IMPORTANT LIABILITY LIMITATIONS
+          {/* Contact Information */}
+          <Card role="region" aria-labelledby="contact-info-heading">
+            <CardContent className="p-6">
+              <h2 id="contact-info-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-[clamp(1.125rem,3vw,1.25rem)]">
+                9. Questions or Problems?
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
+                If you have questions about these terms or need help with heyMemory, please contact us:
+              </p>
+              <div className="space-y-2 text-[clamp(0.875rem,2.5vw,1rem)]">
+                <p className="text-gray-700 dark:text-gray-300">
+                  <strong>Email:</strong> <Link href="mailto:help@heyMemory.app" 
+                    className="text-blue-600 dark:text-blue-400 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                    aria-label="Send email to heyMemory support">help@heyMemory.app</Link>
                 </p>
-                <p className="text-red-700 dark:text-red-300">
-                  Please read this section carefully as it limits our liability to you.
-                </p>
+                <p className="text-gray-700 dark:text-gray-300"><strong>Company:</strong> Biltsite</p>
+                <address className="text-gray-700 dark:text-gray-300 not-italic">
+                  <strong>Address:</strong><br />
+                  Donklaan 79 bus 16<br />
+                  9290 Berlare, Belgium
+                </address>
               </div>
-              <p>
-                <strong>Service Provided "As Is":</strong> The service is provided on an "as is" and "as available" basis. We make no warranties, expressed or implied, and hereby disclaim all other warranties including, without limitation, implied warranties of merchantability, fitness for a particular purpose, or non-infringement.
-              </p>
-              <p>
-                <strong>No Medical Warranties:</strong> We do not warrant that the use of heyMemory will improve your memory, cognitive function, or health condition in any way.
-              </p>
-              <p>
-                <strong>Limitation of Damages:</strong> In no event shall heyMemory be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses.
-              </p>
-            </div>
-          </section>
-
-          <Separator />
-
-          {/* Section 8: Service Availability */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Clock className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">8. Service Availability</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                We strive to maintain the availability of heyMemory, but we cannot guarantee uninterrupted access. The service may be unavailable due to:
-              </p>
-              <ul>
-                <li>Scheduled maintenance and updates</li>
-                <li>Technical difficulties or system failures</li>
-                <li>Internet connectivity issues</li>
-                <li>Force majeure events beyond our control</li>
-              </ul>
-              <p>
-                We will make reasonable efforts to provide advance notice of scheduled maintenance when possible.
-              </p>
-            </div>
-          </section>
-
-          <Separator />
-
-          {/* Section 9: Account Termination */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Users className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">9. Account Termination</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                <strong>Termination by You:</strong> You may terminate your account at any time by contacting us or using the account deletion feature in your profile settings.
-              </p>
-              <p>
-                <strong>Termination by Us:</strong> We may terminate or suspend your account immediately, without prior notice, if you breach these Terms or engage in conduct that we determine to be harmful to other users or the service.
-              </p>
-              <p>
-                <strong>Effect of Termination:</strong> Upon termination, your right to use the service will cease immediately. We may delete your account data in accordance with our data retention policies.
-              </p>
-            </div>
-          </section>
-
-          <Separator />
-
-          {/* Section 10: Changes to Terms */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Scale className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">10. Changes to Terms</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                We reserve the right to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days notice prior to any new terms taking effect.
-              </p>
-              <p>
-                Your continued use of the service after any such changes constitutes your acceptance of the new Terms. If you do not agree to the new Terms, you must stop using the service.
-              </p>
-            </div>
-          </section>
-
-          <Separator />
-
-          {/* Section 11: Governing Law */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Scale className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">11. Governing Law</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                These Terms shall be interpreted and governed by the laws of the jurisdiction in which heyMemory operates, without regard to its conflict of law provisions.
-              </p>
-              <p>
-                Any disputes arising from these Terms or your use of the service will be resolved through binding arbitration in accordance with the rules of the relevant arbitration association.
-              </p>
-            </div>
-          </section>
-
-          <Separator />
-
-          {/* Section 12: Contact Information */}
-          <section>
-            <div className="flex items-center space-x-3 mb-4">
-              <Smartphone className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">12. Contact Information</h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p>
-                If you have any questions about these Terms of Service, please contact us:
-              </p>
-              <ul>
-                <li>
-                  Through our{" "}
-                  <Link href="/contact" className="text-blue-600 dark:text-blue-400 hover:underline">
-                    contact form
-                  </Link>
-                </li>
-                <li>By email: help@heyMemory.app</li>
-              </ul>
-            </div>
-          </section>
+            </CardContent>
+          </Card>
 
           {/* Acknowledgment */}
-          <Card className="mt-8 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <Card className="mt-8 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700" role="region" aria-labelledby="acknowledgment-heading">
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              <h2 id="acknowledgment-heading" className="text-lg font-semibold text-gray-900 dark:text-white mb-3 text-[clamp(1rem,2.5vw,1.125rem)]">
                 Acknowledgment
-              </h3>
-              <p className="text-gray-700 dark:text-gray-300">
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed">
                 By using heyMemory, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. 
                 You also acknowledge that you have read and understood our Privacy Policy.
               </p>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </section>
+      </main>
 
       <MainFooter />
     </div>
