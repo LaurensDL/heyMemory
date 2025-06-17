@@ -684,6 +684,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         state, 
         zipCode, 
         country, 
+        caregiverPhoneNumber, 
         currentPassword, 
         newPassword 
       } = updateProfileSchema.parse(req.body);
@@ -762,6 +763,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       updates.state = state;
       updates.zipCode = zipCode;
       updates.country = country;
+      updates.caregiverPhoneNumber = caregiverPhoneNumber;
       
       // Handle date of birth conversion
       if (dateOfBirth) {
