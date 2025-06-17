@@ -244,7 +244,7 @@ export default function Profile() {
                         type="text"
                         {...register("firstName")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Enter your first name"
+                        placeholder="First name"
                       />
                       {errors.firstName && (
                         <p className="text-red-600 text-lg font-medium">{errors.firstName.message}</p>
@@ -260,7 +260,7 @@ export default function Profile() {
                         type="text"
                         {...register("lastName")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Enter your last name"
+                        placeholder="Last name"
                       />
                       {errors.lastName && (
                         <p className="text-red-600 text-lg font-medium">{errors.lastName.message}</p>
@@ -292,7 +292,7 @@ export default function Profile() {
                       type="email"
                       {...register("email")}
                       className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                      placeholder="Enter your email"
+                      placeholder="Email address"
                     />
                     {errors.email && (
                       <p className="text-red-600 text-lg font-medium">{errors.email.message}</p>
@@ -308,7 +308,7 @@ export default function Profile() {
                       type="tel"
                       {...register("caregiverPhoneNumber")}
                       className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                      placeholder="Enter caregiver's phone number"
+                      placeholder="Caregiver phone"
                     />
                     {errors.caregiverPhoneNumber && (
                       <p className="text-red-600 text-lg font-medium">{errors.caregiverPhoneNumber.message}</p>
@@ -382,7 +382,7 @@ export default function Profile() {
                       type="text"
                       {...register("address")}
                       className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                      placeholder="Enter your street address"
+                      placeholder="Street address"
                     />
                     {errors.address && (
                       <p className="text-red-600 text-lg font-medium">{errors.address.message}</p>
@@ -399,7 +399,7 @@ export default function Profile() {
                         type="text"
                         {...register("city")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Enter your city"
+                        placeholder="City"
                       />
                       {errors.city && (
                         <p className="text-red-600 text-lg font-medium">{errors.city.message}</p>
@@ -415,7 +415,7 @@ export default function Profile() {
                         type="text"
                         {...register("state")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Enter your state/province"
+                        placeholder="State/Province"
                       />
                       {errors.state && (
                         <p className="text-red-600 text-lg font-medium">{errors.state.message}</p>
@@ -433,7 +433,7 @@ export default function Profile() {
                         type="text"
                         {...register("zipCode")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Enter your ZIP code"
+                        placeholder="ZIP code"
                       />
                       {errors.zipCode && (
                         <p className="text-red-600 text-lg font-medium">{errors.zipCode.message}</p>
@@ -449,7 +449,7 @@ export default function Profile() {
                         type="text"
                         {...register("country")}
                         className="h-12 text-lg border-2 border-gray-300 focus:border-[var(--button-primary)] rounded-lg"
-                        placeholder="Enter your country"
+                        placeholder="Country"
                       />
                       {errors.country && (
                         <p className="text-red-600 text-lg font-medium">{errors.country.message}</p>
