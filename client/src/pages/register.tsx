@@ -22,6 +22,12 @@ export default function Register() {
   const [showVerification, setShowVerification] = useState(false);
 
   useEffect(() => {
+    // Add noindex meta tag to prevent search engine indexing
+    const metaRobots = document.createElement('meta');
+    metaRobots.name = 'robots';
+    metaRobots.content = 'noindex, nofollow';
+    document.head.appendChild(metaRobots);
+
     // Add canonical URL
     const canonicalLink = document.createElement('link');
     canonicalLink.rel = 'canonical';
@@ -47,6 +53,10 @@ export default function Register() {
     }, 1000);
 
     return () => {
+      const existingRobots = document.querySelector('meta[name="robots"]');
+      if (existingRobots) {
+        document.head.removeChild(existingRobots);
+      }
       const existingCanonical = document.querySelector('link[rel="canonical"]');
       if (existingCanonical) {
         document.head.removeChild(existingCanonical);

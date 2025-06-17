@@ -18,6 +18,53 @@ export default function VerifyEmailPage({ email, onCancel, onResendSuccess }: Ve
   const { toast } = useToast();
 
   useEffect(() => {
+    // Add noindex meta tag to prevent search engine indexing
+    const metaRobots = document.createElement('meta');
+    metaRobots.name = 'robots';
+    metaRobots.content = 'noindex, nofollow';
+    document.head.appendChild(metaRobots);
+
+    // Add canonical URL
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.origin + '/verify-email';
+    document.head.appendChild(canonicalLink);
+
+    // Add language attribute
+    document.documentElement.lang = 'en';
+
+    // Screen reader announcement for page load
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.className = 'sr-only';
+    announcement.textContent = 'Email verification page loaded. Check your email and follow the verification instructions.';
+    document.body.appendChild(announcement);
+
+    // Remove announcement after screen readers have time to read it
+    const announcementTimer = setTimeout(() => {
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+    }, 1000);
+
+    return () => {
+      const existingRobots = document.querySelector('meta[name="robots"]');
+      if (existingRobots) {
+        document.head.removeChild(existingRobots);
+      }
+      const existingCanonical = document.querySelector('link[rel="canonical"]');
+      if (existingCanonical) {
+        document.head.removeChild(existingCanonical);
+      }
+      if (document.body.contains(announcement)) {
+        document.body.removeChild(announcement);
+      }
+      clearTimeout(announcementTimer);
+    };
+  }, []);
+
+  useEffect(() => {
     if (cooldownSeconds > 0) {
       const timer = setTimeout(() => setCooldownSeconds(cooldownSeconds - 1), 1000);
       return () => clearTimeout(timer);

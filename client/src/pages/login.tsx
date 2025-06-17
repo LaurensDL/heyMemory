@@ -18,6 +18,12 @@ export default function Login() {
   const loginMutation = useLogin();
 
   useEffect(() => {
+    // Add noindex meta tag to prevent search engine indexing
+    const metaRobots = document.createElement('meta');
+    metaRobots.name = 'robots';
+    metaRobots.content = 'noindex, nofollow';
+    document.head.appendChild(metaRobots);
+
     // Add canonical URL
     const canonicalLink = document.createElement('link');
     canonicalLink.rel = 'canonical';
