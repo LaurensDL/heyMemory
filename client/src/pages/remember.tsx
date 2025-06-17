@@ -200,7 +200,7 @@ export default function RememberPage() {
 
                 {/* Close Button */}
                 <div className="flex justify-end pt-6">
-                  <Button onClick={handleCloseDetail} className="bg-black text-white font-black text-2xl px-8 py-4 rounded-xl border-3 border-black hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-400 transition-colors">
+                  <Button onClick={handleCloseDetail} className="bg-red-600 text-white font-black text-2xl px-8 py-4 rounded-xl border-3 border-red-600 hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-400 transition-colors">
                     Close
                   </Button>
                 </div>
