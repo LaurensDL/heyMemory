@@ -312,7 +312,7 @@ export default function TermsOfServicePage() {
                     contact form
                   </Link>
                 </li>
-                <li>By email: terms@heymemory.com</li>
+                <li>By email: help@heyMemory.app</li>
               </ul>
             </div>
           </section>
