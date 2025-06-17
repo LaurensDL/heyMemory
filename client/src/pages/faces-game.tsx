@@ -282,7 +282,7 @@ export default function FacesGamePage() {
 
                           {currentPhoto?.description && (
                             <div className="bg-white/50 rounded-lg p-4 max-w-sm mx-auto">
-                              <p className="text-gray-700 text-base leading-relaxed">
+                              <p className="text-[20px] text-[#1c2129]">
                                 {currentPhoto.description}
                               </p>
                             </div>
