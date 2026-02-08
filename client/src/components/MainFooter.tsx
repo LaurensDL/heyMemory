@@ -32,18 +32,17 @@ export function MainFooter() {
           </div>
           
           <div className="space-y-2">
-            <p className="text-body">© 2025 heyMemory. Designed with care for memory support.</p>
+            <p className="text-body">© {new Date().getFullYear()} heyMemory. Designed with care for memory support.</p>
             <p className="text-sm text-gray-600">
-              A project by{" "}
+              Developed with ❤ by{" "}
               <a 
                 href="https://biltsite.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="hover:text-[var(--button-primary)] underline transition-colors"
               >
-                BILTSITE ™ Web & App Development
+                Biltsite
               </a>
-              .
             </p>
           </div>
         </div>
