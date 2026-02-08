@@ -112,6 +112,12 @@ export default function Home() {
                   Our simple and clear interface makes it easy to store and recall the memories that matter most to you.
                 </p>
                 
+                <p className="text-sm md:text-base text-gray-500 mb-8 md:mb-10 leading-relaxed italic">
+                  heyMemory is a free service, lovingly built and maintained by{" "}
+                  <a href="https://biltsite.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-[var(--button-primary)] transition-colors font-medium not-italic">Biltsite</a>
+                  {" "}as a gift to the community — because everyone deserves a little help remembering.
+                </p>
+
                 {/* CTA Buttons - Mobile First, Desktop Horizontal */}
                 <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center lg:justify-start items-center" role="group" aria-label="Get started with heyMemory">
                   <Link href="/login" className="w-full sm:w-auto md:w-auto">
