@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Mail, Phone, MapPin, Clock, Home as HomeIcon, ChevronRight } from "lucide-react";
+import { Mail, Phone, MapPin, Home as HomeIcon, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import { MainFooter } from "@/components/MainFooter";
 import { MainNavigation } from "@/components/MainNavigation";
@@ -419,19 +419,6 @@ export default function ContactPage() {
                     </a>
                   </p>
                   <p className="text-sm md:text-lg text-gray-600">We try to respond within 24 hours</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4 md:space-x-6" role="listitem">
-                <div className="bg-green-100 p-3 md:p-4 rounded-xl flex-shrink-0" role="img" aria-label="Support hours information">
-                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-green-600" aria-hidden="true" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-lg md:text-2xl font-bold text-black mb-1 md:mb-2" id="hours-heading">Support Hours</h3>
-                  <p className="text-base md:text-xl text-gray-700" aria-describedby="hours-heading">
-                    <time dateTime="10:00">10 AM</time> - <time dateTime="17:00">5 PM</time>, Monday - Friday
-                  </p>
-                  <p className="text-sm md:text-lg text-gray-600">Eastern Time (US)</p>
                 </div>
               </div>
             </div>
