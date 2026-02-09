@@ -34,7 +34,7 @@ export function MainFooter() {
           <div className="space-y-2">
             <p className="text-body">© {new Date().getFullYear()} heyMemory. Designed with care for memory support.</p>
             <p className="text-sm text-gray-600">
-              Developed with ❤ by{" "}
+              Developed with <span className="text-red-500">❤</span> by{" "}
               <a 
                 href="https://biltsite.com" 
                 target="_blank" 
